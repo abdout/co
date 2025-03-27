@@ -10,9 +10,9 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
-import { FormSuccess } from "./form-success";
-import { FormError } from "./form-error";
-import { newVerification } from "./actions/new-verification";
+import { FormSuccess } from "../form-success";
+import { FormError } from "../error/form-error";
+import { newVerification } from "./action";
 
 export const NewVerificationForm = ({
   className,

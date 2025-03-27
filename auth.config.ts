@@ -1,9 +1,9 @@
-import { getUserByEmail } from "@/components/auth/data/user";
-import { LoginSchema } from "@/components/auth/schemas";
+import { getUserByEmail } from "@/components/auth/user";
+import { LoginSchema } from "@/components/auth/validation";
 import bcrypt from "bcryptjs";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Github from "next-auth/providers/github";
+import Facebook from "next-auth/providers/facebook";
 import Google from "next-auth/providers/google";
 
 export default {
@@ -11,10 +11,28 @@ export default {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          emailVerified: new Date(),
+        };
+      },
     }),
-    Github({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    Facebook({
+      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture?.data?.url,
+          emailVerified: new Date(),
+        };
+      },
     }),
     Credentials({
       async authorize(credentials) {

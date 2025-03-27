@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentUser } from "@/components/auth/hooks/use-current-user";
+import { useCurrentUser } from "@/components/auth/use-current-user";
 import { UserInfo } from "@/components/auth/user-info";
 
 

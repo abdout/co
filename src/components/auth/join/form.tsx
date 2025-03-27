@@ -21,11 +21,11 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
-import { RegisterSchema } from "./schemas";
-import { register } from "./actions/register";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
-
+import { RegisterSchema } from "../validation";
+import { register } from "./action";
+import { FormError } from "../error/form-error";
+import { FormSuccess } from "../form-success";
+import { Social } from "../social";
 export const RegisterForm = ({
   className,
   ...props
@@ -60,6 +60,9 @@ export const RegisterForm = ({
     <div className={cn("flex flex-col gap-6 min-w-[200px] md:min-w-[350px]", className)} {...props}>
       <Card className="border-none shadow-none">
         <CardHeader className="text-center" />
+        <CardContent>
+          <Social />
+        </CardContent>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">

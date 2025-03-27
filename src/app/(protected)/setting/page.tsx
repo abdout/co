@@ -34,10 +34,10 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { UserRole } from "@prisma/client";
-import { useCurrentUser } from "@/components/auth/hooks/use-current-user";
-import { SettingsSchema } from "@/components/auth/schemas";
-import { settings } from "@/components/auth/actions/settings";
-import { FormError } from "@/components/auth/form-error";
+import { useCurrentUser } from "@/components/auth/use-current-user";
+import { SettingsSchema } from "@/components/auth/validation";
+import { settings } from "@/components/auth/setting/action";
+import { FormError } from "@/components/auth/error/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
 
 const SettingsPage = () => {

@@ -3,9 +3,9 @@ import { UserRole } from "@prisma/client"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import type { DefaultSession } from "next-auth"
 import { db } from "@/lib/db"
-import { getUserById } from "@/components/auth/data/user"
-import { getTwoFactorConfirmationByUserId } from "@/components/auth/data/two-factor-confirmation"
-import { getAccountByUserId } from "@/components/auth/data/account"
+import { getUserById } from "@/components/auth/user"
+import { getTwoFactorConfirmationByUserId } from "@/components/auth/verification/2f-confirmation"
+import { getAccountByUserId } from "@/components/auth/account"
 import authConfig from "./auth.config"
 
 // Extend the built-in session types

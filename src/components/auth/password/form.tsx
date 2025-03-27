@@ -3,6 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
@@ -21,32 +22,35 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
-import { ResetSchema } from "./schemas";
-import { reset } from "./actions/reset";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
+import { NewPasswordSchema } from "../validation";
+import { newPassword } from "./action";
+import { FormError } from "../error/form-error";
+import { FormSuccess } from "../form-success";
 
-export const ResetForm = ({
+export const NewPasswordForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof ResetSchema>>({
-    resolver: zodResolver(ResetSchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      email: "",
+      password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      reset(values)
+      newPassword(values, token)
         .then((data) => {
           setError(data?.error);
           setSuccess(data?.success);
@@ -57,22 +61,24 @@ export const ResetForm = ({
   return (
     <div className={cn("flex flex-col gap-6 min-w-[200px] md:min-w-[350px]", className)} {...props}>
       <Card className="border-none shadow-none">
-        <CardHeader className="text-center" />
+        <CardHeader className="text-center">
+          <h1 className="text-xl font-semibold">Enter a new password</h1>
+        </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
               <div className="grid gap-6">
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="password"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="Email"
-                          type="email"
+                          placeholder="New Password"
+                          type="password"
                         />
                       </FormControl>
                       <FormMessage />

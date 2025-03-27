@@ -1,7 +1,7 @@
 "use client";
 
 
-import { admin } from "@/components/auth/actions/admin";
+import { admin } from "@/components/auth/admin-action";
 import { FormSuccess } from "@/components/auth/form-success";
 import { RoleGate } from "@/components/auth/role-gate";
 
