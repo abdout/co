@@ -1,0 +1,144 @@
+# Project Rules and Conventions
+
+# Package Manager
+package-manager: pnpm
+
+# UI Components Priority
+- Always use shadcn/ui components first
+- Maintain consistent styling with shadcn/ui theme when creating custom components
+
+# Naming Conventions
+
+## Directories
+- Use lowercase letters
+- For multi-word directories, use hyphens (-)
+- Examples:
+  - src/
+  - user-profile/
+  - data-management/
+
+## Files
+- Use lowercase letters
+- For multi-word filenames, use hyphens (-)
+- Examples:
+  - quick-links.tsx
+  - user-profile-card.tsx
+  - data-table.tsx
+
+## Components
+- Use PascalCase for component names
+- Examples:
+  - QuickLinks
+  - UserProfile
+  - DataTable
+
+## Functions
+- Use PascalCase for function names
+- Examples:
+  - HandleSubmit
+  - FetchData
+  - UpdateUserProfile
+
+## Variables and Constants
+- Use camelCase for variables and constants
+- Examples:
+  - userData
+  - isLoading
+  - MAX_RETRY_COUNT
+
+## CSS Classes
+- Use lowercase letters
+- For multi-word classes, use hyphens (-)
+- Examples:
+  - user-card
+  - primary-button
+  - data-container
+
+# Code Style
+
+## Imports
+- Group imports in the following order:
+  1. React and Next.js imports
+  2. External library imports
+  3. Internal component imports
+  4. Type imports
+
+## Component Structure
+- Use functional components with TypeScript
+- Include proper type definitions
+- Use proper prop interfaces
+
+## State Management
+- Use React hooks for state management
+- Keep state as local as possible
+- Use context for global state when necessary
+
+## Error Handling
+- Implement proper error boundaries
+- Use try-catch blocks for async operations
+- Provide meaningful error messages
+
+## Performance
+- Implement proper memoization when needed
+- Use React.memo for expensive components
+- Optimize images and assets
+
+## Testing
+- Write unit tests for components
+- Include integration tests for critical paths
+- Use proper test naming conventions
+
+## Documentation
+- Include JSDoc comments for complex functions
+- Document component props
+- Keep README up to date
+
+## Git
+- Use conventional commits
+- Keep commits atomic and focused
+- Write meaningful commit messages
+
+## Accessibility
+- Include proper ARIA labels
+- Ensure keyboard navigation works
+- Maintain proper heading hierarchy 
+
+# Project Structure and Architecture
+
+## Directory Structure
+- Use Next.js App Router structure with `src/app` as the root for pages
+- For each page route in `src/app`, create a corresponding component directory in `src/components`
+- Example structure:
+  ```
+  src/
+  ├── app/
+  │   └── task/
+  │       └── page.tsx
+  └── components/
+      └── task/
+          ├── constant.ts
+          ├── type.ts
+          ├── form.tsx
+          ├── action.ts
+          ├── validation.ts
+          ├── model.ts
+          ├── content.tsx
+          ├── readme.mdx
+          └── card.tsx
+          
+  ```
+
+## Component Directory File Conventions
+- `constant.ts`: Contains arrays and constants
+- `type.ts`: Contains TypeScript types and interfaces
+- `form.tsx`: Form components using:
+  - Zod for validation
+  - React Hook Form for form handling
+  - useActionState for form state management
+  - Server Actions for form submission
+- `action.ts`: Server actions and API endpoints
+- `validation.ts`: Validation schemas and utilities
+- `model.ts`: Database schemas and models
+- `card.tsx`: Card components and layouts 
+- `content.tsx`: page ui
+- `readme.mdx`: page ui
