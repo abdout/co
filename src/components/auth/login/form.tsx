@@ -150,7 +150,7 @@ export const LoginForm = ({
                             />
                           </FormControl>
                           <Link
-                            href="/reset"
+                            href="/auth/reset"
                             className="text-sm text-start hover:underline underline-offset-4"
                           >
                             Forgot password?
@@ -171,7 +171,7 @@ export const LoginForm = ({
               </div>
               
               <div className="text-center text-sm">
-                <Link href="/join" className="hover:underline underline-offset-4">
+                <Link href="/auth/join" className="hover:underline underline-offset-4">
                   Don&apos;t have an account?
                 </Link>
               </div>
