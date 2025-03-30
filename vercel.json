@@ -3,6 +3,10 @@
       {
         "source": "/blocks/:path*",
         "destination": "/:path*"
+      },
+      {
+        "source": "/blocks/_next/:path*",
+        "destination": "/_next/:path*"
       }
     ],
     "headers": [

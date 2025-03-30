@@ -9,14 +9,25 @@ import {
 
 const { auth } = NextAuth(authConfig)
 
+// Get base path from environment or use empty string
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 // Middleware using Next.js 14/15 syntax
 export default auth((req) => {
   const { nextUrl } = req
   const isLoggedIn = !!req.auth
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+  // Next.js automatically handles the basePath in middleware
+  // so we can check paths without the basePath prefix
+  const pathname = nextUrl.pathname
+  
+  const isApiAuthRoute = pathname.startsWith(apiAuthPrefix)
+  const isPublicRoute = publicRoutes.some(route => 
+    pathname === route || pathname.startsWith(`${route}/`)
+  )
+  const isAuthRoute = authRoutes.some(route => 
+    pathname === route || pathname.startsWith(`${route}/`)
+  )
 
   if (isApiAuthRoute) {
     return
@@ -30,7 +41,7 @@ export default auth((req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    const callbackUrl = nextUrl.pathname + nextUrl.search
+    const callbackUrl = pathname + nextUrl.search
     const encodedCallbackUrl = encodeURIComponent(callbackUrl)
 
     return Response.redirect(new URL(
