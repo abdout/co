@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import "@theme-toggles/react/css/DarkSide.css"
 import { DarkSide } from "@theme-toggles/react"
+import { useTheme } from "next-themes"
 
 const Toggle = () => {
-  const [isToggled, setToggle] = useState(false);
-
-  useEffect(() => {
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    setToggle(isDarkMode);
-  }, []);
+  const { theme, setTheme } = useTheme();
+  const isToggled = theme === 'dark';
 
   const toggleTheme = () => {
-    const newTheme = isToggled ? 'light' : 'dark';
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    setToggle(!isToggled);
+    setTheme(isToggled ? 'light' : 'dark');
   };
 
   return (
