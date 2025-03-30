@@ -27,10 +27,10 @@ const Auth = () => {
           An authentication and authorization block. 
         </p>
         <div className="flex items-center justify-center space-x-5 pt-4">
-          <Link href="/login">
+          <Link href="/auth/login">
             <Button className='w-20' variant="outline">Login</Button>
           </Link>
-          <Link href="/join">
+          <Link href="/auth/join">
             <Button  className='w-20'>Join</Button>
           </Link>
         </div>
