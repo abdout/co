@@ -1,31 +1,40 @@
 {
-    "rewrites": [
-      {
-        "source": "/blocks/:path*",
-        "destination": "/:path*"
-      },
-      {
-        "source": "/blocks/_next/:path*",
-        "destination": "/_next/:path*"
-      }
-    ],
-    "headers": [
-      {
-        "source": "/(.*)",
-        "headers": [
-          {
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          },
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          },
-          {
-            "key": "Referrer-Policy",
-            "value": "strict-origin-when-cross-origin"
-          }
-        ]
-      }
-    ]
-  }
+  "rewrites": [
+    {
+      "source": "/blocks/:path*",
+      "destination": "https://block-ivory.vercel.app/:path*"
+    },
+    {
+      "source": "/_next/static/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/static/:path*"
+    },
+    {
+      "source": "/_next/image/:path*", 
+      "destination": "https://block-ivory.vercel.app/_next/image/:path*"
+    },
+    {
+      "source": "/_next/data/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/data/:path*"
+    },
+    {
+      "source": "/_next/static/media/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/static/media/:path*"
+    },
+    {
+      "source": "/_next/static/css/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/static/css/:path*"
+    },
+    {
+      "source": "/_next/static/chunks/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/static/chunks/:path*"
+    },
+    {
+      "source": "/_next/static/development/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/static/development/:path*"
+    },
+    {
+      "source": "/_next/static/webpack/:path*",
+      "destination": "https://block-ivory.vercel.app/_next/static/webpack/:path*"
+    }
+  ]
+}
