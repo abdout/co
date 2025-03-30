@@ -26,7 +26,7 @@ const Auth = () => {
         <p className=" text-lg font-light text-neutral-600">
           An authentication and authorization block. 
         </p>
-        <div className="flex items-center justify-center space-x-5 pt-4">
+        <div className="flex items-center justify-center space-x-4 pt-4">
           <Link href="/auth/login">
             <Button className='w-20' variant="outline">Login</Button>
           </Link>
