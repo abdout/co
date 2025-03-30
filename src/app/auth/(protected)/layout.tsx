@@ -1,5 +1,5 @@
 import TaxonomyHeader from "@/components/template/header-taxonomy/taxonomy-header";
-import { Navbar } from "../../components/protected/navbar";
+
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
