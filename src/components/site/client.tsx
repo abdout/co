@@ -84,8 +84,8 @@ export function ClientSection() {
   return (
     <div className="relative">
       {/* White Section with Client Logos */}
-      <div className="bg-white py-16">
-        <div className="container mx-auto px-8">
+      <div className="dark bg-black py-16 ">
+        <div className="container text-primary mx-auto px-8">
           <div className=" my-10 ">
             <h4 className="text-muted-foreground">clients </h4>
             <h1 className=" font-bold -mt-2"> Trust us</h1>
@@ -134,18 +134,7 @@ export function ClientSection() {
           </div>
         </div>
         {/* Inverted Angular Shape Divider */}
-        <div className="absolute -top-1 left-0 right-0">
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            className="w-full h-20"
-          >
-            <path
-              d="M0,0 L0,10 L290,90 L420,40 L480,10 L910,70 L1200,0 Z"
-              className="fill-white"
-            />
-          </svg>
-        </div>
+        
       </div>
     </div>
   );

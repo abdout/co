@@ -57,24 +57,13 @@ export function NumberSection() {
       {/* Background Image Section with Mask */}
       <div className="relative h-[90vh] bg-[url('/switchgear.png')] bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 bg-black/50">
-          <div className="container mt-14 px-8 mx-auto  h-full flex flex-col justify-center text-accent">
+          <div className="container mt-40 px-8 mx-auto  h-full flex flex-col justify-center text-accent">
           <h4 className="text-neutral-400">company </h4>
             <h1 className=" font-bold -mt-2">In numbers</h1>
           </div>
         </div>
         {/* Angular Shape Divider with Three Peaks */}
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            className="w-full h-20"
-          >
-            <path
-              d="M0,120 L0,70 L210,50 L420,70 L910,0 L1200,50 L1200,120 Z"
-              className="fill-white"
-            />
-          </svg>
-        </div>
+        
       </div>
 
       {/* Counters Section */}

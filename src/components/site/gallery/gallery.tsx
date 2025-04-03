@@ -8,14 +8,23 @@ interface GalleryProps {
 }
 
 const defaultImages = [
-  "https://images.unsplash.com/photo-1670510521052-9f29bce5bbfb",
-  "https://images.unsplash.com/photo-1670431667395-93114aff8545",
-  "https://images.unsplash.com/photo-1665680521183-1a77175d81dd",
-  "https://images.unsplash.com/photo-1670510521081-fe2e687c3153",
-  "https://images.unsplash.com/photo-1670510521081-fe2e687c3153",
-  "https://images.unsplash.com/photo-1670510521047-da0e1e68524d",
-  "https://images.unsplash.com/photo-1664575196412-ed801e8333a1",
-  "https://images.unsplash.com/photo-1664575196412-ed801e8333a1",
+  "/gallery/1.png",
+  "/gallery/2.jpg",
+  "/gallery/3.jpg",
+  "/gallery/4.png",
+  "/gallery/5.png",
+  "/gallery/6.png",
+  "/gallery/7.png",
+  "/gallery/8.png",
+//   "/gallery/9.png",
+  "/gallery/10.png",
+  "/gallery/11.png",
+  "/gallery/12.png",
+  "/gallery/13.png",
+  "/gallery/14.png",
+  "/gallery/15.jpg",
+  "/gallery/16.png",
+  "/gallery/17.png",
 ];
 
 export const Gallery = ({ images = defaultImages }: GalleryProps) => {
@@ -43,44 +52,38 @@ export const Gallery = ({ images = defaultImages }: GalleryProps) => {
       if (track.dataset.mouseDownAt === "0") return;
       
       const mouseDelta = parseFloat(track.dataset.mouseDownAt || "0") - e.clientX;
-      const maxDelta = window.innerWidth;
+      const maxDelta = window.innerWidth * 2;
       
       let percentage = (mouseDelta / maxDelta) * -100;
-      let nextPercentage = parseFloat(track.dataset.prevPercentage || "0") + percentage;
+      let prevPercentage = parseFloat(track.dataset.prevPercentage || "0");
+      let nextPercentage = prevPercentage + percentage;
 
-      // Reset position when scrolling too far in either direction
+      // Handle infinite loop
       if (nextPercentage > 0) {
-        nextPercentage = -100;
+        const excess = nextPercentage;
+        nextPercentage = -100 + excess;
         track.dataset.mouseDownAt = e.clientX.toString();
+        track.dataset.prevPercentage = nextPercentage.toString();
       } else if (nextPercentage < -100) {
-        nextPercentage = 0;
+        const excess = nextPercentage + 100;
+        nextPercentage = excess;
         track.dataset.mouseDownAt = e.clientX.toString();
+        track.dataset.prevPercentage = nextPercentage.toString();
       }
       
       track.dataset.percentage = nextPercentage.toString();
-      
-      track.animate(
-        {
-          transform: `translate(${nextPercentage}%, -50%)`
-        },
-        { duration: 1200, fill: "forwards" }
-      );
+      track.style.transform = `translate(${nextPercentage}%, -50%)`;
       
       const imageElements = track.getElementsByClassName("image");
       for (let i = 0; i < imageElements.length; i++) {
         const image = imageElements[i] as HTMLElement;
-        image.animate(
-          {
-            objectPosition: `${nextPercentage + 100}% 50%`
-          },
-          { duration: 1200, fill: "forwards" }
-        );
+        image.style.objectPosition = `${100 + nextPercentage}% 50%`;
       }
     };
     
     const handleMouseUp = () => {
       track.dataset.mouseDownAt = "0";
-      track.dataset.prevPercentage = track.dataset.percentage || "0";
+      track.dataset.prevPercentage = track.dataset.percentage;
     };
     
     track.dataset.mouseDownAt = "0";
@@ -98,22 +101,31 @@ export const Gallery = ({ images = defaultImages }: GalleryProps) => {
     };
   }, []);
   
+  // Create a continuous array of images for seamless looping
+  const displayImages = [...images, ...images, ...images];
+  
   return (
     <section id="gallery-section">
-      <div className="gallery-container">
+      <div className="gallery-container space-y-6">
+        <div className="text-center mb-12">
+          <h2 className="text-5xl font-bold mb-4 text-primary dark">Moment</h2>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            Image collection
+          </p>
+        </div>
         <div
           id="image-track"
           ref={trackRef} 
           data-mouse-down-at="0"
           data-prev-percentage="0"
-          style={{ left: '0%' }}
+          style={{ left: '0' }}
         >
-          {images.map((src, index) => (
+          {displayImages.map((src, index) => (
             <img
-              key={index}
+              key={`${src}-${index}`}
               className="image"
               src={src}
-              alt={`Gallery image ${index + 1}`}
+              alt={`Gallery image ${(index % images.length) + 1}`}
               draggable="false"
             />
           ))}

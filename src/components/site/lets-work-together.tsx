@@ -41,7 +41,7 @@ export default function LetsWorkTogether() {
                 <Button type="submit" className="w-fit px-8">
                   Submit
                 </Button>
-                <Button type="submit" variant="ghost" className="w-fit px-4">
+                <Button type="submit" variant="ghost" className="w-fit px-4 dark text-white">
                   Live chat
                 </Button>
               </div>
