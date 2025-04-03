@@ -13,6 +13,7 @@ import Social from "@/components/site/social";
 import MapPage from "@/components/site/map";
 import LetsWorkTogether from "@/components/site/lets-work-together";
 import { NewComersPage } from "@/components/site/new-comers";
+import Gallery from "@/components/site/gallery/gallery";
 export default function Home() {
   return (
     <main className="min-h-screen ">
@@ -23,6 +24,7 @@ export default function Home() {
       <NumberSection />
       <ClientSection />
       <TeamPage />
+      <Gallery />
       <LetsWorkTogether />
       <MapPage />
       
