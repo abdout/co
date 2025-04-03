@@ -1,0 +1,62 @@
+"use client";
+
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { GetStarted } from "./get-started";
+
+const navLinks = [
+  { href: "/research", label: "Research" },
+  { href: "/product", label: "Product" },
+  { href: "/studios", label: "Studios" },
+  { href: "/company", label: "Company" },
+];
+
+export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrolled]);
+
+  return (
+    <nav className={cn(
+      "fixed top-0 z-50 w-full transition-colors duration-300",
+      scrolled ? "bg-primary" : "bg-transparent"
+    )}>
+      <div className=" h-14 mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="text-accent font-bold flex items-center">
+            <span className="text-xl font-fabriga">company</span>
+          </Link>
+
+          <div className="hidden md:flex items-center justify-center flex-1 max-w-2xl mx-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "text-sm font-fabriga font-medium text-muted-foreground  hover:text-accent transition-colors px-4"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center">
+           <GetStarted />
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}

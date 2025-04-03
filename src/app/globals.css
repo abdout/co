@@ -32,7 +32,7 @@ body {
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 99%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
@@ -45,6 +45,7 @@ body {
     --input: 240 5.9% 90%;
     --ring: 240 5% 64.9%;
     --radius: 0.5rem;
+    
 
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -249,3 +250,18 @@ body {
   -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
   scrollbar-width: none; /* Hides scrollbar in Firefox */
 }
+
+
+.image-scale-hover {
+  display: block; /* Ensures transform works consistently, might need inline-block depending on layout */
+  transition: transform 0.5s ease-in-out; /* Defines the smooth transition */
+  /* You can adjust the duration (0.5s) and timing function (ease-in-out) */
+  transform-origin: center center; /* Optional: Ensures scaling happens from the center */
+  will-change: transform; /* Optional: Hint for browser optimization */
+}
+
+.image-scale-hover:hover {
+  transform: scale(1.1); /* Scales the image up to 110% */
+  /* Adjust the scale value (1.1) for more or less zoom */
+}
+

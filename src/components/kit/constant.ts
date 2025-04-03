@@ -1,0 +1,98 @@
+import { Kit } from "./types";
+
+export const KITS: Kit[] = [
+  {
+    id: "1",
+    name: "B10E",
+    src: "/kit/b10e.png",
+    alt: "B10E",
+    width: 130,
+    bg: "#C0C2C8",
+    calibration: "2023-05-15",
+    datasheet: "/docs/b10e.pdf",
+    manual: "/manuals/b10e.pdf",
+    status: "Available",
+    under: "Store",
+    location: "Main Warehouse",
+    price: "10000",
+  },
+  {
+    id: "2",
+    name: "CT Analyzer",
+    src: "/kit/ct.png",
+    alt: "CT Analyzer",
+    width: 140,
+    bg: "#047FC6",
+    calibration: "2023-07-20",
+    datasheet: "/docs/ct-analyzer.pdf",
+    manual: "/manuals/ct-analyzer.pdf",
+    status: "Available",
+    under: "Store",
+    location: "Main Warehouse",
+    price: "15000",
+  },
+  {
+    id: "3",
+    name: "Delta4000",
+    src: "/kit/delta4000.png",
+    alt: "Delta4000",
+    width: 100,
+    bg: "#6A787A",
+    calibration: "2023-06-10",
+    datasheet: "/docs/delta4000.pdf",
+    manual: "/manuals/delta4000.pdf",
+    status: "In Use",
+    under: "Project A",
+    location: "Field",
+    price: "12000",
+  },
+  {
+    id: "4",
+    name: "DLRO600",
+    src: "/kit/dlro600.png",
+    alt: "DLRO600",
+    width: 140,
+    bg: "#EBEDEC",
+    calibration: "2023-08-05",
+    datasheet: "/docs/dlro600.pdf",
+    manual: "/manuals/dlro600.pdf",
+    status: "Available",
+    under: "Store",
+    location: "Main Warehouse",
+    price: "8000",
+  },
+  {
+    id: "5",
+    name: "Egil",
+    src: "/kit/egil.png",
+    alt: "Egil",
+    width: 145,
+    bg: "#E1E0D0",
+    calibration: "2023-04-30",
+    datasheet: "/docs/egil.pdf",
+    manual: "/manuals/egil.pdf",
+    status: "Maintenance",
+    under: "Technical Department",
+    location: "Workshop",
+    price: "9500",
+  }
+];
+
+export const KIT_STATUS_OPTIONS = [
+  { label: "Available", value: "Available" },
+  { label: "In Use", value: "In Use" },
+  { label: "Maintenance", value: "Maintenance" },
+  { label: "Calibration", value: "Calibration" },
+  { label: "Out of Service", value: "Out of Service" }
+];
+
+export const kitDocuments = [
+  { icon: "ph:file-text", label: "Manual" },
+  { icon: "ph:clipboard-text", label: "Datasheet" },
+  { icon: "ph:ruler", label: "Calibration" },
+  { icon: "ph:wrench", label: "Service" },
+  { icon: "ph:certificate", label: "Certificate" },
+  { icon: "ph:tag", label: "Price" },
+  { icon: "ph:map-pin", label: "Location" },
+  { icon: "ph:history", label: "History" }
+]; 

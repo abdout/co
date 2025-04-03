@@ -13,17 +13,46 @@ enum UserRole {
   USER
 }
 
+model Team {  
+  id                    String   @id @default(cuid())
+  fullname              String
+  src                   String?
+  alt                   String?
+  phone                 String?
+  whatsapp              String?
+  twitter               String?
+  facebook              String?
+  linkedin              String?
+  mail                  String?
+  location              String?
+  width                 Int?
+  height                Int?
+  image                 String?
+  iqama                 String?
+  sce                   String?
+  passport              String?
+  drivingLicense        String?
+  cdl                   String?
+  license               String?
+  resume                String?
+  eligibility           String[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  users                 User[]   @relation("TeamMembers")
+}
+
 model User {
-  id                 String    @id @default(cuid())
-  name               String?
-  email              String?   @unique
-  emailVerified      DateTime?
-  image              String?
-  password           String?
-  role               UserRole  @default(USER)
-  accounts           Account[]
-  isTwoFactorEnabled Boolean   @default(false)
+  id                    String                 @id @default(cuid())
+  username              String?
+  email                 String?                @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  role                  UserRole              @default(USER)
+  accounts              Account[]
+  isTwoFactorEnabled    Boolean               @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  teams                 Team[]                @relation("TeamMembers")
 }
 
 model Account {
