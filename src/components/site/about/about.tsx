@@ -276,17 +276,6 @@ const About = () => {
           >
             <Content />
           </div>
-          
-          {/* Custom scrollbar controls info */}
-          <div className="fixed bottom-4 right-4 bg-black bg-opacity-70 text-white p-4 rounded-md text-sm">
-            <p>Custom Scrollbar Controls:</p>
-            <p className="text-xs mt-1">
-              • Drag the highlight box to scroll<br/>
-              • Click on miniature preview to jump<br/>
-              • Use arrow keys, Page Up/Down, Home/End<br/>
-              • Text Speed: {textSpeedFactor.toFixed(2)} (- / + to adjust)
-            </p>
-          </div>
         </div>
       </div>
       
