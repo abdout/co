@@ -30,7 +30,7 @@ const servicesItems = [
     title: "Design & Installation",
     description: "Custom electrical system design for industrial projects and commercial applications.",
     url: "/news/high-voltage-testing",
-    image: "/service/schema.jpg",
+    image: "/service/16.png",
   },
   {
     id: 5,

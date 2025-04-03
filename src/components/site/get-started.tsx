@@ -5,7 +5,7 @@ export function GetStarted() {
   return (
     <Link
       href="/qoute"
-      className="group  inline-flex items-center gap-x-2  text-sm font-medium text-muted-foreground hover:text-accent"
+      className="group  inline-flex items-center gap-x-2  text-sm font-medium text-neutral-300 hover:text-accent"
     >
       
       <span className="underline-offset-4 group-hover:underline">

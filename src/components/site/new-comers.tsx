@@ -17,7 +17,7 @@ export function NewComersPage() {
           </p>
 
           <Link
-            href="/services"
+            href="/onboarding"
            
           >
             <Button  size= 'lg' className="rounded-full">

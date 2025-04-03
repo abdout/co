@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { GetStarted } from "./get-started";
 
 const navLinks = [
-  { href: "/research", label: "Research" },
-  { href: "/product", label: "Product" },
-  { href: "/studios", label: "Studios" },
-  { href: "/company", label: "Company" },
+  { href: "about", label: "About" },
+  { href: "service", label: "Service" },
+  { href: "shop", label: "Shop" },
+  { href: "platform", label: "Platform" },
 ];
 
 export function SiteHeader() {
@@ -44,7 +44,7 @@ export function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm font-fabriga font-medium text-muted-foreground  hover:text-accent transition-colors px-4"
+                  "text-sm font-fabriga font-medium text-neutral-300  hover:text-accent transition-colors px-4"
                 )}
               >
                 {link.label}

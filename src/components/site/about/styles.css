@@ -1,0 +1,85 @@
+.aboutSection {
+  @apply relative min-h-screen w-full py-8;
+}
+
+.frameBox {
+  @apply fixed top-0 left-0 w-full h-full pointer-events-none;
+  z-index: 1;
+}
+
+.smallNav {
+  @apply fixed top-0 left-0 w-full p-8;
+  z-index: 2;
+}
+
+.contentItem {
+  @apply mb-16;
+}
+
+.sectionTitle {
+  @apply text-lg font-semibold mb-4;
+}
+
+.textBox p {
+  @apply mb-4 text-lg leading-relaxed;
+}
+
+.experienceList,
+.awardsList,
+.brandsList,
+.socialList {
+  @apply space-y-6;
+}
+
+.experienceItem,
+.awardItem {
+  @apply space-y-1;
+}
+
+.title {
+  @apply text-base font-medium;
+}
+
+.company,
+.period,
+.detail {
+  @apply text-sm text-muted-foreground;
+}
+
+.brandsGrid {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4;
+}
+
+.brandItem {
+  @apply text-sm text-muted-foreground hover:text-foreground transition-colors;
+}
+
+.socialLink {
+  @apply text-sm hover:text-foreground transition-colors flex items-center space-x-2;
+}
+
+/* Animation classes */
+.fadeIn {
+  @apply opacity-0 animate-in fade-in duration-500;
+}
+
+.slideUp {
+  @apply translate-y-4 animate-in slide-in-from-bottom duration-500;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .smallNav {
+    @apply p-12;
+  }
+
+  .textBox p {
+    @apply text-xl;
+  }
+}
+
+@media (min-width: 1024px) {
+  .smallNav {
+    @apply p-16;
+  }
+}

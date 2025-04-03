@@ -11,7 +11,7 @@ export function BorchurePage() {
             Testing & Commissioning
           </h2>
 
-          <p className="text-base  text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
             Delivering comprehensive electrical testing services with state-of-the-art equipment and expert engineers for power systems, switchgear, and critical installations.
           </p>
 
@@ -19,7 +19,7 @@ export function BorchurePage() {
             href="/services"
            
           >
-            <Button variant='outline' className="rounded-full ">
+            <Button variant='outline' size='lg' className="rounded-full ">
             Borchure
             </Button>
           </Link>

@@ -24,7 +24,7 @@ export function HeroPage() {
             Precision testing, <br /> confidence energize.
           </h1>
 
-          <p className="max-w-[42rem] leading-normal text-gray-200 sm:text-xl sm:leading-8">
+          <p className="max-w-[42rem] leading-normal text-neutral-300 sm:text-xl sm:leading-8">
             Engineering reliability in testing and commissioning to ensure your facility&apos;s longevity while upholding the highest standards and best practices.
           </p>
 
