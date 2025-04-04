@@ -60,8 +60,29 @@ const About = () => {
   };
 
   useEffect(() => {
+    // Check if an element is part of the header
+    const isHeaderElement = (element: Element | null): boolean => {
+      while (element) {
+        if (element.tagName === 'NAV' && element.classList.contains('fixed')) {
+          return true;
+        }
+        element = element.parentElement;
+      }
+      return false;
+    };
+
     // Handle wheel events for custom scrolling
     const handleWheel = (e: WheelEvent) => {
+      // Don't prevent default if interacting with the header
+      if (isHeaderElement(e.target as Element)) {
+        return;
+      }
+      
+      // Check if the mouse is in the header area (top 80px of screen)
+      if (e.clientY < 80) {
+        return;
+      }
+      
       e.preventDefault();
       
       // Get the container
@@ -80,6 +101,11 @@ const About = () => {
 
     // Mouse event handlers for dragging the box
     const handleMouseDown = (e: MouseEvent) => {
+      // Don't handle if interacting with the header
+      if (isHeaderElement(e.target as Element) || e.clientY < 80) {
+        return;
+      }
+      
       if (!boxRef.current) return;
       
       // Check if click is on the box
@@ -100,6 +126,11 @@ const About = () => {
     };
     
     const handleMouseMove = (e: MouseEvent) => {
+      // Don't handle if interacting with the header
+      if (isHeaderElement(e.target as Element) || e.clientY < 80) {
+        return;
+      }
+      
       if (!isDragging || !boxRef.current || !leftColumnRef.current) return;
       
       // Calculate new position
@@ -135,6 +166,11 @@ const About = () => {
     
     // Click handler for the left content area
     const handleLeftColumnClick = (e: MouseEvent) => {
+      // Don't handle if interacting with the header
+      if (isHeaderElement(e.target as Element) || e.clientY < 80) {
+        return;
+      }
+      
       if (!leftColumnRef.current || !boxRef.current || isDragging) return;
       
       const leftColumn = leftColumnRef.current;
@@ -178,6 +214,15 @@ const About = () => {
     
     // Handle keyboard shortcuts
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Skip keyboard shortcuts when focus is on input fields
+      if (
+        document.activeElement?.tagName === 'INPUT' || 
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.getAttribute('contenteditable') === 'true'
+      ) {
+        return;
+      }
+      
       // Page Up and Page Down for larger scrolling
       const largeDelta = 0.1;
       

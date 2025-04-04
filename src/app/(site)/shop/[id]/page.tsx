@@ -117,6 +117,11 @@ export default function ProductPage() {
   useEffect(() => {
     if (activeAppendix) {
       setPdfScale(1);
+      // Prevent body scrolling when dialog is open
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restore scrolling when dialog is closed
+      document.body.style.overflow = '';
     }
   }, [activeAppendix]);
 
@@ -262,16 +267,17 @@ export default function ProductPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 h-full w-full z-50"
+              className="fixed inset-0 bg-black/80 h-full w-full z-[9000]"
               onClick={closeAppendixDialog}
             />
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] p-0"
+              className="fixed inset-0 z-[9001] p-0"
+              style={{ top: 0, left: 0 }}
             >
-              <div className="bg-primary w-full h-full flex flex-col">
+              <div className="bg-primary w-full h-full flex flex-col box-border">
                 {/* Custom PDF header */}
                 <div className="flex justify-between items-center py-3 px-5 border-b border-background/20 bg-background/5">
                   <div className="flex items-center">

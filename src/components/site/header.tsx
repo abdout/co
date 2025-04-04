@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { GetStarted } from "./get-started";
 
 const navLinks = [
-  { href: "about", label: "About" },
-  { href: "service", label: "Service" },
-  { href: "shop", label: "Shop" },
-  { href: "platform", label: "Platform" },
+  { href: "/about", label: "About" },
+  { href: "/service", label: "Service" },
+  { href: "/shop", label: "Shop" },
+  { href: "/platform", label: "Platform" },
 ];
 
 export function SiteHeader() {
@@ -29,7 +29,7 @@ export function SiteHeader() {
 
   return (
     <nav className={cn(
-      "fixed top-0 z-50 w-full transition-colors duration-300",
+      "fixed top-0 z-[1000] w-full transition-colors duration-300 pointer-events-auto",
       scrolled ? "bg-primary" : "bg-transparent"
     )}>
       <div className=" h-14 mx-auto px-4 sm:px-6 lg:px-8 py-3">
@@ -44,7 +44,7 @@ export function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm font-fabriga font-medium text-neutral-300  hover:text-accent transition-colors px-4"
+                  "text-sm font-fabriga font-medium text-neutral-300 hover:text-accent transition-colors px-4 cursor-pointer"
                 )}
               >
                 {link.label}
