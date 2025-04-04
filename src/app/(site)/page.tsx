@@ -1,4 +1,3 @@
-
 import { HeroPage } from "@/components/site/hero";
 import { BorchurePage } from "@/components/site/borchure";
 import { ServicePage } from "@/components/site/service";
@@ -14,6 +13,7 @@ import MapPage from "@/components/site/map";
 import LetsWorkTogether from "@/components/site/lets-work-together";
 import { NewComersPage } from "@/components/site/new-comers";
 import Gallery from "@/components/site/gallery/gallery";
+
 export default function Home() {
   return (
     <main className="min-h-screen ">
