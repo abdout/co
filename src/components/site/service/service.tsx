@@ -271,27 +271,85 @@ export function ServiceDetailPage() {
             <div ref={processRef} id="process" className="mb-20">
               <h2 className="text-3xl font-bold mb-8 text-white">Process</h2>
               <Timeline 
-                data={selectedService.process.map((step, index) => ({
-                  title: step,
-                  content: (
-                    <div className="bg-white/5 p-6 rounded-lg">
-                      <p className="text-neutral-300">
-                        {index === 0 
-                          ? "We begin with a thorough evaluation of your current systems and requirements to establish baseline performance and identify areas for improvement."
-                          : index === 1
-                          ? "Our engineering team designs a comprehensive plan tailored to your specific needs, considering technical requirements and budget constraints."
-                          : index === 2
-                          ? "We prepare all necessary equipment and materials, ensuring everything meets our rigorous quality standards before implementation."
-                          : index === 3
-                          ? "Our certified technicians execute the plan with precision, adhering to industry best practices and safety protocols."
-                          : index === 4
-                          ? "All results are meticulously documented and analyzed to verify performance meets or exceeds expected standards."
-                          : "We provide detailed recommendations for ongoing maintenance and future improvements to maximize system performance and longevity."
-                        }
-                      </p>
-                    </div>
-                  )
-                }))}
+                data={[
+                  { 
+                    title: "Assessment", 
+                    content: (
+                      <div className=" p-4">
+                        
+                        <p className="text-neutral-300">
+                          We begin with a thorough evaluation of your current systems and requirements to establish baseline performance and identify areas for improvement.
+                        </p>
+                      </div>
+                    ) 
+                  },
+                  { 
+                    title: "Planning", 
+                    content: (
+                      <div className="p-4">
+                        
+                        <p className="text-neutral-300">
+                          Our engineering team designs a comprehensive plan tailored to your specific needs, considering technical requirements and budget constraints.
+                        </p>
+                      </div>
+                    ) 
+                  },
+                  { 
+                    title: "Preparation", 
+                    content: (
+                      <div className=" p-4">
+                       
+                        <p className="text-neutral-300">
+                          We prepare all necessary equipment and materials, ensuring everything meets our rigorous quality standards before implementation.
+                        </p>
+                      </div>
+                    ) 
+                  },
+                  { 
+                    title: "Execution", 
+                    content: (
+                      <div className=" p-4">
+                        
+                        <p className="text-neutral-300">
+                          Our certified technicians execute the plan with precision, adhering to industry best practices and safety protocols.
+                        </p>
+                      </div>
+                    ) 
+                  },
+                  { 
+                    title: "Verification", 
+                    content: (
+                      <div className=" p-4">
+                        
+                        <p className="text-neutral-300">
+                          All results are meticulously documented and analyzed to verify performance meets or exceeds expected standards.
+                        </p>
+                      </div>
+                    ) 
+                  },
+                  { 
+                    title: "Maintenance", 
+                    content: (
+                      <div className=" p-4">
+                        
+                        <p className="text-neutral-300">
+                          We provide detailed recommendations for ongoing maintenance and future improvements to maximize system performance and longevity.
+                        </p>
+                      </div>
+                    ) 
+                  },
+                  { 
+                    title: "Handover", 
+                    content: (
+                      <div className="p-4">
+                        
+                        <p className="text-neutral-300">
+                          Final project documentation is delivered along with training for your team, ensuring a smooth transition and successful project completion.
+                        </p>
+                      </div>
+                    ) 
+                  }
+                ]}
               />
             </div>
             
@@ -333,7 +391,7 @@ export function ServiceDetailPage() {
         </div>
         
         {/* Call to Action */}
-        <div className="bg-white/5 rounded-xl p-10 text-center mb-12 border border-white/10">
+        <div className="bg-white/5 p-10 text-center mb-12">
           <h2 className="text-3xl font-bold mb-4 text-white">Ready to Get Started?</h2>
           <p className="text-lg text-neutral-300 max-w-2xl mx-auto mb-8">
             Contact our team today to discuss your {selectedService.title.firstLine.toLowerCase()} {selectedService.title.secondLine.toLowerCase()} needs and discover how we can help optimize your electrical systems.
@@ -343,22 +401,21 @@ export function ServiceDetailPage() {
               href="/contact" 
               className="inline-flex items-center gap-2 bg-white hover:bg-white/90 text-black py-3 px-8 rounded-md transition duration-300"
             >
-              Request a Quote
-              <ArrowRight className="w-4 h-4" />
+              Get Quote
             </Link>
             <Link 
               href="/about" 
               className="inline-flex items-center gap-2 border border-white text-white hover:bg-white/20 py-3 px-8 rounded-md transition duration-300"
             >
-              Learn More About Us
+              Learn More
             </Link>
           </div>
         </div>
         
         {/* Other Services */}
         <div>
-          <h3 className="text-2xl font-bold mb-8 text-center text-white">Explore Our Other Services</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <h3 className="text-2xl font-bold mb-8 text-center text-white px-8">Explore Our Other Services</h3>
+          <div className="flex items-center justify-center gap-8 px-4">
             {servicesItems.filter(service => service.id !== activeService).map(service => {
               const ServiceIcon = service.icon;
               return (
