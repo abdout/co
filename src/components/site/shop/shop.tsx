@@ -2,6 +2,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 interface KitItem {
     name: string;
@@ -62,6 +63,16 @@ export default function Shop() {
     const [active, setActive] = useState<KitItem | null>(null);
     const id = useId();
     const ref = useRef<HTMLDivElement>(null);
+
+    // Prefetch product pages when the shop component mounts
+    useEffect(() => {
+        kits.forEach(kit => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = `/shop/${kit.name}`;
+            document.head.appendChild(link);
+        });
+    }, []);
 
     useEffect(() => {
         function onKeyDown(event: KeyboardEvent) {
@@ -181,16 +192,22 @@ export default function Shop() {
                                 >
                                     Place Order
                                 </motion.a>
-                                <motion.a
+                                <motion.div
                                     layout
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    href={`/shop/${active.name}`}
-                                    className="px-4 py-3 text-sm rounded-full font-bold border border-background text-background text-center w-28"
+                                    className="w-28"
                                 >
-                                    Learn More
-                                </motion.a>
+                                    <Link
+                                        href={`/shop/${active.name}`}
+                                        className="px-4 py-3 text-sm rounded-full font-bold border border-background text-background text-center inline-block w-full"
+                                        onClick={() => setActive(null)}
+                                        prefetch={true}
+                                    >
+                                        Learn More
+                                    </Link>
+                                </motion.div>
                             </div>
                         </motion.div>
                     </div>

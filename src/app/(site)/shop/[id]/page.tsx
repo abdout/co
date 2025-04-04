@@ -103,6 +103,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<KitItem | null>(null);
   const [activeAppendix, setActiveAppendix] = useState<string | null>(null);
   const [pdfScale, setPdfScale] = useState<number>(1);
+  const [loading, setLoading] = useState(true);
 
   // Function to handle zoom controls
   const zoomIn = () => {
@@ -117,27 +118,44 @@ export default function ProductPage() {
   useEffect(() => {
     if (activeAppendix) {
       setPdfScale(1);
-      // Prevent body scrolling when dialog is open
       document.body.style.overflow = 'hidden';
     } else {
-      // Restore scrolling when dialog is closed
       document.body.style.overflow = '';
     }
   }, [activeAppendix]);
 
   useEffect(() => {
+    setLoading(true);
+    
     if (params.id) {
       const foundKit = kits.find(kit => kit.name === params.id);
       if (foundKit) {
         setProduct(foundKit);
       }
     }
+    
+    // Short timeout to ensure a smooth transition
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, [params.id]);
 
   // Function to close the appendix dialog
   const closeAppendixDialog = () => {
     setActiveAppendix(null);
   };
+
+  if (loading) {
+    return (
+      <div className="container px-8 py-28 bg-primary min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-8 h-8 border-2 border-background/20 border-t-background rounded-full animate-spin mb-3"></div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
