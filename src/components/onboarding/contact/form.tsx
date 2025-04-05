@@ -58,21 +58,26 @@ const ContactForm = ({
   );
 
   const onSubmit = handleSubmit((formData) => {
-    // Ensure all fields have at least empty string values
-    const data = {
-      phone: formData.phone || '',
-      whatsapp: formData.whatsapp || '',
-      twitter: formData.twitter || '',
-      facebook: formData.facebook || '',
-      linkedin: formData.linkedin || '',
+    // Get the original data for comparison
+    const originalData = data || {};
+    
+    // Only update fields that have been changed or were already set
+    // This prevents sending empty/null values for fields that weren't changed
+    const submissionData = {
+      phone: formData.phone || '', // Phone is required or empty string
+      // For social media fields, preserve original data if not changed
+      whatsapp: formData.whatsapp !== undefined && formData.whatsapp !== '' ? formData.whatsapp : originalData.whatsapp || '',
+      twitter: formData.twitter !== undefined && formData.twitter !== '' ? formData.twitter : originalData.twitter || '',
+      facebook: formData.facebook !== undefined && formData.facebook !== '' ? formData.facebook : originalData.facebook || '',
+      linkedin: formData.linkedin !== undefined && formData.linkedin !== '' ? formData.linkedin : originalData.linkedin || '',
       id: formData.id
     };
 
     // Save to localStorage for step navigation tracking
-    localStorage.setItem('contactFormData', JSON.stringify(data));
+    localStorage.setItem('contactFormData', JSON.stringify(submissionData));
 
     startTransition(() => {
-      formAction(data);
+      formAction(submissionData);
     });
   });
 
@@ -80,16 +85,16 @@ const ContactForm = ({
   const pathname = usePathname();
 
   const onSubmitSuccess = useCallback(() => {
-    toast.success(`تم ${type === "create" ? "إنشاء" : "تحديث"} الاتصال بنجاح!`);
+    toast.success(`Contact ${type === "create" ? "created" : "updated"}!`);
     router.push(getNextRoute(pathname));
   }, [router, pathname, type]);
 
   useEffect(() => {
     if (state.success) {
-      toast.success("تم حفظ البيانات بنجاح");
+      toast.success("Data save success");
       onSubmitSuccess();
     } else if (state.error) {
-      toast.error("فشل حفظ البيانات");
+      toast.error("Data save faild");
     }
   }, [state, onSubmitSuccess]);
 

@@ -62,7 +62,7 @@ const AttachmentForm = ({
   const pathname = usePathname();
 
   const onSubmitSuccess = () => {
-    toast.success(`Documents ${type === "create" ? "uploaded" : "updated"} successfully!`);
+    toast.success(`Documents ${type === "create" ? "uploaded" : "updated"}!`);
     router.push(getNextRoute(pathname));
   };
 
@@ -96,7 +96,7 @@ const AttachmentForm = ({
         {type === "create" ? "Upload Files" : "Update Files"}
       </h1> */}
       <PageHeading title="Attachments"/>
-      <div className="flex justify-center items-center md:gap-6 gap-8 pt-10">
+      <div className="grid grid-cols-3 gap-8 pt-10">
         {ATTACHMENT_FIELDS.map(({ name, label, type: fieldType }) => (
           <CldUploadWidget
             key={name}
@@ -115,7 +115,9 @@ const AttachmentForm = ({
             }}
             onSuccess={(result: CloudinaryUploadWidgetResults, { widget }) => {
               if (result.info && typeof result.info === 'object' && 'secure_url' in result.info) {
-                setValue(name, result.info.secure_url as string);
+                const url = result.info.secure_url as string;
+                console.log(`Setting ${name} field to:`, url);
+                setValue(name, url);
               }
               widget.close();
             }}
@@ -123,7 +125,7 @@ const AttachmentForm = ({
             {({ open }: { open: () => void }) => (
               <div
                 onClick={() => open()}
-                className="relative flex items-center justify-center w-24 h-24 cursor-pointer overflow-hidden border border-neutral-500 rounded-lg hover:bg-neutral-100"
+                className="relative flex items-center justify-center w-32 h-24 cursor-pointer overflow-hidden border border-neutral-500 rounded-md hover:bg-neutral-100"
               >
                 {formValues[name] ? (
                   // Only image types should be displayed as images

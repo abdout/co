@@ -1,0 +1,23 @@
+{
+  "title": "Underfreq.",
+  "description": "Index page for Underfreq.",
+  "body": {
+    "raw": "\n# Underfreq.\n\n- [Pickup](pickup)\n- [Timing](timing)\n- [Change Rate](change-rate)\n",
+    "code": "var Component=(()=>{var f=Object.create;var a=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var m=Object.getOwnPropertyNames;var p=Object.getPrototypeOf,x=Object.prototype.hasOwnProperty;var g=(e,n)=>()=>(n||e((n={exports:{}}).exports,n),n.exports),_=(e,n)=>{for(var i in n)a(e,i,{get:n[i],enumerable:!0})},l=(e,n,i,c)=>{if(n&&typeof n==\"object\"||typeof n==\"function\")for(let t of m(n))!x.call(e,t)&&t!==i&&a(e,t,{get:()=>n[t],enumerable:!(c=u(n,t))||c.enumerable});return e};var j=(e,n,i)=>(i=e!=null?f(p(e)):{},l(n||!e||!e.__esModule?a(i,\"default\",{value:e,enumerable:!0}):i,e)),q=e=>l(a({},\"__esModule\",{value:!0}),e);var s=g((U,o)=>{o.exports=_jsx_runtime});var C={};_(C,{default:()=>h,frontmatter:()=>k});var r=j(s()),k={title:\"Underfreq.\",description:\"Index page for Underfreq.\"};function d(e){let n={a:\"a\",h1:\"h1\",li:\"li\",span:\"span\",ul:\"ul\",...e.components};return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsxs)(n.h1,{id:\"underfreq\",children:[(0,r.jsx)(n.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#underfreq\",children:(0,r.jsx)(n.span,{className:\"icon icon-link\"})}),\"Underfreq.\"]}),`\n`,(0,r.jsxs)(n.ul,{children:[`\n`,(0,r.jsx)(n.li,{children:(0,r.jsx)(n.a,{href:\"pickup\",children:\"Pickup\"})}),`\n`,(0,r.jsx)(n.li,{children:(0,r.jsx)(n.a,{href:\"timing\",children:\"Timing\"})}),`\n`,(0,r.jsx)(n.li,{children:(0,r.jsx)(n.a,{href:\"change-rate\",children:\"Change Rate\"})}),`\n`]})]})}function h(e={}){let{wrapper:n}=e.components||{};return n?(0,r.jsx)(n,{...e,children:(0,r.jsx)(d,{...e})}):d(e)}return q(C);})();\n;return Component;"
+  },
+  "_id": "docs/relay/underfreq./index.mdx",
+  "_raw": {
+    "sourceFilePath": "docs/relay/underfreq./index.mdx",
+    "sourceFileName": "index.mdx",
+    "sourceFileDir": "docs/relay/underfreq.",
+    "contentType": "mdx",
+    "flattenedPath": "docs/relay/underfreq."
+  },
+  "type": "Doc",
+  "slug": "/docs/relay/underfreq.",
+  "slugAsParams": "relay/underfreq.",
+  "url": "/docs/docs/relay/underfreq.",
+  "category": "docs",
+  "subCategory": "relay",
+  "activityName": "underfreq."
+}

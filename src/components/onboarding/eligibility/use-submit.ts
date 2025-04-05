@@ -29,15 +29,15 @@ export const useSubmit = ({ handleSubmit, setIsSubmitting }: UseFormSubmitProps)
         const result = await createActivities(initialState, data);
 
         if (result.success) {
-          toast.success("Activity information saved successfully!");
+          toast.success("Eligibility save success!");
           
           // Navigate to the next step
           router.push("/onboarding/review");
         } else {
-          toast.error(result.message || "Failed to save activity information.");
+          toast.error(result.message || "Eligibility save faild!");
         }
       } catch (error) {
-        console.error("Activity submission error:", error);
+        console.error("Eligibility submission error:", error);
         toast.error("An unexpected error occurred. Please try again.");
       } finally {
         if (setIsSubmitting) {

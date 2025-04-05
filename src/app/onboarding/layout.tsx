@@ -33,7 +33,7 @@ export default function OnboardingLayout({
 
   return (
     <FormProvider>
-      <div className={`${isReviewPage ? "py-16 pt-20 px-2 md:px-14 min-h-screen " : "px-0 md:px-20 py-8 h-screen overflow-hidden"} flex flex-col`}>
+      <div className={`${isReviewPage ? "py-0 px-2 md:px-14 min-h-screen " : "px-0 md:px-20 py-8 h-screen overflow-hidden"} flex flex-col`}>
         <Toaster 
           position={isMobile ? "top-center" : "bottom-right"}
           toastOptions={{

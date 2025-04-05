@@ -1,12 +1,12 @@
 // Types for review components
-import { UserReviewData } from '@/components/onboarding/review/action';
+import { TeamReviewData } from '@/app/onboarding/review/action';
 
 export type ReviewCardProps = {
-  userData: UserReviewData | null;
+  teamData: TeamReviewData | null;
 };
 
 export interface ReviewContainerProps {
-  userData: UserReviewData | null;
+  teamData: TeamReviewData | null;
   isSubmitting: boolean;
   handleSubmit: () => Promise<void>;
 }

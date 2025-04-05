@@ -22,8 +22,8 @@ export const eligibility = [
   "Surge Arrester",
   "Capacitor Bank",
   "UPS",
-  "Distribution Board",
-  "Earthing System",
+  "Dist. Board",
+  "Eart System",
 
   // Transformer Categories
   "Power Trafo",
@@ -32,8 +32,8 @@ export const eligibility = [
 
   // Low Current Categories
   "SCADA",
-  "Fault Recorder",
-  "Battery Bank"
+  "Recorder",
+  "Battery"
 ] as const;
 
 export type Eligibility = typeof eligibility[number]; 

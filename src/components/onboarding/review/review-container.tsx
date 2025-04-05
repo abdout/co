@@ -5,7 +5,7 @@ import { ContactCard } from './contact';
 import { ReviewActions } from './review-action';
 import { ReviewContainerProps } from './type';
 
-export function ReviewContainer({ userData, isSubmitting, handleSubmit }: ReviewContainerProps) {
+export function ReviewContainer({ teamData, isSubmitting, handleSubmit }: ReviewContainerProps) {
   return (
     <div className="min-h-screen -mt-10">
       {/* Main Content */}
@@ -13,13 +13,13 @@ export function ReviewContainer({ userData, isSubmitting, handleSubmit }: Review
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-14">
           {/* Main Info Column */}
           <div className="lg:col-span-2 space-y-8">
-            <ContactCard userData={userData} />
-            <EligibilityCard userData={userData} />
+            <ContactCard teamData={teamData} />
+            <EligibilityCard teamData={teamData} />
           </div>
 
           {/* Side Info Column */}
           <div className="space-y-8">
-            <AttachmentsCard userData={userData} />
+            <AttachmentsCard teamData={teamData} />
           </div>
         </div>
 

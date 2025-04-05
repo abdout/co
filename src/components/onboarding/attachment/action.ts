@@ -16,20 +16,54 @@ export async function createAttachment(state: ActionState, data: AttachmentSchem
     const user = await currentUser();
     if (!user?.id) return { success: false, error: true };
 
-    await db.team.update({
+    // Find existing teams for this user
+    const existingUser = await db.user.findUnique({
       where: { id: user.id },
-      data: {
-        image: data.image || '',
-        resume: data.resume || '',
-        iqama: data.iqama || '',
-        sce: data.sce || '',
-        passport: data.passport || '',
-        drivingLicense: data.drivingLicense || '',
-        
-      }
+      include: { teams: true }
     });
 
-    revalidatePath("/lab");
+    console.log("Creating/updating attachment with data:", {
+      image: data.image ? `${data.image.substring(0, 30)}...` : 'Not provided',
+      resume: data.resume ? `${data.resume.substring(0, 30)}...` : 'Not provided',
+      iqama: data.iqama ? `${data.iqama.substring(0, 30)}...` : 'Not provided',
+      sce: data.sce ? `${data.sce.substring(0, 30)}...` : 'Not provided',
+      passport: data.passport ? `${data.passport.substring(0, 30)}...` : 'Not provided',
+      drivingLicense: data.drivingLicense ? `${data.drivingLicense.substring(0, 30)}...` : 'Not provided',
+    });
+
+    if (existingUser?.teams.length) {
+      // Update existing team
+      const updated = await db.team.update({
+        where: { id: existingUser.teams[0].id },
+        data: {
+          image: data.image || '',
+          resume: data.resume || '',
+          iqama: data.iqama || '',
+          sce: data.sce || '',
+          passport: data.passport || '',
+          drivingLicense: data.drivingLicense || '',
+        }
+      });
+      console.log("Updated team with image:", updated.image ? `${updated.image.substring(0, 30)}...` : 'Empty');
+    } else {
+      // Create new team with user connection
+      await db.team.create({
+        data: {
+          fullname: user.name || '',
+          image: data.image || '',
+          resume: data.resume || '',
+          iqama: data.iqama || '',
+          sce: data.sce || '',
+          passport: data.passport || '',
+          drivingLicense: data.drivingLicense || '',
+          users: {
+            connect: { id: user.id }
+          }
+        }
+      });
+    }
+
+    revalidatePath("/onboarding");
     return { success: true, error: false };
   } catch (error) {
     console.error(error);
@@ -43,8 +77,17 @@ export async function getAttachment() {
     const user = await currentUser();
     if (!user?.id) return null;
 
-    const userData = await db.team.findUnique({
+    // Get user with teams
+    const userWithTeams = await db.user.findUnique({
       where: { id: user.id },
+      include: { teams: true }
+    });
+
+    if (!userWithTeams?.teams.length) return null;
+
+    // Get team data
+    const teamData = await db.team.findUnique({
+      where: { id: userWithTeams.teams[0].id },
       select: {
         image: true,
         resume: true,
@@ -55,7 +98,7 @@ export async function getAttachment() {
       }
     });
 
-    return userData;
+    return teamData;
   } catch (error) {
     console.error(error);
     return null;
@@ -68,8 +111,19 @@ export async function updateAttachment(_state: ActionState, data: AttachmentSche
     const user = await currentUser();
     if (!user?.id) return { success: false, error: true };
 
-    await db.team.update({
+    // Get user with teams
+    const userWithTeams = await db.user.findUnique({
       where: { id: user.id },
+      include: { teams: true }
+    });
+
+    if (!userWithTeams?.teams.length) {
+      return { success: false, error: true };
+    }
+
+    // Update team
+    await db.team.update({
+      where: { id: userWithTeams.teams[0].id },
       data: {
         image: data.image || '',
         resume: data.resume || '',
@@ -80,7 +134,7 @@ export async function updateAttachment(_state: ActionState, data: AttachmentSche
       }
     });
 
-    revalidatePath("/lab");
+    revalidatePath("/onboarding");
     return { success: true, error: false };
   } catch (error) {
     console.error(error);
@@ -94,8 +148,19 @@ export async function deleteAttachment() {
     const user = await currentUser();
     if (!user?.id) return { success: false, error: true };
 
-    await db.team.update({
+    // Get user with teams
+    const userWithTeams = await db.user.findUnique({
       where: { id: user.id },
+      include: { teams: true }
+    });
+
+    if (!userWithTeams?.teams.length) {
+      return { success: false, error: true };
+    }
+
+    // Update team to clear fields
+    await db.team.update({
+      where: { id: userWithTeams.teams[0].id },
       data: {
         image: null,
         resume: null,
@@ -106,7 +171,7 @@ export async function deleteAttachment() {
       }
     });
 
-    revalidatePath("/lab");
+    revalidatePath("/onboarding");
     return { success: true, error: false };
   } catch (error) {
     console.error(error);

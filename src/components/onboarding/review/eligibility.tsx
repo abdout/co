@@ -1,12 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserReviewData } from "./type";
+import { ReviewCardProps } from "./type";
+import { Badge } from "@/components/ui/badge";
 
-interface EligibilityCardProps {
-  userData: UserReviewData | null;
-}
-
-export function EligibilityCard({ userData }: EligibilityCardProps) {
-  if (!userData) return null;
+export function EligibilityCard({ teamData }: ReviewCardProps) {
+  if (!teamData) return null;
 
   return (
     <Card>
@@ -14,38 +11,20 @@ export function EligibilityCard({ userData }: EligibilityCardProps) {
         <CardTitle>Eligibility Information</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+        {teamData.eligibility && teamData.eligibility.length > 0 ? (
           <div>
-            <p className="text-sm text-muted-foreground">Nationality</p>
-            <p className="font-medium">{userData.nationalityId}</p>
+            <p className="text-sm text-muted-foreground mb-2">Selected Eligibility Categories</p>
+            <div className="flex flex-wrap gap-2">
+              {teamData.eligibility.map((item, index) => (
+                <Badge key={index} variant="outline" className="px-3 py-1">
+                  {item}
+                </Badge>
+              ))}
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Marital Status</p>
-            <p className="font-medium">{userData.maritalStatus}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Gender</p>
-            <p className="font-medium">{userData.gender}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Religion</p>
-            <p className="font-medium">{userData.religion}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Date of Birth</p>
-            <p className="font-medium">
-              {userData.birthDate ? new Date(userData.birthDate).toLocaleDateString('en-US') : ''}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Place of Birth</p>
-            <p className="font-medium">
-              {[userData.birthCountry, userData.birthState, userData.birthLocality]
-                .filter(Boolean)
-                .join(', ')}
-            </p>
-          </div>
-        </div>
+        ) : (
+          <p className="text-center text-gray-500">No eligibility information</p>
+        )}
       </CardContent>
     </Card>
   );

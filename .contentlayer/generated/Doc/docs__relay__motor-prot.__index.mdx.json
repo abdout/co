@@ -1,0 +1,23 @@
+{
+  "title": "Motor Prot.",
+  "description": "Index page for Motor Prot.",
+  "body": {
+    "raw": "\n# Motor Prot.\n\n- [Starting Time](starting-time)\n- [Stall Prot.](stall-prot.)\n- [Thermal OL](thermal-ol)\n- [Unbal./Ph Loss](unbal.-ph-loss)\n",
+    "code": "var Component=(()=>{var m=Object.create;var l=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var u=Object.getOwnPropertyNames;var f=Object.getPrototypeOf,x=Object.prototype.hasOwnProperty;var _=(r,n)=>()=>(n||r((n={exports:{}}).exports,n),n.exports),g=(r,n)=>{for(var e in n)l(r,e,{get:n[e],enumerable:!0})},i=(r,n,e,a)=>{if(n&&typeof n==\"object\"||typeof n==\"function\")for(let o of u(n))!x.call(r,o)&&o!==e&&l(r,o,{get:()=>n[o],enumerable:!(a=p(n,o))||a.enumerable});return r};var M=(r,n,e)=>(e=r!=null?m(f(r)):{},i(n||!r||!r.__esModule?l(e,\"default\",{value:r,enumerable:!0}):e,r)),j=r=>i(l({},\"__esModule\",{value:!0}),r);var c=_((k,s)=>{s.exports=_jsx_runtime});var b={};g(b,{default:()=>d,frontmatter:()=>P});var t=M(c()),P={title:\"Motor Prot.\",description:\"Index page for Motor Prot.\"};function h(r){let n={a:\"a\",h1:\"h1\",li:\"li\",span:\"span\",ul:\"ul\",...r.components};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsxs)(n.h1,{id:\"motor-prot\",children:[(0,t.jsx)(n.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#motor-prot\",children:(0,t.jsx)(n.span,{className:\"icon icon-link\"})}),\"Motor Prot.\"]}),`\n`,(0,t.jsxs)(n.ul,{children:[`\n`,(0,t.jsx)(n.li,{children:(0,t.jsx)(n.a,{href:\"starting-time\",children:\"Starting Time\"})}),`\n`,(0,t.jsx)(n.li,{children:(0,t.jsx)(n.a,{href:\"stall-prot.\",children:\"Stall Prot.\"})}),`\n`,(0,t.jsx)(n.li,{children:(0,t.jsx)(n.a,{href:\"thermal-ol\",children:\"Thermal OL\"})}),`\n`,(0,t.jsx)(n.li,{children:(0,t.jsx)(n.a,{href:\"unbal.-ph-loss\",children:\"Unbal./Ph Loss\"})}),`\n`]})]})}function d(r={}){let{wrapper:n}=r.components||{};return n?(0,t.jsx)(n,{...r,children:(0,t.jsx)(h,{...r})}):h(r)}return j(b);})();\n;return Component;"
+  },
+  "_id": "docs/relay/motor-prot./index.mdx",
+  "_raw": {
+    "sourceFilePath": "docs/relay/motor-prot./index.mdx",
+    "sourceFileName": "index.mdx",
+    "sourceFileDir": "docs/relay/motor-prot.",
+    "contentType": "mdx",
+    "flattenedPath": "docs/relay/motor-prot."
+  },
+  "type": "Doc",
+  "slug": "/docs/relay/motor-prot.",
+  "slugAsParams": "relay/motor-prot.",
+  "url": "/docs/docs/relay/motor-prot.",
+  "category": "docs",
+  "subCategory": "relay",
+  "activityName": "motor-prot."
+}

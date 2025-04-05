@@ -30,13 +30,13 @@ export function HeroPage() {
 
           <div className="flex items-center gap-4 pt-8">
             <Link
-              href="https://app.runwayml.com/"
+              href="/quote"
               className="px-6 py-3 text-sm font-medium rounded-full bg-white text-black hover:bg-white/90 transition-colors inline-flex items-center"
             >
               Get Quote
             </Link>
             <Link
-              href="/gen-4"
+              href="/shop"
               className="px-6 py-3 text-sm font-medium rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
             >
               Rent Kit

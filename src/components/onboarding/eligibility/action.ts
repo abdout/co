@@ -23,25 +23,32 @@ export async function createActivities(state: ActionState, data: ActivitySchema)
       };
     }
 
-    // Find or create team entry for the user
+    // Get user with teams relationship
+    const userWithTeams = await db.user.findUnique({
+      where: { id: user.id },
+      include: { teams: true }
+    });
+
+    const existingTeamId = userWithTeams?.teams[0]?.id;
+
+    // Find the user's team or create a new one if it doesn't exist
     const team = await db.team.upsert({
       where: {
-        id: user.id, // Using user.id as team.id for simplicity
+        id: existingTeamId || "not-found" // Look for existing team
       },
       create: {
-        id: user.id,
         fullname: user.name || '',
-        eligibility: data.eligibility,
+        eligibility: data.eligibility || [], // Allow empty array
         users: {
           connect: { id: user.id }
         }
       },
       update: {
-        eligibility: data.eligibility,
+        eligibility: data.eligibility || [], // Allow empty array
       }
     });
 
-    revalidatePath("/lab");
+    revalidatePath("/onboarding");
     return { success: true, error: false };
   } catch (error) {
     console.error("[CREATE_ACTIVITIES]", error);
@@ -95,16 +102,31 @@ export async function updateActivities(_state: ActionState, data: ActivitySchema
       };
     }
 
+    // Find the user's team
+    const userWithTeam = await db.user.findUnique({
+      where: { id: user.id },
+      include: { teams: true }
+    });
+
+    if (!userWithTeam?.teams.length) {
+      return {
+        success: false,
+        error: true,
+        message: "No team found for this user"
+      };
+    }
+
+    // Update the team
     await db.team.update({
       where: {
-        id: user.id,
+        id: userWithTeam.teams[0].id,
       },
       data: {
-        eligibility: data.eligibility,
+        eligibility: data.eligibility || [], // Allow empty array
       }
     });
 
-    revalidatePath("/lab");
+    revalidatePath("/onboarding");
     return { success: true, error: false };
   } catch (error) {
     console.error("[UPDATE_ACTIVITIES]", error);
@@ -128,16 +150,31 @@ export async function deleteActivities(): Promise<ActionState> {
       };
     }
 
+    // Find the user's team
+    const userWithTeam = await db.user.findUnique({
+      where: { id: user.id },
+      include: { teams: true }
+    });
+
+    if (!userWithTeam?.teams.length) {
+      return {
+        success: false, 
+        error: true, 
+        message: "No team found for this user"
+      };
+    }
+
+    // Update the team to clear eligibility
     await db.team.update({
       where: {
-        id: user.id,
+        id: userWithTeam.teams[0].id,
       },
       data: {
         eligibility: [],
       }
     });
 
-    revalidatePath("/lab");
+    revalidatePath("/onboarding");
     return { success: true, error: false };
   } catch (error) {
     console.error("[DELETE_ACTIVITIES]", error);

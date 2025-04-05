@@ -55,28 +55,58 @@ export default function ActivityForm({ user }: ActivityFormProps) {
     >
       <PageHeading title="Eligibility"/>
       <ScrollArea className="w-full flex-1 pr-4">
-        <div className="flex flex-col gap-8 w-full px-4">
+        <div className="flex flex-col gap-4 w-full px-4">
           {/* Eligibility Section */}
           <div className="flex flex-col items-center justify-center gap-4">
             
-            <div className="flex flex-wrap items-center justify-center w-[80%] gap-4">
-              {eligibility.map((item) => (
-                <Button
-                  key={item}
-                  type="button"
-                  variant={selectedEligibility.includes(item) ? "default" : "outline"}
-                  size="sm"
-                  className={cn(
-                    " transition-colors whitespace-normal",
-                    selectedEligibility.includes(item) 
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90" 
-                      : "hover:bg-accent hover:text-accent-foreground"
-                  )}
-                  onClick={() => toggleEligibility(item)}
-                >
-                  {item}
-                </Button>
-              ))}
+            <div className="flex flex-wrap items-center justify-center w-[75%] gap-2 py-8">
+              {eligibility.map((item, index) => {
+                // Create varying sizes based on item length or random
+                const sizeClass = [
+                  "text-xs", 
+                  "text-sm", 
+                  "text-base", 
+                  "text-lg", 
+                  "text-xl", 
+                  
+                ][Math.floor(index % 6)];
+
+                // Create varying blue shades
+                const colorClass = selectedEligibility.includes(item)
+                  ? "text-foreground"
+                  : [
+                      "text-muted-foreground", 
+                      "text-muted-foreground/80", 
+                      "text-muted-foreground/90", 
+                      "text-muted-foreground", 
+                      "text-muted-foreground/70", 
+                      "text-muted-foreground/80"
+                    ][Math.floor(index % 6)];
+                
+                // Font weight variation
+                const weightClass = selectedEligibility.includes(item)
+                  ? "font-bold"
+                  : "font-normal";
+
+                return (
+                  <Button
+                    key={item}
+                    type="button"
+                    variant="ghost"
+                    className={cn(
+                      "rounded-full transition-colors border-0 px-1 py-0 hover:bg-transparent",
+                      sizeClass,
+                      weightClass,
+                      selectedEligibility.includes(item) 
+                        ? "bg-transparent text-foreground font-medium" 
+                        : `${colorClass} hover:text-foreground`
+                    )}
+                    onClick={() => toggleEligibility(item)}
+                  >
+                    {item}
+                  </Button>
+                );
+              })}
             </div>
           </div>
         </div>

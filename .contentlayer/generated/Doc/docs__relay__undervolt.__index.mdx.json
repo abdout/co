@@ -1,0 +1,23 @@
+{
+  "title": "Undervolt.",
+  "description": "Index page for Undervolt.",
+  "body": {
+    "raw": "\n# Undervolt.\n\n- [Pickup](pickup)\n- [Timing](timing)\n",
+    "code": "var Component=(()=>{var u=Object.create;var o=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var x=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var _=(e,n)=>()=>(n||e((n={exports:{}}).exports,n),n.exports),g=(e,n)=>{for(var r in n)o(e,r,{get:n[r],enumerable:!0})},l=(e,n,r,a)=>{if(n&&typeof n==\"object\"||typeof n==\"function\")for(let i of p(n))!f.call(e,i)&&i!==r&&o(e,i,{get:()=>n[i],enumerable:!(a=m(n,i))||a.enumerable});return e};var j=(e,n,r)=>(r=e!=null?u(x(e)):{},l(n||!e||!e.__esModule?o(r,\"default\",{value:e,enumerable:!0}):r,e)),v=e=>l(o({},\"__esModule\",{value:!0}),e);var s=_((b,c)=>{c.exports=_jsx_runtime});var M={};g(M,{default:()=>h,frontmatter:()=>k});var t=j(s()),k={title:\"Undervolt.\",description:\"Index page for Undervolt.\"};function d(e){let n={a:\"a\",h1:\"h1\",li:\"li\",span:\"span\",ul:\"ul\",...e.components};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsxs)(n.h1,{id:\"undervolt\",children:[(0,t.jsx)(n.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#undervolt\",children:(0,t.jsx)(n.span,{className:\"icon icon-link\"})}),\"Undervolt.\"]}),`\n`,(0,t.jsxs)(n.ul,{children:[`\n`,(0,t.jsx)(n.li,{children:(0,t.jsx)(n.a,{href:\"pickup\",children:\"Pickup\"})}),`\n`,(0,t.jsx)(n.li,{children:(0,t.jsx)(n.a,{href:\"timing\",children:\"Timing\"})}),`\n`]})]})}function h(e={}){let{wrapper:n}=e.components||{};return n?(0,t.jsx)(n,{...e,children:(0,t.jsx)(d,{...e})}):d(e)}return v(M);})();\n;return Component;"
+  },
+  "_id": "docs/relay/undervolt./index.mdx",
+  "_raw": {
+    "sourceFilePath": "docs/relay/undervolt./index.mdx",
+    "sourceFileName": "index.mdx",
+    "sourceFileDir": "docs/relay/undervolt.",
+    "contentType": "mdx",
+    "flattenedPath": "docs/relay/undervolt."
+  },
+  "type": "Doc",
+  "slug": "/docs/relay/undervolt.",
+  "slugAsParams": "relay/undervolt.",
+  "url": "/docs/docs/relay/undervolt.",
+  "category": "docs",
+  "subCategory": "relay",
+  "activityName": "undervolt."
+}

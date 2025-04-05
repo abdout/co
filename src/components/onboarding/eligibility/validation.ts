@@ -10,9 +10,10 @@ const activityWithSystemSchema = z.object({
 });
 
 // Define the schema for form validation
+// Making eligibility optional to allow empty submission
 export const activitySchema = z.object({
-  // Selected eligibility items
-  eligibility: z.array(z.string()),
+  // Selected eligibility items - allowing empty array
+  eligibility: z.array(z.string()).optional().default([]),
 });
 
 // Export the inferred type from the schema
