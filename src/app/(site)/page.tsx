@@ -4,7 +4,7 @@ import { ServicePage } from "@/components/site/service";
 import { ResearchSection } from "@/components/site/ResearchSection";
 import { StorySection } from "@/components/site/StorySection";
 import { CustomerStories } from "@/components/site/CustomerStories";
-import { Footer } from "@/components/site/Footer";
+import { Footer } from "@/components/site/footer";
 import { NumberSection } from "@/components/site/number";
 import { ClientSection } from "@/components/site/client";
 import { TeamPage } from "@/components/site/team";

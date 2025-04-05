@@ -20,8 +20,8 @@ export function NewComersPage() {
             href="/onboarding"
            
           >
-            <Button  size= 'lg' className="rounded-full">
-            Onboard
+            <Button  size= 'lg' className="rounded-full py-6">
+            Onboarding
             </Button>
           </Link>
 

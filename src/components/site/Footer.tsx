@@ -4,7 +4,7 @@ import NewsLetter from "./newsletter";
 
 const footerLinks = {
   services: [
-    { label: "HV Testing", href: "/services/high-voltage" },
+    { label: "Testing", href: "/services/high-voltage" },
     { label: "Commissioning", href: "/services/commissioning" },
     { label: "Protection", href: "/services/protection-systems" },
     { label: "Installation", href: "/services/design" },
@@ -114,7 +114,7 @@ export function Footer() {
             </Link>
 
             <div className="w-[73.5%] text-xs  text-white/40 mt-2 ">
-              © 2025 TECOM Ltd. /
+              © 2025 COMPANY Ltd. /
               <Link href="/terms-of-use" className="hover:text-white/60 transition-colors ml-1 mr-1">
                 Terms
               </Link> /

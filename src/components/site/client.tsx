@@ -118,16 +118,16 @@ export function ClientSection() {
            Rental Shop 
           </h2>
 
-          <p className="text-lg text-netural-400 mb-8 text-center">
+          <p className="text-lg text-neutral-300 mb-8 text-center">
             A wide range of professional testing equipment available for rent. <br/> Order online. receive at your doorstep. 
           </p>
 
           <Link
-            href="/equipment"
+            href="/shop"
            
           >
             <Button variant='outline' size='lg' className=" h-12 text-lg flex gap-2 rounded-full text-primary ">
-            Store
+            Shop
             <ArrowRight className=" h-6 w-6 mt-[3px]" />
             </Button>
           </Link>

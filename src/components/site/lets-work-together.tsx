@@ -14,9 +14,17 @@ export default function LetsWorkTogether() {
             <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mb-4 ">
             Ready to elevate business with advanced automation solutions? Experience streamlined operations and enhanced efficiency for any industry.
             </p>
-            <div className="flex gap-4 mt-4 items-center">
-              <Icon icon="bytesize:github" width="30" height="30" />
-              <Icon icon="ri:discord-fill" width="35" height="35" />
+            <div className="flex gap-4 mt-4 items-center text-primary">
+              <a href="tel:+966557721603" aria-label="Call us">
+                <Icon icon="mdi:phone" width="30" height="30" />
+              </a>
+              <a href="https://wa.me/966557721603" target="_blank" rel="noopener noreferrer" aria-label="Contact on WhatsApp">
+                <Icon icon="ri:whatsapp-fill" width="30" height="30" />
+              </a>
+              <a href="https://www.linkedin.com/company/databayt-automation" target="_blank" rel="noopener noreferrer" aria-label="Visit our LinkedIn">
+                <Icon icon="mdi:linkedin" width="30" height="30" />
+              </a>
+              <Icon icon="mdi:twitter" width="30" height="30" />
             </div>
           </div>
           <div className="flex-1 pt-1">

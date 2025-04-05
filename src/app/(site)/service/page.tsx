@@ -1,5 +1,5 @@
 import { ServiceDetailPage } from "@/components/site/service/service";
-import { Footer } from "@/components/site/Footer";
+import { Footer } from "@/components/site/footer";
 
 export default function ServicePage() {
   return (
