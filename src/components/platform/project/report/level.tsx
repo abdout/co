@@ -1,33 +1,29 @@
 "use client";
-import { useProject } from "@/provider/project";
-import React, { useEffect } from "react";
+import React from "react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 
 interface IndexProps {
-  params: Params | Promise<Params>;
+  params: Params;
+  project?: any; // Accept project as prop
 }
 
 interface Params {
   id: string;
 }
 
-const Level: React.FC<IndexProps> = ({ params }) => {
-  // Properly unwrap params using React.use() for Next.js 15
-  const unwrappedParams = params instanceof Promise ? React.use(params) : params;
-  const id = unwrappedParams.id;
-  const { project, fetchProject } = useProject();
-
-  useEffect(() => {
-    fetchProject(id);
-  }, [id, fetchProject]);
+const Level: React.FC<IndexProps> = ({ params, project }) => {
+  const id = params.id;
 
   if (!project) {
     return null; // Don't render anything if the project data is not loaded yet
   }
 
+  // Fallback if voltages is not available in project data
+  const voltages = project.voltages || { EV: false, HV: false, MV: true, LV: true };
+  
   const selectedVoltages = ["EV", "HV", "MV", "LV"].filter(
-    (voltage) => project.voltages[voltage as keyof typeof project.voltages]
+    (voltage) => voltages[voltage as keyof typeof voltages]
   );
 
   return (

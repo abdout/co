@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Icon } from "@iconify/react";
-import XlIcon from "@/components/atom/icon/xl";
+
 import { usePathname } from "next/navigation";
 
 interface ActionProps {
@@ -43,9 +43,7 @@ switch (true) {
   return (
     <>
       <div className="flex gap-10 items-center">
-        <div>
-          <XlIcon src="/customer/rtcc.png" alt="RTCC" />
-        </div>
+        
         <div>
           <h1>{projectTitle}</h1>
           <h4>{statement}</h4>
