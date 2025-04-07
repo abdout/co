@@ -1,8 +1,9 @@
-import { auth } from "auth";
-import { getUserById } from "@/components/auth/data/user";
+import { auth } from "../../../../../auth";
+
 import { notFound, redirect } from "next/navigation";
 import { ProfileHeader } from "@/components/platform/profile/profile-header";
 import { ProfileTabs } from "@/components/platform/profile/profile-tabs";
+import { getUserById } from "@/components/auth/user";
 
 export const metadata = {
   title: "الملف الشخصي",

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useActionState } from '../kit/form';
+import { useActionState } from '@/lib/hooks/useActionState';
 import { deleteTeamMember } from './actions';
 import { toast } from 'sonner';
 
@@ -24,22 +24,27 @@ interface DeleteTeamMemberProps {
 }
 
 const DeleteTeamMember = ({ id, name, onSuccess }: DeleteTeamMemberProps) => {
-  const [deleteState, executeDelete] = useActionState(deleteTeamMember);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const isLoading = deleteState.pending;
+  const { execute: executeDelete, isLoading: isDeleting } = useActionState(deleteTeamMember, {
+    onSuccess: () => {
+      setIsOpen(false);
+      toast.success('Team member deleted successfully');
+      if (onSuccess) onSuccess();
+    },
+    onError: (error) => toast.error(error || 'Failed to delete team member')
+  });
 
   const onConfirm = async () => {
     try {
       await executeDelete(id);
-      toast.success(`Team member "${name}" deleted successfully`);
-      if (onSuccess) await onSuccess();
     } catch (error) {
-      toast.error('Failed to delete team member');
+      // Handle error
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
         <button className="w-full text-left text-destructive">Delete</button>
       </AlertDialogTrigger>
@@ -51,13 +56,13 @@ const DeleteTeamMember = ({ id, name, onSuccess }: DeleteTeamMemberProps) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
           <AlertDialogAction 
             onClick={onConfirm} 
-            disabled={isLoading}
+            disabled={isDeleting}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

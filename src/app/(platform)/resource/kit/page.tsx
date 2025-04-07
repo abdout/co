@@ -1,5 +1,5 @@
-import KitContent from '@/components/kit/content'
 import { Metadata } from 'next'
+import KitPage from './client'
 
 export const metadata: Metadata = {
   title: "Kits | Company Underway",
@@ -7,11 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Kit = () => {
-  return (
-    <div className="container mx-auto px-4 py-4">
-      <KitContent />
-    </div>
-  )
+  return <KitPage />
 }
 
 export default Kit

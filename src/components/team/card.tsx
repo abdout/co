@@ -54,13 +54,11 @@ const TeamCard = ({
       <div className="flex flex-col items-center p-6">
         <div className="relative mb-4">
           <div className="relative h-[105px] w-[105px] rounded-full overflow-hidden bg-muted">
-            <Image
-              src={member.src || "/placeholder-avatar.jpg"}
+            <img
+              src={member.src || member.userImage || "/placeholder-avatar.jpg"}
               alt={member.alt || `${member.firstName} ${member.lastName}`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
           <div className={cn(
@@ -72,6 +70,13 @@ const TeamCard = ({
         <h3 className="text-lg font-semibold">
           {member.firstName} {member.lastName}
         </h3>
+        
+        {/* Display the Facebook username if available */}
+        {member.userName && (
+          <div className="mt-1 text-xs text-blue-500 font-medium">
+            @{member.userName}
+          </div>
+        )}
         
         <div className="mt-2 flex items-center text-xs text-muted-foreground">
           <MapPin className="mr-1 h-3 w-3" />
@@ -100,7 +105,7 @@ const TeamCard = ({
               <Phone className="h-4 w-4" />
             </div>
           )}
-          {member.mail && (
+          {(member.mail || member.userEmail) && (
             <div className="flex items-center">
               <Mail className="h-4 w-4" />
             </div>

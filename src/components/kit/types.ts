@@ -1,17 +1,21 @@
 export interface Kit {
   id: string;
-  name: string;
-  src: string;
-  alt: string;
-  width?: number;
-  bg?: string;
+  name?: string;
+  picture?: string;
+  images?: string[];
+  accessories?: string[];
   calibration?: string;
+  calibrationIssue?: string;
+  calibrationDue?: Date;
+  software?: string;
   datasheet?: string;
   manual?: string;
   status?: string;
   under?: string;
   location?: string;
   price?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface KitDetailProps {
@@ -20,13 +24,15 @@ export interface KitDetailProps {
 }
 
 export interface KitCardProps {
-  src: string;
-  alt: string;
-  width?: number;
-  status?: number;
-  id?: string;
-  bg?: string;
+  id: string;
+  name?: string;
+  model?: string;
+  status?: string;
+  picture?: string;
+  price?: string;
   onSelect?: (id: string) => void;
+  kit: Kit;
+  onExpand: (kit: Kit) => void;
 }
 
 export interface KitFormValues {

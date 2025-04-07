@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState } from "react-dom";
+import { useActionState } from "@/lib/hooks/useActionState";
 import { createTeamMember, updateTeamMember } from "./actions";
 import { teamFormSchema, type TeamFormValues } from "./validation";
 import { TeamMember, TeamFormProps } from "./types";
@@ -56,22 +56,35 @@ const TeamForm = ({
       id: "",
       firstName: "",
       lastName: "",
-      src: "",
-      alt: "",
       phone: "",
-      mail: "",
       location: "In RTCC",
-      width: 105,
-      height: 105,
       iqama: "",
       eligible: []
     }
   });
 
-  const [createState, executeCreate] = useActionState(createTeamMember);
-  const [updateState, executeUpdate] = useActionState(updateTeamMember);
+  const { execute: executeCreate, isLoading: isCreating } = useActionState(createTeamMember, {
+    onSuccess: () => {
+      toast.success("Team member created successfully");
+      form.reset();
+      setOpen(false);
+      if (onSuccess) onSuccess();
+      if (onClose) onClose();
+    },
+    onError: (error) => toast.error(error || "Failed to create team member")
+  });
+  
+  const { execute: executeUpdate, isLoading: isUpdating } = useActionState(updateTeamMember, {
+    onSuccess: () => {
+      toast.success("Team member updated successfully");
+      setOpen(false);
+      if (onSuccess) onSuccess();
+      if (onClose) onClose();
+    },
+    onError: (error) => toast.error(error || "Failed to update team member")
+  });
 
-  const isSubmitting = createState.pending || updateState.pending;
+  const isSubmitting = isCreating || isUpdating;
 
   const onSubmit = async (values: TeamFormValues) => {
     // Include the selected skills in the form values
@@ -82,22 +95,12 @@ const TeamForm = ({
     
     try {
       if (memberToEdit) {
-        await executeUpdate({ id: memberToEdit.id, data: formData });
-        toast.success("Team member updated successfully");
+        await executeUpdate(memberToEdit.id, formData);
       } else {
         await executeCreate(formData);
-        toast.success("Team member created successfully");
       }
-      
-      form.reset();
-      setOpen(false);
-      if (onSuccess) await onSuccess();
-      if (onClose) onClose();
     } catch (error) {
-      toast.error(memberToEdit 
-        ? "Failed to update team member" 
-        : "Failed to create team member"
-      );
+      // Errors are handled by the hooks
     }
   };
 
@@ -177,53 +180,7 @@ const TeamForm = ({
               />
             </div>
             
-            <FormField
-              control={form.control}
-              name="src"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Profile Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter image URL" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="alt"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image Alt Text</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter alt text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
             <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="mail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="email" 
-                        placeholder="Enter email address" 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
               <FormField
                 control={form.control}
                 name="phone"
@@ -237,9 +194,7 @@ const TeamForm = ({
                   </FormItem>
                 )}
               />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
+              
               <FormField
                 control={form.control}
                 name="location"
@@ -270,7 +225,9 @@ const TeamForm = ({
                   </FormItem>
                 )}
               />
-              
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="iqama"
@@ -279,46 +236,6 @@ const TeamForm = ({
                     <FormLabel>Iqama Document URL</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter document URL" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="width"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image Width</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="Enter width" 
-                        {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="height"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image Height</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="Enter height" 
-                        {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

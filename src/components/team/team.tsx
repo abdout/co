@@ -1,6 +1,5 @@
 'use client';
 import React from "react";
-import Image from "next/image";
 import { Mail } from "lucide-react";
 import { Icon } from "@iconify/react";
 import { 
@@ -41,12 +40,11 @@ const TeamCard = ({ member, onClick }: TeamCardProps) => {
   return (
     <Card className="border border-gray-200 rounded-md overflow-hidden flex flex-col items-center py-5 px-2 shadow-none max-w-[220px]" onClick={onClick}>
       <div className="flex justify-center mb-3 w-[90px] h-[90px] relative">
-        <Image
-          className="rounded-full object-cover"
-          src={member.src}
+        <img
+          className="rounded-full object-cover absolute inset-0 w-full h-full"
+          src={member.src || "/placeholder-avatar.jpg"}
           alt={fullName}
-          fill
-          sizes="90px"
+          loading="lazy"
         />
       </div>
       

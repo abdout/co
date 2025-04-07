@@ -1,18 +1,18 @@
 export interface Car {
   id: string;
-  name: string;
-  src: string;
-  alt: string;
-  sim?: string;
-  petrol?: number;
-  oil?: string;
-  history?: string;
-  status?: string;
-  under?: string;
-  km?: number;
-  width?: number;
-  licence?: string;
-  penalty?: string;
+  name?: string | null;
+  images?: string[];
+  sim?: string | null;
+  petrol?: number | null;
+  oil?: string | null;
+  history?: string | null;
+  status?: string | null;
+  under?: string | null;
+  km?: number | null;
+  licence?: string | null;
+  penalty?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface CarDetailProps {
@@ -21,30 +21,28 @@ export interface CarDetailProps {
 }
 
 export interface CarCardProps {
-  src: string;
-  alt: string;
-  width?: number;
-  status?: number;
-  id?: string;
-  bg?: string;
+  id: string;
+  name?: string;
+  status?: string;
+  images?: string[];
   onSelect?: (id: string) => void;
+  car: Car;
+  onExpand: (car: Car) => void;
 }
 
 export interface CarFormValues {
   id: string;
   name: string;
-  src: string;
-  alt: string;
-  sim?: string;
-  petrol?: number;
-  oil?: string;
-  history?: string;
-  status?: string;
-  under?: string;
-  km?: number;
-  width?: number;
-  licence?: string;
-  penalty?: string;
+  images?: string[];
+  sim?: string | null;
+  petrol?: number | null;
+  oil?: string | null;
+  history?: string | null;
+  status?: string | null;
+  under?: string | null;
+  km?: number | null;
+  licence?: string | null;
+  penalty?: string | null;
 }
 
 export interface CarFormProps {

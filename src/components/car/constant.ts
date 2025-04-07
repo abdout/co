@@ -84,10 +84,11 @@ export const CARS: Car[] = [
 ];
 
 export const CAR_STATUS_OPTIONS = [
-  { label: "Ready", value: "Ready" },
-  { label: "In Use", value: "In Use" },
-  { label: "Maintenance", value: "Maintenance" },
-  { label: "Out of Service", value: "Out of Service" }
+  { value: 'Ready', label: 'Ready' },
+  { value: 'In Use', label: 'In Use' },
+  { value: 'Maintenance', label: 'Under Maintenance' },
+  { value: 'Repair', label: 'Under Repair' },
+  { value: 'Unavailable', label: 'Unavailable' }
 ];
 
 export const carDocuments = [

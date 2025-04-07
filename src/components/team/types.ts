@@ -5,15 +5,14 @@ export type TeamMember = {
   id: string;
   firstName: string;
   lastName: string;
-  src: string;
-  alt: string;
   phone?: string;
-  mail?: string;
   location?: string;
-  width: number;
-  height: number;
   iqama?: string;
   eligible?: string[];
+  // User data that comes from the User model
+  userName?: string;
+  userEmail?: string;
+  userImage?: string;
 };
 
 export interface TeamCardProps {

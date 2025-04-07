@@ -1,37 +1,80 @@
+'use client';
+
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { Car as CarType } from "./types";
 
 interface CarProps {
-  src: string;
-  alt: string;
-  width?: number;
-  status?: number;
-  id?: string;
-  bg?: string;
+  images?: string[];
+  name?: string;
+  id: string;
+  status?: string;
+  car?: CarType;
   onSelect?: (id: string) => void;
+  onExpand?: (car: CarType) => void;
 }
 
-const Car = ({ src, alt, width, status, id, bg, onSelect }: CarProps) => {
+const Car = ({ 
+  images, 
+  name, 
+  id, 
+  status, 
+  car, 
+  onSelect, 
+  onExpand 
+}: CarProps) => {
+  // Use the first image in the array or a placeholder
+  const imageUrl = images && images.length > 0 ? images[0] : "/placeholder.jpg";
+  
+  const handleClick = () => {
+    if (car && onExpand) {
+      onExpand(car);
+    } else if (onSelect && id) {
+      onSelect(id);
+    }
+  };
+  
   return (
-    <div 
-      onClick={() => id && onSelect && onSelect(id)}
-      className="group flex flex-col rounded-lg overflow-hidden transition duration-300 cursor-pointer border border-neutral-300 dark:border-neutral-900"
+    <motion.div 
+      onClick={handleClick}
+      layoutId={`card-${car?.id}-${id}`}
+      className="group flex flex-col rounded-lg overflow-hidden transition duration-300 cursor-pointer border border-border h-full w-full bg-card"
     >
-      <div className="relative md:h-[10rem] h-[8rem] w-full overflow-hidden flex justify-center items-center  border-neutral-300 dark:border-neutral-900">
+      <motion.div 
+        layoutId={`image-${car?.id}-${id}`}
+        className="relative h-3/5 w-full overflow-hidden flex justify-center items-center"
+      >
         <Image
-          src={src}
-          alt={alt}
+          src={imageUrl}
+          alt={name || "Car image"}
           fill
-          className="group-hover:scale-105 transition duration-300 p-5 "
+          className="object-cover p-2"
         />
+      </motion.div>
+      <div className="p-4 flex-grow flex flex-col">
+        <motion.h3 
+          layoutId={`title-${car?.id}-${id}`}
+          className="font-medium text-lg truncate"
+        >
+          {name || car?.name || "Unnamed Car"}
+        </motion.h3>
+        
+        <motion.p
+          layoutId={`status-${car?.id}-${id}`}
+          className="text-muted-foreground text-sm mt-1"
+        >
+          {status || car?.status || "Unknown status"}
+        </motion.p>
+        
+        <motion.p
+          layoutId={`under-${car?.id}-${id}`}
+          className="text-muted-foreground text-sm mt-1"
+        >
+          {car?.under ? `Assigned to: ${car.under}` : "Unassigned"}
+        </motion.p>
       </div>
-      <div className="md:p-4 px-4 py-3 bg-neutral-300 dark:bg-neutral-900">
-        <h3 className="text-xl font-bold mb-1">{alt}</h3>
-        <h4 className="text-muted-foreground text-sm">{id}</h4>
-        <h4 className="text-muted-foreground text-sm">Ready</h4>
-        <h4 className="text-muted-foreground text-sm">In store</h4>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

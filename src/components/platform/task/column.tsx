@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown, Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
 
 import { Task } from './type'
 import TaskForm from './form'
@@ -16,19 +15,19 @@ const TeamCell: React.FC = () => {
   return (
     <div className="flex -space-x-2">
       <div className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-        <Image 
+        <img 
           src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=64" 
           alt="Team member 1"
-          fill
-          className="object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
       </div>
       <div className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-        <Image 
+        <img 
           src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=64" 
           alt="Team member 2"
-          fill
-          className="object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
       </div>
     </div>

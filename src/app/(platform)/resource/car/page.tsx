@@ -1,5 +1,5 @@
-import CarContent from '@/components/car/content'
 import { Metadata } from 'next'
+import CarPage from './client'
 
 export const metadata: Metadata = {
   title: "Cars | Company Underway",
@@ -7,11 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Car = () => {
-  return (
-    <div className="container mx-auto px-4 py-4">
-      <CarContent />
-    </div>
-  )
+  return <CarPage />
 }
 
 export default Car

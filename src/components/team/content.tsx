@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useActionState } from '../kit/form';
+import { useActionState } from '@/lib/hooks/useActionState';
 import { getTeamMembers } from './actions';
 import { TeamMember } from './types';
 import TeamForm from './form';
@@ -20,8 +20,8 @@ const TeamContent = () => {
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, memberId: string | null }>({ x: 0, y: 0, memberId: null });
 
-  const [fetchState, fetchMembers] = useActionState(getTeamMembers, {
-    optimisticData: [] as TeamMember[]
+  const { execute: fetchMembers } = useActionState(getTeamMembers, {
+    onError: (error) => toast.error(error)
   });
 
   useEffect(() => {
@@ -29,11 +29,10 @@ const TeamContent = () => {
       try {
         setIsLoading(true);
         const result = await fetchMembers();
-        if (result) {
-          setMembers(result);
-        }
+        setMembers(result || []);
       } catch (error) {
         toast.error('Failed to fetch team members');
+        setMembers([]);
       } finally {
         setIsLoading(false);
       }

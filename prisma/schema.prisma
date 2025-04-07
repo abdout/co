@@ -16,17 +16,12 @@ enum UserRole {
 model Team {  
   id                    String   @id @default(cuid())
   fullname              String
-  src                   String?
-  alt                   String?
   phone                 String?
   whatsapp              String?
   twitter               String?
   facebook              String?
   linkedin              String?
-  mail                  String?
   location              String?
-  width                 Int?
-  height                Int?
   image                 String?
   iqama                 String?
   sce                   String?
@@ -105,4 +100,49 @@ model TwoFactorConfirmation {
   id     String @id @default(cuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Kit {
+  id              String    @id @default(cuid())
+  name            String?
+  picture         String?   // Main image for kit card
+  images          String[]  // Set of images showing actual status
+  accessories     String[]  // List of accessories included with the kit
+  calibration     String?
+  calibrationIssue String?
+  calibrationDue  DateTime?
+  software        String?
+  datasheet       String?
+  manual          String?
+  status          String?
+  under           String?
+  location        String?
+  price           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([name])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Car {
+  id              String    @id @default(cuid())
+  name            String?
+  images          String[]  // Additional images of the car
+  sim             String?   // SIM card information
+  petrol          Int?
+  oil             String?
+  history         String?
+  status          String?
+  under           String?
+  km              Int?
+  licence         String?
+  penalty         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([name])
+  @@index([status])
+  @@index([createdAt])
 }

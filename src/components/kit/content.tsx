@@ -79,7 +79,7 @@ const KitContent = () => {
           </div>
           <Button 
             onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 rounded-full"
           >
             <Plus className="h-4 w-4" />
             Add Kit
@@ -95,43 +95,59 @@ const KitContent = () => {
               <p className="text-muted-foreground">No kits found</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Assigned To</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {kits.map((kit) => (
-                  <TableRow key={kit.id}>
-                    <TableCell>{kit.id}</TableCell>
-                    <TableCell>{kit.name}</TableCell>
-                    <TableCell>{kit.status || 'N/A'}</TableCell>
-                    <TableCell>{kit.under || 'N/A'}</TableCell>
-                    <TableCell>{kit.location || 'N/A'}</TableCell>
-                    <TableCell className="text-right space-x-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => setKitToEdit(kit)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <DeleteKit 
-                        id={kit.id} 
-                        name={kit.name}
-                        onSuccess={handleDeleteSuccess}
-                      />
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[80px]">ID</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Assigned To</TableHead>
+                    <TableHead>Location</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {kits.map((kit) => (
+                    <TableRow key={kit.id}>
+                      <TableCell className="font-mono text-xs">{kit.id.substring(0, 8)}</TableCell>
+                      <TableCell className="font-medium">{kit.name}</TableCell>
+                      <TableCell>
+                        {kit.status ? (
+                          <span className={`px-2 py-1 text-xs rounded-full ${
+                            kit.status === 'Available' 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {kit.status}
+                          </span>
+                        ) : (
+                          'N/A'
+                        )}
+                      </TableCell>
+                      <TableCell>{kit.under || 'N/A'}</TableCell>
+                      <TableCell>{kit.location || 'N/A'}</TableCell>
+                      <TableCell className="text-right space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setKitToEdit(kit)}
+                          className="rounded-full h-8 w-8 p-0"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <DeleteKit 
+                          id={kit.id} 
+                          name={kit.name}
+                          onSuccess={handleDeleteSuccess}
+                          onDelete={() => {}}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

@@ -21,7 +21,7 @@ export default {
       profile(profile) {
         return {
           id: profile.sub,
-          name: profile.name,
+          username: profile.name,
           email: profile.email,
           image: profile.picture,
           emailVerified: new Date(),
@@ -34,7 +34,7 @@ export default {
       profile(profile) {
         return {
           id: profile.id,
-          name: profile.name,
+          username: profile.name,
           email: profile.email,
           image: profile.picture?.data?.url,
           emailVerified: new Date(),
