@@ -66,7 +66,7 @@ export default function ProjectCreateForm({ projectToEdit, onSuccess, onClose }:
       phase: projectToEdit?.phase || 'approved',
       team: projectToEdit?.team || [],
       teamLead: projectToEdit?.teamLead || '',
-      systems: projectToEdit?.systems as Systems[] || [],
+      systems: projectToEdit?.systems || [],
       activities: projectToEdit?.activities || [],
       mobilization: projectToEdit?.mobilization || '',
       accommodation: projectToEdit?.accommodation || '',
@@ -169,17 +169,33 @@ export default function ProjectCreateForm({ projectToEdit, onSuccess, onClose }:
   const onSubmit = async (data: ProjectFormValues) => {
     setIsSubmitting(true);
     try {
+      // Ensure all required fields have default values
       const projectData = {
-        ...data,
-        systems: selectedSystems,
-        activities: selectedActivities
+        customer: data.customer || '',
+        description: data.description || '',
+        location: data.location || '',
+        client: data.client || '',
+        consultant: data.consultant || '',
+        status: data.status || 'pending',
+        priority: data.priority || 'pending',
+        phase: data.phase || 'approved',
+        team: data.team || [],
+        teamLead: data.teamLead || '',
+        systems: selectedSystems || [],
+        activities: selectedActivities || [],
+        mobilization: data.mobilization || '',
+        accommodation: data.accommodation || '',
+        kits: data.kits || [],
+        cars: data.cars || [],
+        startDate: data.startDate || undefined,
+        endDate: data.endDate || undefined,
       };
       
       let result;
       
-      if (projectToEdit && projectToEdit._id) {
+      if (projectToEdit && projectToEdit.id) {
         // Update existing project
-        result = await updateProject(projectToEdit._id, projectData);
+        result = await updateProject(projectToEdit.id, projectData);
         if (result.success) {
           toast.success('Project updated successfully!');
         }
@@ -217,23 +233,20 @@ export default function ProjectCreateForm({ projectToEdit, onSuccess, onClose }:
           'RMU': {},
           'LOW CURRENT': {}
         });
-        setActiveSystemTab(null);
+        setSelectedActivities([]);
         
-        // Call onSuccess callback to update project list
         if (onSuccess) {
           await onSuccess();
         }
-        
-        // Call onClose to immediately close dialog
         if (onClose) {
           onClose();
         }
       } else {
-        toast.error(result.message || `Failed to ${projectToEdit ? 'update' : 'create'} project`);
+        toast.error(result.error || 'Failed to save project');
       }
-    } catch (error: any) {
-      console.error(`Error ${projectToEdit ? 'updating' : 'creating'} project:`, error);
-      toast.error(error?.message || 'An unexpected error occurred');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('An error occurred while saving the project');
     } finally {
       setIsSubmitting(false);
     }

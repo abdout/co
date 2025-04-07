@@ -1,6 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from "react";
-import { useProject } from "@/provider/project";
+import React from "react";
 import {
   EvCable,
   EvRmu,
@@ -29,6 +28,7 @@ interface IndexProps {
   params: Params | Promise<Params>;
   option: OptionKey;
   index: number;
+  project: any;
 }
 
 interface Params {
@@ -39,7 +39,7 @@ interface Option {
   value: string;
 }
 
-const SubActivity: React.FC<IndexProps> = ({ params, option, index }) => {
+const SubActivity: React.FC<IndexProps> = ({ params, option, index, project }) => {
   // Safety check for params
   if (!params) {
     return null;
@@ -53,21 +53,6 @@ const SubActivity: React.FC<IndexProps> = ({ params, option, index }) => {
     return null;
   }
   
-  const id = unwrappedParams.id;
-  
-  const { project, fetchProject } = useProject();
-  const loadedProjectId = useRef<string | null>(null);
-
-  useEffect(() => {
-    // Prevent re-fetching if we already have the project data for this ID
-    if (project && project._id === id && loadedProjectId.current === id) {
-      return;
-    }
-    
-    fetchProject(id);
-    loadedProjectId.current = id;
-  }, [id, project, fetchProject]);
-
   if (!project) {
     return null;
   }

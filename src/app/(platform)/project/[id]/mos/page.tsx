@@ -1,34 +1,75 @@
 'use client';
 
 import Intro from '@/components/platform/project/mos/intro'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Action from '@/components/platform/project/layout/action';
-import { useProject } from '@/provider/project';
 import { usePDF } from 'react-to-pdf';
-import { allActivities } from 'contentlayer/generated';
-import type { Activity as ContentActivity } from 'contentlayer/generated';
 import { Activity } from '@/components/platform/project/types';
 import ActivityRenderer from '@/components/platform/project/mos/activity-renderer';
-import { ActivityWrapper } from '@/components/platform/project/mos/warpper';
 import GenerateNotice from '@/components/platform/project/mos/generate-notice';
-import { checkMosContentExists, generateMosContent } from '@/components/platform/project/mos/actions';
+import { checkMosContentExists, generateMosContent, loadMdxContent, normalizeForFile } from '@/components/platform/project/mos/actions';
 import { useToast } from '@/components/ui/use-toast';
+import { getProject } from '@/components/platform/project/actions';
+
+// Define the ContentActivity type for Contentlayer
+type ContentActivity = {
+  title: string;
+  system: string;
+  category: string;
+  description: string;
+  body: {
+    raw: string;
+    code: string;
+  };
+  slug: string;
+  url: string;
+  _id: string;
+  [key: string]: any; // Add index signature for additional properties
+};
 
 interface Params {
   id: string;
 }
 
+interface ProjectActivity {
+  system: string;
+  category: string;
+  activity: string;
+}
+
+interface ActivityWithContent {
+  projectActivity: ProjectActivity;
+  contentActivity?: ContentActivity;
+  categoryContent?: ContentActivity; // Store the category-level content
+}
+
+interface CategoryActivities {
+  [category: string]: ActivityWithContent[];
+}
+
+interface GroupedActivities {
+  [system: string]: CategoryActivities;
+}
+
+// Local utility function for client-side normalization
+const normalizeString = (str: string): string => {
+  return str.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[\.\/\\]/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .trim();
+};
+
 const MOS = ({ params }: { params: Params | Promise<Params> }) => {
-  // Properly unwrap params using React.use() for Next.js 15
   const unwrappedParams = params instanceof Promise ? React.use(params) : params;
   const id = unwrappedParams.id;
   
-  const { project, fetchProject } = useProject();
-  const loadedProjectId = useRef<string | null>(null);
-  const { toast } = useToast();
-  
+  const [project, setProject] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [contentExists, setContentExists] = useState(true);
+  const [categoryContents, setCategoryContents] = useState<Record<string, ContentActivity>>({});
+  const { toast } = useToast();
   
   // Check if MOS content exists
   useEffect(() => {
@@ -40,15 +81,72 @@ const MOS = ({ params }: { params: Params | Promise<Params> }) => {
     checkContent();
   }, []);
   
+  // Fetch project data
   useEffect(() => {
-    // Prevent re-fetching if we already have the project data for this ID
-    if (project && project._id === id && loadedProjectId.current === id) {
-      return;
-    }
+    const fetchProject = async () => {
+      try {
+        const result = await getProject(id);
+        if (result.success && result.project) {
+          setProject(result.project);
+        } else {
+          toast({
+            title: 'Error',
+            description: 'Failed to fetch project',
+            variant: 'destructive',
+          });
+        }
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch project',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProject();
+  }, [id, toast]);
+  
+  // Load MDX content for all system/category combinations
+  useEffect(() => {
+    if (!project || !project.activities) return;
     
-    fetchProject(id);
-    loadedProjectId.current = id;
-  }, [id, fetchProject, project]);
+    // Track which system/category combinations we've already processed
+    const processed = new Set<string>();
+    const contents: Record<string, ContentActivity> = {};
+    
+    const loadContents = async () => {
+      // Get unique system/category combinations
+      for (const activity of project.activities) {
+        const system = activity.system;
+        const category = activity.category;
+        
+        // Use client-side normalization for the key
+        const key = `${normalizeString(system)}/${normalizeString(category)}`;
+        
+        // Skip if we've already processed this combination
+        if (processed.has(key)) continue;
+        processed.add(key);
+        
+        // Load the content
+        try {
+          const result = await loadMdxContent(system, category);
+          if (result.success && result.content) {
+            contents[key] = result.content;
+          }
+        } catch (error) {
+          console.error(`Failed to load content for ${system}/${category}:`, error);
+        }
+      }
+      
+      // Update state with all loaded contents
+      setCategoryContents(contents);
+    };
+    
+    loadContents();
+  }, [project]);
   
   const { toPDF, targetRef } = usePDF({
     filename: `${project?.customer} MOS.pdf`,
@@ -87,93 +185,28 @@ const MOS = ({ params }: { params: Params | Promise<Params> }) => {
     }
   };
   
-  // Match project activities with content activities
-  const getProjectActivitiesWithContent = () => {
+  // Prepare project activities
+  const getProjectActivitiesWithContent = (): ActivityWithContent[] => {
     if (!project || !project.activities || project.activities.length === 0) {
       return [];
     }
     
-    // Helper function to normalize strings for comparison
-    const normalizeString = (str: string) => {
-      if (!str) return '';
-      return str.toLowerCase()
-        .replace(/\./g, '') // Remove periods
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/[\/\\]/g, '-') // Replace slashes with hyphens
-        .trim();
-    };
-    
-    return project.activities.map(activity => {
-      // Find matching content activity with improved string normalization
-      const match = allActivities.find(contentActivity => {
-        const normalizedSystemType = normalizeString(contentActivity.systemType);
-        const normalizedSubitem = normalizeString(contentActivity.subitem);
-        const normalizedTitle = normalizeString(contentActivity.title);
-        
-        const normalizedActivitySystem = normalizeString(activity.system);
-        const normalizedActivityCategory = normalizeString(activity.category);
-        const normalizedActivityName = normalizeString(activity.activity);
-        
-        // First try exact match
-        const exactMatch = 
-          normalizedSystemType === normalizedActivitySystem &&
-          normalizedSubitem === normalizedActivityCategory &&
-          normalizedTitle === normalizedActivityName;
-        
-        if (exactMatch) return true;
-        
-        // Then try more flexible matching for title if system and category match
-        const systemAndCategoryMatch = 
-          normalizedSystemType === normalizedActivitySystem &&
-          normalizedSubitem === normalizedActivityCategory;
-          
-        if (systemAndCategoryMatch) {
-          // Check if title contains activity name or vice versa
-          const titleContainsActivity = normalizedTitle.includes(normalizedActivityName);
-          const activityContainsTitle = normalizedActivityName.includes(normalizedTitle);
-          
-          // Sometimes periods are kept in filenames as hyphens
-          const titleWithDots = normalizedTitle.replace(/-/g, '.');
-          const activityWithDots = normalizedActivityName.replace(/-/g, '.');
-          const dotsMatch = titleWithDots === activityWithDots;
-          
-          return titleContainsActivity || activityContainsTitle || dotsMatch;
-        }
-        
-        return false;
-      });
+    // Return project activities and organize by system and category
+    return project.activities.map((activity: ProjectActivity) => {
+      // Get normalized system and category for file path using client-side function
+      const normalizedSystem = normalizeString(activity.system);
+      const normalizedCategory = normalizeString(activity.category);
       
-      if (!match && activity.system && activity.category && activity.activity) {
-        console.log(
-          `No match found for: System=${activity.system}, Category=${activity.category}, Activity=${activity.activity}`
-        );
-        console.log(
-          `Normalized: System=${normalizeString(activity.system)}, Category=${normalizeString(activity.category)}, Activity=${normalizeString(activity.activity)}`
-        );
-        
-        // Log available activities for this system and category for debugging
-        const potentialMatches = allActivities.filter(contentActivity => {
-          const normalizedSystemType = normalizeString(contentActivity.systemType);
-          const normalizedSubitem = normalizeString(contentActivity.subitem);
-          
-          const normalizedActivitySystem = normalizeString(activity.system);
-          const normalizedActivityCategory = normalizeString(activity.category);
-          
-          return normalizedSystemType === normalizedActivitySystem &&
-                 normalizedSubitem === normalizedActivityCategory;
-        });
-        
-        if (potentialMatches.length > 0) {
-          console.log('Potential matches found with same system and category:');
-          potentialMatches.forEach(potential => {
-            console.log(`- Title: ${potential.title} (normalized: ${normalizeString(potential.title)})`);
-          });
-        }
-      }
+      // Create a unique key for this system+category combination
+      const categoryKey = `${normalizedSystem}/${normalizedCategory}`;
+      
+      // Get the category content from our state
+      const categoryContent = categoryContents[categoryKey];
       
       return {
         projectActivity: activity,
-        contentActivity: match
+        contentActivity: undefined,
+        categoryContent: categoryContent
       };
     });
   };
@@ -181,7 +214,7 @@ const MOS = ({ params }: { params: Params | Promise<Params> }) => {
   const activitiesWithContent = getProjectActivitiesWithContent();
   
   // Group activities by system and category
-  const groupedActivities = activitiesWithContent.reduce((acc, { projectActivity, contentActivity }) => {
+  const groupedActivities = activitiesWithContent.reduce((acc: GroupedActivities, { projectActivity, contentActivity, categoryContent }: ActivityWithContent) => {
     const system = projectActivity.system;
     const category = projectActivity.category;
     
@@ -195,55 +228,83 @@ const MOS = ({ params }: { params: Params | Promise<Params> }) => {
     
     acc[system][category].push({ 
       projectActivity,
-      contentActivity 
+      contentActivity,
+      categoryContent
     });
     
     return acc;
-  }, {} as Record<string, Record<string, Array<{
-    projectActivity: Activity;
-    contentActivity?: ContentActivity;
-  }>>>);
+  }, {} as GroupedActivities);
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
   
   return (
-    <div className='flex flex-col gap-6 w-[60rem]'>
-      <Action projectTitle={project?.customer || ""} toPDF={toPDF} />
+    <div className='flex flex-col gap-8 w-[60rem]'>
+      <Action projectTitle={project.customer || ""} toPDF={toPDF} />
       
       {!contentExists && (
         <GenerateNotice onGenerate={handleGenerateContent} isGenerating={isGenerating} />
       )}
       
-      <div ref={targetRef} className="space-y-6">
-        <Intro />
+      <div ref={targetRef} className="space-y-8">
+        <Intro project={project} />
         
-        <ActivityWrapper activities={allActivities || []}>
+        <div className="space-y-10">
           {Object.entries(groupedActivities).map(([systemType, categories]) => (
-            <div key={systemType} className="space-y-4">
-              <h2 className="text-2xl font-bold">{systemType}</h2>
-              {Object.entries(categories).map(([category, activities]) => (
-                <div key={category} className="ml-4 space-y-2">
-                  <h3 className="text-xl font-semibold">{category}</h3>
-                  {activities.map(({ projectActivity, contentActivity }, index) => (
-                    <div key={`${projectActivity.system}-${projectActivity.category}-${projectActivity.activity}-${index}`} className="ml-4">
-                      <ActivityRenderer 
-                        activity={projectActivity} 
-                        contentActivity={contentActivity} 
-                      />
-                    </div>
-                  ))}
-                </div>
-              ))}
+            <div key={systemType} className="space-y-6">
+              <h2 className="text-2xl font-bold px-6">{systemType}</h2>
+              {Object.entries(categories as CategoryActivities).map(([category, categoryActivities]) => {
+                // Get the first entry to access the shared categoryContent
+                const firstActivity = categoryActivities[0];
+                const { categoryContent } = firstActivity || {};
+                
+                return (
+                  <div key={category} className="space-y-4">
+                    <h3 className="text-xl font-semibold px-6">{category}</h3>
+                    
+                    {/* If we have category content, display it using ActivityRenderer */}
+                    {categoryContent ? (
+                      <div className="px-8 mb-4">
+                        <ActivityRenderer 
+                          activity={{
+                            system: systemType,
+                            category: category,
+                            activity: category
+                          }}
+                          contentActivity={categoryContent}
+                        />
+                      </div>
+                    ) : (
+                      // Otherwise, display activities individually
+                      categoryActivities.map(({ projectActivity, contentActivity }: ActivityWithContent, index: number) => (
+                        <div key={`${projectActivity.system}-${projectActivity.category}-${projectActivity.activity}-${index}`}>
+                          <ActivityRenderer 
+                            activity={projectActivity} 
+                            contentActivity={contentActivity} 
+                          />
+                        </div>
+                      ))
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ))}
           
-          {activitiesWithContent.length === 0 && project && (
-            <div className="p-4 border rounded-md bg-muted">
+          {activitiesWithContent.length === 0 && (
+            <div className="px-8 py-4 bg-muted rounded-md">
               <p>No activities found for this project. Please add activities to see MOS content.</p>
             </div>
           )}
-        </ActivityWrapper>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MOS
+export default MOS;

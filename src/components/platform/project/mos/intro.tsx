@@ -1,11 +1,12 @@
 import React from 'react'
-import { useProject } from '@/provider/project';
 
-const Intro = () => {
-  const { project } = useProject();
+interface IntroProps {
+  project?: any;
+}
 
+const Intro: React.FC<IntroProps> = ({ project }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-8">
       <div className="border-b pb-4">
         <h1 className="text-3xl font-bold mb-2">Method of Statement (MOS)</h1>
         {project && (

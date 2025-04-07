@@ -1,14 +1,10 @@
+import { withContentlayer } from 'next-contentlayer';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      'platform-lookaside.fbsbx.com',
-      'graph.facebook.com',
-      'scontent.xx.fbcdn.net',
-      'randomuser.me',
-      'images.unsplash.com'
-    ],
+    domains: ['images.unsplash.com'],
   },
 };
 
-export default nextConfig; 
+export default withContentlayer(nextConfig); 

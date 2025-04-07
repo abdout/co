@@ -146,3 +146,41 @@ model Car {
   @@index([status])
   @@index([createdAt])
 }
+
+model Project {
+  id            String    @id @default(cuid())
+  // Basic Information
+  customer      String
+  description   String
+  location      String
+  client        String
+  consultant    String
+  status        String
+  priority      String
+  phase         String
+  
+  // Team Information
+  team          String[]
+  teamLead      String
+  
+  // Systems and Activities
+  systems       String[]
+  activities    Json      // Will store array of activities
+  
+  // Resources
+  mobilization  String
+  accommodation String
+  kits          String[]
+  cars          String[]
+  
+  // Additional Fields
+  startDate     DateTime
+  endDate       DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([customer])
+  @@index([status])
+  @@index([createdAt])
+}

@@ -42,36 +42,32 @@ export interface ProjectCreateFormProps {
 }
 
 export interface Activity {
-  system: string;
-  category: string;
-  subcategory: string;
-  activity: string;
+  system?: string;
+  category?: string;
+  subcategory?: string;
+  activity?: string;
 }
 
 export interface Project {
-  _id?: string;
   id?: string;
-  project_id?: string;
-  customer: string;
-  location: string;
-  details: string;
+  customer?: string;
+  description?: string;
+  location?: string;
+  client?: string;
+  consultant?: string;
+  status?: "pending" | "on_progress" | "done" | "stuck";
+  priority?: "high" | "medium" | "low" | "pending";
+  phase?: "approved" | "started" | "half_way" | "handover";
   team?: string[];
-  activities?: Array<Activity>;
-  tags?: string[];
-  status: "pending" | "on_progress" | "done" | "stuck";
-  priority: "high" | "medium" | "low" | "pending";
-  phase: "approved" | "started" | "half_way" | "handover";
-  description: string;
-  client: string;
-  consultant: string;
-  teamLead: string;
-  systems: string[];
-  mobilization: string;
-  accommodation: string;
-  kits: string[];
-  cars: string[];
+  teamLead?: string;
+  systems?: string[];
+  activities?: Activity[];
+  mobilization?: string;
+  accommodation?: string;
+  kits?: string[];
+  cars?: string[];
   startDate?: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   createdAt?: Date;
   updatedAt?: Date;
 } 

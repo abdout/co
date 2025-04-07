@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../contentlayer.config.ts"],
+  "sourcesContent": ["import { defineDocumentType, makeSource } from 'contentlayer/source-files';\n\nexport const Activity = defineDocumentType(() => ({\n  name: 'Activity',\n  filePathPattern: `mos/**/*.mdx`,\n  contentType: 'mdx',\n  fields: {\n    title: {\n      type: 'string',\n      required: true,\n    },\n    system: {\n      type: 'string',\n      required: true,\n    },\n    category: {\n      type: 'string',\n      required: true,\n    },\n    description: {\n      type: 'string',\n      required: true,\n    },\n  },\n}));\n\nexport default makeSource({\n  contentDirPath: 'content',\n  documentTypes: [Activity],\n  mdx: {\n    rehypePlugins: [],\n    remarkPlugins: [],\n  },\n});"],
+  "mappings": ";AAAA,SAAS,oBAAoB,kBAAkB;AAExC,IAAM,WAAW,mBAAmB,OAAO;AAAA,EAChD,MAAM;AAAA,EACN,iBAAiB;AAAA,EACjB,aAAa;AAAA,EACb,QAAQ;AAAA,IACN,OAAO;AAAA,MACL,MAAM;AAAA,MACN,UAAU;AAAA,IACZ;AAAA,IACA,QAAQ;AAAA,MACN,MAAM;AAAA,MACN,UAAU;AAAA,IACZ;AAAA,IACA,UAAU;AAAA,MACR,MAAM;AAAA,MACN,UAAU;AAAA,IACZ;AAAA,IACA,aAAa;AAAA,MACX,MAAM;AAAA,MACN,UAAU;AAAA,IACZ;AAAA,EACF;AACF,EAAE;AAEF,IAAO,8BAAQ,WAAW;AAAA,EACxB,gBAAgB;AAAA,EAChB,eAAe,CAAC,QAAQ;AAAA,EACxB,KAAK;AAAA,IACH,eAAe,CAAC;AAAA,IAChB,eAAe,CAAC;AAAA,EAClB;AACF,CAAC;",
+  "names": []
+}

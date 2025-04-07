@@ -1,7 +1,32 @@
 import { notFound } from 'next/navigation';
-import { allDocs } from 'contentlayer/generated';
-import type { Doc } from 'contentlayer/generated';
+// Replace contentlayer imports with placeholder empty arrays and types
+// import { allDocs } from '.contentlayer/generated';
+// import type { Doc } from '.contentlayer/generated';
 import { Mdx } from '@/components/ui/mdx-components';
+
+// Create placeholder type and data
+interface Doc {
+  title: string;
+  description: string;
+  body: {
+    code: string;
+    raw: string;
+  };
+  slug: string;
+  slugAsParams: string;
+  url: string;
+  category: string;
+  subCategory: string;
+  activityName: string;
+  _raw: {
+    flattenedPath: string;
+  };
+  _id: string;
+  _type: 'Doc';
+}
+
+// Empty docs array as placeholder
+const allDocs: Doc[] = [];
 
 interface DocPageProps {
   params: {

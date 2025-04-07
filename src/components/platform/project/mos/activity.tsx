@@ -1,8 +1,8 @@
 'use client';
-import React, { useEffect, useRef } from "react";
-import { useProject } from "@/provider/project";
+import React, { useEffect, useRef, useState } from "react";
 import { HeadTitle } from "@/constant/project/itp/head";
 import SubActivity from "./subactivity";
+import { getProject } from '@/components/platform/project/actions';
 
 interface IndexProps {
   params: Params | Promise<Params>;
@@ -33,6 +33,9 @@ type OptionKey =
   | "lvRmu";
 
 const Activity: React.FC<IndexProps> = ({ params, option, index }) => {
+  const [project, setProject] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
   // Safety check for params
   if (!params) {
     return null;
@@ -47,23 +50,35 @@ const Activity: React.FC<IndexProps> = ({ params, option, index }) => {
   }
   
   const id = unwrappedParams.id;
-  
-  const { project, fetchProject } = useProject();
   const loadedProjectId = useRef<string | null>(null);
-
+  
+  // Fetch project data
   useEffect(() => {
-    // Prevent re-fetching if we already have the project data for this ID
-    if (project && project._id === id && loadedProjectId.current === id) {
-      return;
-    }
+    const fetchProjectData = async () => {
+      // Prevent re-fetching if we already have the project data for this ID
+      if (project && loadedProjectId.current === id) {
+        return;
+      }
+      
+      try {
+        const result = await getProject(id);
+        if (result.success && result.project) {
+          setProject(result.project);
+          loadedProjectId.current = id;
+        }
+      } catch (error) {
+        console.error("Failed to fetch project:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    fetchProject(id);
-    loadedProjectId.current = id;
-  }, [id, project, fetchProject]);
+    fetchProjectData();
+  }, [id, project]);
 
   // Safety check for project
   if (!project) {
-    return null;
+    return isLoading ? null : <div>Failed to load project data</div>;
   }
 
   const labels = HeadTitle(project)
@@ -82,7 +97,7 @@ const Activity: React.FC<IndexProps> = ({ params, option, index }) => {
           {`${index + labelIndex}. ${label}`}
         </h2>
       ))}
-      <SubActivity params={unwrappedParams} option={option} index={index} />
+      <SubActivity params={unwrappedParams} option={option} index={index} project={project} />
     </div>
   );
 };

@@ -25,12 +25,13 @@ const ProjectList: React.FC = () => {
     try {
       setIsLoading(true);
       const result = await getProjects();
-      if (result.success && result.data) {
-        setProjects(result.data as unknown as Project[]);
+      if (result.success) {
+        setProjects(result.projects || []);
       } else {
-        toast.error(result.message || 'Failed to fetch projects');
+        toast.error(result.error || 'Failed to fetch projects');
       }
     } catch (error) {
+      console.error('Error fetching projects:', error);
       toast.error('An error occurred while fetching projects');
     } finally {
       setIsLoading(false);
@@ -77,7 +78,7 @@ const ProjectList: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {projects.map((project: Project) => (
           <ProjectCard
-            key={project._id}
+            key={project.id}
             project={project}
             contextMenu={contextMenu}
             onRightClick={handleRightClick}

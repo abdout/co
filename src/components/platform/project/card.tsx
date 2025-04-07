@@ -24,33 +24,26 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   onOpenDialog,
   onProjectDeleted,
 }) => {
-  // const handleDelete = async () => {
-  //   try {
-  //     const result = await deleteProject(project._id);
-  //     if (result.success) {
-  //       toast.success('Project deleted successfully');
-  //       if (onProjectDeleted) {
-  //         await onProjectDeleted();
-  //       }
-  //     } else {
-  //       toast.error(result.message || 'Failed to delete project');
-  //     }
-  //   } catch (error: any) {
-  //     toast.error(error?.message || 'An unexpected error occurred');
-  //   }
-  // };
+  const formatDate = (date?: Date) => {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
   return (
     <div className="relative">
       <Card
-        className={`border border-gray-400 hover:border-black h-48 ${contextMenu.projectID === project._id ? 'opacity-20' : ''}`}
+        className={`border border-gray-400 hover:border-black h-48 ${contextMenu.projectID === project.id ? 'opacity-20' : ''}`}
         onContextMenu={(e) => {
-          if (project._id) {
-            onRightClick(e, project._id);
+          if (project.id) {
+            onRightClick(e, project.id);
           }
         }}
       >
-        <Link href={`/project/${project._id}`}>
+        <Link href={`/project/${project.id}`}>
           <CardHeader>
             <strong className="font-heading text-2xl">{project.customer}</strong>
             <p className="line-clamp-1 overflow-hidden text-ellipsis">
@@ -75,7 +68,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </Link>
       </Card>
 
-      {contextMenu.projectID === project._id && (
+      {contextMenu.projectID === project.id && (
         <div
           className="absolute top-0 left-0 w-full h-full flex flex-row justify-center items-center space-x-4 p-8"
           onMouseLeave={onCloseContextMenu}
@@ -85,7 +78,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
           <div className="flex items-center justify-center">
             <button
-              onClick={() => project._id && onOpenDialog(project._id)}
+              onClick={() => project.id && onOpenDialog(project.id)}
               className="flex gap-4 z-50"
             >
               <Icon icon="icon-park-solid:edit" width={40} />

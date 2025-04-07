@@ -20,7 +20,24 @@ declare module 'contentlayer/generated' {
     _type: 'Doc';
   }
 
+  export interface Activity {
+    title: string;
+    system: string;
+    category: string;
+    description: string;
+    body: {
+      code: string;
+      raw: string;
+    };
+    slug: string;
+    slugAsParams: string;
+    url: string;
+    _id: string;
+    _type: 'Activity';
+  }
+
   export const allDocs: Doc[];
+  export const allActivities: Activity[];
 }
 
 declare module 'next-contentlayer2/hooks' {

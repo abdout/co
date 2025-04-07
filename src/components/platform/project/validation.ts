@@ -26,7 +26,7 @@ export const projectFormSchema = z.object({
   kits: z.array(z.string()).optional(),
   cars: z.array(z.string()).optional(),
   startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  endDate: z.date().nullable().optional(),
 });
 
 export type ProjectFormValues = z.infer<typeof projectFormSchema>; 

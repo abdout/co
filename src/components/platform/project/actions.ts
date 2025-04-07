@@ -1,66 +1,152 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import connectDB from '@/lib/mongodb';
-import Project from './model';
+import { db } from '@/lib/db';
 import { ProjectFormValues } from './validation';
 import { auth } from '../../../../auth';
 import { Project as ProjectType } from './types';
 
-// Helper function to serialize MongoDB documents
-const serializeDocument = (doc: any): any => {
-  if (!doc) return doc;
-  
-  // Handle arrays
-  if (Array.isArray(doc)) {
-    return doc.map(item => serializeDocument(item));
-  }
-  
-  // Handle objects
-  if (typeof doc === 'object') {
-    const serialized: any = {};
-    for (const [key, value] of Object.entries(doc)) {
-      // Handle ObjectId
-      if (key === '_id' && value?.toString) {
-        serialized[key] = value.toString();
-      }
-      // Handle Date objects
-      else if (value instanceof Date) {
-        serialized[key] = value.toISOString();
-      }
-      // Handle nested objects
-      else if (typeof value === 'object' && value !== null) {
-        serialized[key] = serializeDocument(value);
-      }
-      // Handle primitive values
-      else {
-        serialized[key] = value;
-      }
-    }
-    return serialized;
-  }
-  
-  return doc;
-};
-
-export async function createProject(data: ProjectFormValues) {
-  console.log('=== Server Action: createProject ===');
-  console.log('Received data:', JSON.stringify(data, null, 2));
-  
+export async function createProject(data: ProjectFormValues | null) {
   try {
-    // Check authentication
     const session = await auth();
     if (!session?.user) {
-      console.error('Authentication failed: No user session');
-      return { success: false, message: 'Authentication required' };
+      throw new Error('Unauthorized');
     }
+
+    if (!data) {
+      return { success: false, error: 'No data provided' };
+    }
+
+    const projectData = {
+      customer: data.customer || '',
+      description: data.description || '',
+      location: data.location || '',
+      client: data.client || '',
+      consultant: data.consultant || '',
+      status: data.status || 'pending',
+      priority: data.priority || 'pending',
+      phase: data.phase || 'approved',
+      team: Array.isArray(data.team) ? data.team : [],
+      teamLead: data.teamLead || '',
+      systems: Array.isArray(data.systems) ? data.systems : [],
+      activities: Array.isArray(data.activities) ? data.activities : [],
+      mobilization: data.mobilization || '',
+      accommodation: data.accommodation || '',
+      kits: Array.isArray(data.kits) ? data.kits : [],
+      cars: Array.isArray(data.cars) ? data.cars : [],
+      startDate: data.startDate || new Date(),
+      endDate: data.endDate || null,
+    };
+
+    console.log('Creating project with data:', JSON.stringify(projectData, null, 2));
+
+    const project = await db.project.create({
+      data: projectData,
+    });
+
+    revalidatePath('/project');
+    return { success: true, project };
+  } catch (error) {
+    console.error('Error creating project:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to create project' };
+  }
+}
+
+export async function getProjects() {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      console.error('Unauthorized access attempt');
+      return { success: false, error: 'Unauthorized' };
+    }
+
+    console.log('Fetching projects...');
     
-    console.log('Attempting to connect to database...');
-    await connectDB();
-    console.log('Database connection successful');
-    
-    console.log('Creating project with data:', JSON.stringify(data, null, 2));
-    const project = await Project.create({
+    const projects = await db.project.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    console.log('Projects fetched:', projects);
+
+    if (!projects || projects.length === 0) {
+      console.log('No projects found');
+      return { success: true, projects: [] };
+    }
+
+    return { success: true, projects };
+  } catch (error) {
+    console.error('Error in getProjects:', {
+      error,
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to fetch projects',
+      details: error instanceof Error ? error.stack : undefined
+    };
+  }
+}
+
+export async function getProject(id: string) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      throw new Error('Unauthorized');
+    }
+
+    const project = await db.project.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        customer: true,
+        description: true,
+        location: true,
+        client: true,
+        consultant: true,
+        status: true,
+        priority: true,
+        phase: true,
+        team: true,
+        teamLead: true,
+        systems: true,
+        activities: true,
+        mobilization: true,
+        accommodation: true,
+        kits: true,
+        cars: true,
+        startDate: true,
+        endDate: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!project) {
+      return { success: false, error: 'Project not found' };
+    }
+
+    return { success: true, project };
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to fetch project' };
+  }
+}
+
+export async function updateProject(id: string, data: Partial<ProjectFormValues> | null) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      throw new Error('Unauthorized');
+    }
+
+    if (!data) {
+      return { success: false, error: 'No data provided' };
+    }
+
+    const projectData = {
       customer: data.customer,
       description: data.description,
       location: data.location,
@@ -69,202 +155,47 @@ export async function createProject(data: ProjectFormValues) {
       status: data.status,
       priority: data.priority,
       phase: data.phase,
-      team: data.team,
+      team: Array.isArray(data.team) ? data.team : undefined,
       teamLead: data.teamLead,
-      systems: data.systems,
-      activities: data.activities,
+      systems: Array.isArray(data.systems) ? data.systems : undefined,
+      activities: Array.isArray(data.activities) ? data.activities : undefined,
       mobilization: data.mobilization,
       accommodation: data.accommodation,
-      kits: data.kits,
-      cars: data.cars,
+      kits: Array.isArray(data.kits) ? data.kits : undefined,
+      cars: Array.isArray(data.cars) ? data.cars : undefined,
       startDate: data.startDate,
       endDate: data.endDate,
-    });
-    console.log('Project created successfully:', JSON.stringify(project, null, 2));
-
-    console.log('Revalidating project path...');
-    revalidatePath('/platform/project');
-    console.log('Path revalidation complete');
-    
-    // Serialize the project before returning
-    const serializedProject = serializeDocument(project.toObject ? project.toObject() : project);
-    
-    return { success: true, data: serializedProject };
-  } catch (error: any) {
-    console.error('Error in createProject:', {
-      name: error?.name || 'Unknown',
-      message: error?.message || 'No error message',
-      stack: error?.stack || 'No stack trace',
-      code: error?.code,
-      keyPattern: error?.keyPattern,
-      keyValue: error?.keyValue
-    });
-
-    // Handle specific MongoDB errors
-    if (error?.code === 11000) {
-      return { success: false, message: 'A project with this name already exists' };
-    }
-    
-    if (error?.name === 'ValidationError') {
-      return { success: false, message: 'Invalid project data provided' };
-    }
-
-    return { 
-      success: false, 
-      message: error?.message || 'Failed to create project',
-      details: error?.code ? `Error code: ${error.code}` : undefined
     };
-  }
-}
 
-export async function getProjects() {
-  console.log('=== Server Action: getProjects ===');
-  
-  try {
-    // Check authentication
-    const session = await auth();
-    if (!session?.user) {
-      console.error('Authentication failed: No user session');
-      return { success: false, message: 'Authentication required' };
-    }
-    
-    console.log('Attempting to connect to database...');
-    await connectDB();
-    console.log('Database connection successful');
-    
-    console.log('Fetching projects...');
-    const projects = await Project.find({}).sort({ createdAt: -1 }).lean();
-    console.log(`Found ${projects.length} projects`);
-    
-    // Serialize all projects and their nested objects
-    const serializedProjects = projects.map(project => serializeDocument(project));
-    
-    return { success: true, data: serializedProjects };
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return { success: false, message: error instanceof Error ? error.message : 'Failed to fetch projects' };
-  }
-}
-
-export async function getProject(id: string) {
-  try {
-    await connectDB();
-    const project = await Project.findById(id).lean();
-    if (!project) {
-      return { success: false, message: 'Project not found' };
-    }
-    
-    // Serialize the project before returning
-    const serializedProject = serializeDocument(project);
-    
-    return { success: true, data: serializedProject };
-  } catch (error) {
-    console.error('Error fetching project:', error);
-    return { success: false, message: 'Failed to fetch project' };
-  }
-}
-
-export async function updateProject(id: string, data: Partial<ProjectFormValues>) {
-  console.log('=== Server Action: updateProject ===');
-  console.log('Project ID:', id);
-  console.log('Update data:', JSON.stringify(data, null, 2));
-  
-  try {
-    console.log('Attempting to connect to database...');
-    await connectDB();
-    console.log('Database connection successful');
-    
-    console.log('Finding and updating project...');
-    const project = await Project.findByIdAndUpdate(
-      id,
-      {
-        customer: data.customer,
-        description: data.description,
-        location: data.location,
-        client: data.client,
-        consultant: data.consultant,
-        status: data.status,
-        priority: data.priority,
-        phase: data.phase,
-        team: data.team,
-        teamLead: data.teamLead,
-        systems: data.systems,
-        activities: data.activities,
-        mobilization: data.mobilization,
-        accommodation: data.accommodation,
-        kits: data.kits,
-        cars: data.cars,
-        startDate: data.startDate,
-        endDate: data.endDate,
-      },
-      { new: true }
-    );
-
-    if (!project) {
-      console.log('Project not found with ID:', id);
-      return { success: false, message: 'Project not found' };
-    }
-
-    console.log('Project updated successfully:', JSON.stringify(project, null, 2));
-    console.log('Revalidating project path...');
-    revalidatePath('/platform/project');
-    console.log('Path revalidation complete');
-
-    // Serialize the project before returning
-    const serializedProject = serializeDocument(project.toObject ? project.toObject() : project);
-    
-    return { success: true, data: serializedProject };
-  } catch (error: any) {
-    console.error('=== Error in updateProject ===');
-    console.error('Error type:', error?.constructor?.name || 'Unknown');
-    console.error('Error message:', error?.message || 'No error message');
-    console.error('Error stack:', error?.stack || 'No stack trace');
-    
-    // Handle MongoDB specific errors
-    if (error?.code === 11000) {
-      console.error('Duplicate key error:', error.keyPattern);
-      return { success: false, message: 'A project with this information already exists' };
-    }
-    
-    // Handle validation errors
-    if (error?.name === 'ValidationError') {
-      console.error('Validation errors:', Object.values(error.errors).map((err: any) => err.message));
-      return { success: false, message: 'Validation failed', errors: Object.values(error.errors).map((err: any) => err.message) };
-    }
-
-    // Handle other MongoDB errors
-    console.error('Error details:', {
-      name: error?.name || 'Unknown',
-      code: error?.code,
-      keyPattern: error?.keyPattern,
-      keyValue: error?.keyValue
+    const project = await db.project.update({
+      where: { id },
+      data: projectData,
     });
-    
-    return { 
-      success: false, 
-      message: error?.message || 'Failed to update project',
-      error: error?.message || 'Unknown error'
-    };
+
+    revalidatePath('/project');
+    revalidatePath(`/project/${id}`);
+    return { success: true, project };
+  } catch (error) {
+    console.error('Error updating project:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to update project' };
   }
 }
 
 export async function deleteProject(id: string) {
   try {
-    await connectDB();
-    const project = await Project.findByIdAndDelete(id);
-
-    if (!project) {
-      return { success: false, message: 'Project not found' };
+    const session = await auth();
+    if (!session?.user) {
+      throw new Error('Unauthorized');
     }
 
-    revalidatePath('/platform/project');
-    
-    // Serialize the project before returning
-    const serializedProject = serializeDocument(project.toObject ? project.toObject() : project);
-    
-    return { success: true, data: serializedProject };
-  } catch (error: any) {
+    await db.project.delete({
+      where: { id },
+    });
+
+    revalidatePath('/project');
+    return { success: true };
+  } catch (error) {
     console.error('Error deleting project:', error);
-    return { success: false, message: error?.message || 'Failed to delete project' };
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to delete project' };
   }
 } 
