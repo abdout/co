@@ -10,29 +10,45 @@ import { cn } from "@/lib/utils"
 import { Icons } from "./icons"
 import { MobileNav } from "./mobile-nav"
 import { useCurrentUser } from "@/hooks/use-current-user"
-import { ProjectNavDropdown } from "./project-nav-dropdown"
-import { ResourceNavDropdown } from "./resource-nav-dropdown"
-import { ChevronDown } from "lucide-react"
 
 interface MainNavProps {
   items?: MainNavItem[]
   children?: React.ReactNode
+  onSectionChange?: (section: 'project' | 'resource' | 'wallet' | null, projectId?: string) => void
 }
 
-export function MainNav({ items, children }: MainNavProps) {
+export function MainNav({ items, children, onSectionChange }: MainNavProps) {
   const segment = useSelectedLayoutSegment()
   const pathname = usePathname()
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
   const user = useCurrentUser()
-  
-  // Check if we're in a resource path
-  const isResourcePath = pathname.startsWith('/resource')
   
   // Check if we're in a project path with an ID
   const projectPathMatch = pathname.match(/^\/project\/([^\/]+)/)
   const isProjectPage = !!projectPathMatch
   const projectId = projectPathMatch ? projectPathMatch[1] : null
   
+  // Check if we're in a resource path
+  const isResourcePath = pathname.startsWith('/resource')
+  
+  // Check if we're in a wallet path
+  const isWalletPath = pathname.startsWith('/wallet')
+  
+  // Update parent component when section changes
+  React.useEffect(() => {
+    if (onSectionChange) {
+      if (isProjectPage && projectId) {
+        onSectionChange('project', projectId)
+      } else if (isResourcePath) {
+        onSectionChange('resource')
+      } else if (isWalletPath) {
+        onSectionChange('wallet')
+      } else {
+        onSectionChange(null)
+      }
+    }
+  }, [pathname, isProjectPage, isResourcePath, isWalletPath, projectId, onSectionChange])
+
   // Filter items based on user role
   const filteredItems = items?.filter(item => {
     // If the item doesn't have roleRequired, show it to everyone
@@ -56,77 +72,27 @@ export function MainNav({ items, children }: MainNavProps) {
         </Link>
         {filteredItems?.length ? (
           <nav className="flex items-center gap-4 text-sm font-medium lg:gap-7">
-            {filteredItems?.map((item, index) => {
-              // Handle Project navigation item
-              if (item.title === "Project") {
-                // Only show dropdown if we're on a project page with ID
-                if (isProjectPage && projectId) {
-                  return (
-                    <ProjectNavDropdown 
-                      key={index}
-                      projectId={projectId}
-                      className={cn(
-                        "transition-colors hover:text-foreground/80",
-                        pathname.startsWith('/project')
-                          ? "text-foreground"
-                          : "text-foreground/60",
-                        item.disabled && "cursor-not-allowed opacity-80"
-                      )}
-                    />
-                  )
-                } else {
-                  // Otherwise render as link to /project
-                  return (
-                    <Link
-                      key={index}
-                      href={item.disabled ? "#" : item.href}
-                      className={cn(
-                        "transition-colors hover:text-foreground/80 flex items-center gap-1",
-                        pathname.startsWith('/project')
-                          ? "text-foreground"
-                          : "text-foreground/60",
-                        item.disabled && "cursor-not-allowed opacity-80"
-                      )}
-                    >
-                      {item.title} <ChevronDown className="h-4 w-4" />
-                    </Link>
-                  )
-                }
-              }
-              
-              // If this is the Resource link and we're in a resource path
-              if (item.title === "Resource") {
-                return (
-                  <ResourceNavDropdown 
-                    key={index}
-                    className={cn(
-                      "transition-colors hover:text-foreground/80",
-                      isResourcePath
-                        ? "text-foreground"
-                        : "text-foreground/60",
-                      item.disabled && "cursor-not-allowed opacity-80"
-                    )}
-                  />
-                )
-              }
-              
-              // Otherwise render as standard link
-              return (
-                <Link
-                  key={index}
-                  href={item.disabled ? "#" : item.href}
-                  className={cn(
-                    "transition-colors hover:text-foreground/80",
-                    item.href.startsWith(`/${segment}`)
-                      ? "text-foreground"
-                      : "text-foreground/60",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              )
-            })}
+            {filteredItems?.map((item, index) => (
+              <Link
+                key={index}
+                href={item.disabled ? "#" : item.href}
+                className={cn(
+                  "transition-colors hover:text-foreground/80",
+                  (item.title === "Project" && isProjectPage) ||
+                  (item.title === "Resource" && isResourcePath) ||
+                  (item.title === "Wallet" && isWalletPath) ||
+                  (item.href.startsWith(`/${segment}`) && 
+                   item.title !== "Project" && 
+                   item.title !== "Resource" &&
+                   item.title !== "Wallet")
+                    ? "text-foreground"
+                    : "text-foreground/60",
+                  item.disabled && "cursor-not-allowed opacity-80"
+                )}
+              >
+                {item.title}
+              </Link>
+            ))}
           </nav>
         ) : null}
       </div>

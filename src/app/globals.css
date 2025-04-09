@@ -252,6 +252,17 @@ body {
   scrollbar-width: none; /* Hides scrollbar in Firefox */
 }
 
+/* Hide scrollbar but allow scrolling */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
 
 .image-scale-hover {
   display: block; /* Ensures transform works consistently, might need inline-block depending on layout */
