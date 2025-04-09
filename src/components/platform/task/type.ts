@@ -1,4 +1,5 @@
 import { TASK_STATUS, TASK_PRIORITY } from './constant';
+import { TaskStatus, TaskPriority } from '@prisma/client';
 
 export interface Activity {
   system: string;
@@ -7,31 +8,32 @@ export interface Activity {
   activity: string;
 }
 
-export type TaskStatus = typeof TASK_STATUS[keyof typeof TASK_STATUS];
-export type TaskPriority = typeof TASK_PRIORITY[keyof typeof TASK_PRIORITY];
+export type TaskStatusType = typeof TASK_STATUS[keyof typeof TASK_STATUS];
+export type TaskPriorityType = typeof TASK_PRIORITY[keyof typeof TASK_PRIORITY];
 
 export interface Task {
   _id?: string;
+  id?: string;
   project: string;
   task: string;
   club: string;
-  status: TaskStatus;
-  priority: TaskPriority;
+  status: TaskStatus | TaskStatusType;
+  priority: TaskPriority | TaskPriorityType;
   duration: string;
   desc: string;
   label: string;
   tag: string;
   remark: string;
-  date?: Date;
-  hours?: number;
-  overtime?: number;
+  date?: Date | null;
+  hours?: number | null;
+  overtime?: number | null;
   linkedActivity?: {
     projectId: string;
     system: string;
     category: string;
     subcategory: string;
     activity: string;
-  };
+  } | null;
   assignedTo?: string[];
   createdAt?: Date;
   updatedAt?: Date;

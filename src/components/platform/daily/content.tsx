@@ -36,13 +36,22 @@ import { Icon } from '@iconify/react'
 import { useModal } from '@/components/atom/modal/context'
 import Create from '@/components/platform/daily/create'
 import Modal from '@/components/atom/modal/modal'
+import { syncTasksWithDailies } from './actions'
+import { toast } from 'sonner'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  onTasksChange?: () => void
+  onRowClick?: (row: TData, event: React.MouseEvent<HTMLElement>) => void
 }
 
-export function Content<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function Content<TData, TValue>({
+  columns,
+  data,
+  onTasksChange,
+  onRowClick
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -52,6 +61,7 @@ export function Content<TData, TValue>({ columns, data }: DataTableProps<TData, 
   })
   const [rowSelection, setRowSelection] = useState({})
   const [page, setPage] = useState(0)
+  const [syncing, setSyncing] = useState(false)
   const loadMoreRef = useRef(null)
 
   const PAGE_SIZE = 20
@@ -118,19 +128,69 @@ export function Content<TData, TValue>({ columns, data }: DataTableProps<TData, 
     closeModal()
   }
 
+  const handleSyncWithTasks = async () => {
+    try {
+      setSyncing(true);
+      toast.info('Syncing tasks with dailies...');
+      
+      const result = await syncTasksWithDailies();
+      
+      if (result.error) {
+        console.error('Failed to sync with tasks:', result.error);
+        toast.error('Failed to sync with tasks');
+        return;
+      }
+      
+      toast.success('Successfully synced with tasks');
+      
+      // Fetch updated dailies after sync
+      if (onTasksChange) await onTasksChange();
+    } catch (error) {
+      console.error('Error syncing with tasks:', error);
+      toast.error('Error syncing with tasks');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  // Initial sync on component mount and set up auto-sync interval
+  useEffect(() => {
+    // Auto-sync with tasks on initial load
+    handleSyncWithTasks();
+    
+    // Set up an interval to sync with tasks every 5 minutes
+    const syncInterval = setInterval(() => {
+      handleSyncWithTasks();
+    }, 5 * 60 * 1000); // 5 minutes in milliseconds
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(syncInterval);
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <>
-      {modal.open && modal.id === null && <Modal content={<Create onClose={handleCloseModal} />} />}
+      {modal.open && modal.id === null && (
+        <Modal 
+          content={
+            <Create 
+              onClose={() => {
+                handleCloseModal();
+                if (onTasksChange) onTasksChange();
+              }} 
+            />
+          } 
+        />
+      )}
       
       {/* Filters and Add Daily Report Button */}
       <div className='flex flex-wrap items-center justify-between gap-2 md:gap-4 py-4'>
         <div className='flex flex-wrap items-center gap-2 md:gap-4'>
           {/* Search Input */}
           <Input
-            placeholder='Search by title...'
-            value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+            placeholder='Search by task name...'
+            value={(table.getColumn('task')?.getFilterValue() as string) ?? ''}
             onChange={(event) =>
-              table.getColumn('title')?.setFilterValue(event.target.value)
+              table.getColumn('task')?.setFilterValue(event.target.value)
             }
             className='w-[200px]'
           />
@@ -293,6 +353,22 @@ export function Content<TData, TValue>({ columns, data }: DataTableProps<TData, 
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Sync Button */}
+            <div className='pl-2'>
+              <Button
+                variant="outline"
+                className="h-9 px-3 gap-2 reveal"
+                onClick={handleSyncWithTasks}
+                disabled={syncing}
+              >
+                <Icon 
+                  icon="lucide:refresh-cw" 
+                  className={`size-4 ${syncing ? 'animate-spin' : ''}`} 
+                />
+                {syncing ? 'Syncing...' : 'Sync'}
+              </Button>
+            </div>
+
             {/* Add Daily Report Button */}
             <Button 
               variant="outline"
@@ -306,40 +382,33 @@ export function Content<TData, TValue>({ columns, data }: DataTableProps<TData, 
       </div>
 
       {/* Table */}
-      <div className='border-t border-b rounded-none'>
-        <Table className="border-collapse">
+      <div className='rounded-md border'>
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="border-b border-l-0 border-r-0">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {visibleRows?.length ? (
+            {visibleRows.length ? (
               visibleRows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className="border-b hover:bg-slate-50"
+                  onClick={(event) => onRowClick && onRowClick(row.original, event)}
+                  className="cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="border-0 p-4">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>

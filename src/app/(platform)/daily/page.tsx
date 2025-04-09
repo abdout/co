@@ -1,59 +1,92 @@
 'use client'
 
+import React, { useState, useEffect } from 'react'
 import { useDaily } from '@/components/platform/daily/context'
-import { columns } from '@/components/platform/daily/coloum'
+import { getColumns } from '@/components/platform/daily/coloum'
 import { Content } from '@/components/platform/daily/content'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@iconify/react'
-import ModalProvider from '@/components/atom/modal/provider'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 import { useModal } from '@/components/atom/modal/context'
-import Create from '@/components/platform/daily/create'
+import DailyForm from '@/components/platform/daily/form'
+import DeleteDaily from '@/components/platform/daily/delete'
+import { Daily } from '@/components/platform/daily/type'
 
-const Page = () => {
+const DailyPage = () => {
   const { dailyReports, refreshDailyReports, loading } = useDaily()
+  const router = useRouter()
   const { modal, openModal, closeModal } = useModal()
   
-  const handleRefresh = () => {
-    refreshDailyReports()
+  const fetchDailies = async () => {
+    try {
+      refreshDailyReports()
+    } catch (error) {
+      console.error('Exception in fetchDailies:', error)
+      toast.error('Failed to fetch daily reports')
+    }
   }
+  
+  // Get columns with the fetchDailies function
+  const columns = getColumns(fetchDailies);
+  
+  // Initial fetch on component mount
+  useEffect(() => {
+    fetchDailies()
+  }, [])
   
   const handleCloseModal = () => {
     closeModal()
     refreshDailyReports()
   }
 
+  const handleRowClick = (daily: Daily, event: React.MouseEvent<HTMLElement>) => {
+    // Check if the click was on an action button or dialog
+    const target = event.target as HTMLElement
+    const actionButton = target.closest('[data-action="no-navigate"]')
+    
+    if (actionButton) {
+      // If clicked on an action button, don't navigate
+      return
+    }
+    
+    // Use daily.id if available
+    const dailyId = daily.id || daily._id
+    router.push(`/daily/${dailyId}`)
+  }
+
   return (
-    <ModalProvider>
-      <div className="h-full flex-1 flex-col space-y-4 p-8 md:flex">
-        <div className="flex items-center justify-between space-y-2">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight">Daily Reports</h2>
-            <p className="text-muted-foreground">
-              Track your daily progress and activities across projects.
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={handleRefresh} disabled={loading}>
-              {loading ? (
-                <Icon icon="lucide:loader-2" className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Icon icon="lucide:refresh-cw" className="mr-2 h-4 w-4" />
-              )}
-              Refresh
-            </Button>
-            <Button onClick={() => openModal(null)}>
-              <Icon icon="lucide:plus" className="mr-2 h-4 w-4" />
-              New Daily Report
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <Content columns={columns} data={dailyReports || []} />
+    <div className="container mx-auto px-4">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-4xl font-heading">Daily</h1>
+          <p className="text-muted-foreground">Manage. track.</p>
         </div>
       </div>
-      {modal.open && modal.id === null && <Create onClose={handleCloseModal} />}
-    </ModalProvider>
+      
+      <Content 
+        columns={columns} 
+        data={dailyReports || []} 
+        onTasksChange={fetchDailies}
+        onRowClick={handleRowClick}
+      />
+      
+      {modal.open && modal.id === 'new-daily' && (
+        <DailyForm onClose={handleCloseModal} mode="create" />
+      )}
+      {modal.open && modal.id === 'edit-daily' && modal.data && (
+        <DailyForm
+          onClose={handleCloseModal}
+          initialData={modal.data as Daily}
+          mode="edit"
+        />
+      )}
+      {modal.open && modal.id === 'delete-daily' && modal.data && (
+        <DeleteDaily
+          daily={modal.data as Daily}
+          onClose={handleCloseModal}
+        />
+      )}
+    </div>
   )
 }
 
-export default Page 
+export default DailyPage 

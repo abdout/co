@@ -13,6 +13,20 @@ enum UserRole {
   USER
 }
 
+enum TaskStatus {
+  pending
+  stuck
+  in_progress
+  done
+}
+
+enum TaskPriority {
+  pending
+  high
+  medium
+  low
+}
+
 model Team {  
   id                    String   @id @default(cuid())
   fullname              String
@@ -102,6 +116,32 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Task {
+  id              String        @id @default(cuid())
+  project         String
+  task            String
+  club            String?
+  status          TaskStatus    @default(pending)
+  priority        TaskPriority  @default(pending)
+  duration        String?
+  desc            String?
+  label           String?
+  tag             String?
+  remark          String?
+  date            DateTime?
+  hours           Int?
+  overtime        Int?
+  linkedActivity  Json?
+  assignedTo      String[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([project])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+}
+
 model Kit {
   id              String    @id @default(cuid())
   name            String?
@@ -182,5 +222,27 @@ model Project {
 
   @@index([customer])
   @@index([status])
+  @@index([createdAt])
+}
+
+model Daily {
+  id                  String    @id @default(cuid())
+  task                String?
+  description         String?
+  date                String?
+  engineer            String?
+  project             String?
+  status              String?
+  priority            String?
+  hoursSpent          String?
+  completionPercentage String?
+  blockers            String?
+  plannedTomorrow     String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([date])
+  @@index([engineer])
+  @@index([project])
   @@index([createdAt])
 }

@@ -1,13 +1,13 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import connectDB from '@/lib/mongodb';
-import Task from './model';
+import { db } from '@/lib/db';
+
 import { TaskFormValues } from './validation';
 import { auth } from '../../../../auth';
 import { Task as TaskType, Activity } from './type';
-import Project from '../project/model';
 import { TASK_STATUS, TASK_PRIORITY } from './constant';
+import { TaskStatus, TaskPriority } from '@prisma/client';
 
 export async function createTask(data: TaskFormValues) {
   console.log('=== Server Action: createTask ===');
@@ -33,17 +33,20 @@ export async function createTask(data: TaskFormValues) {
     }
     
     console.log('Authenticated user:', session.user.email);
-    await connectDB();
-    console.log('Connected to DB for create operation');
+    console.log('Creating task with Prisma');
+    
+    // Map string values to Prisma enums
+    const statusValue = mapStatusToPrismaEnum(data.status);
+    const priorityValue = mapPriorityToPrismaEnum(data.priority);
     
     // Create a clean object to prevent circular references
     const cleanData = {
-      project: data.project,
-      task: data.task,
-      status: data.status,
-      priority: data.priority,
-      duration: data.duration,
-      desc: data.desc,
+      project: data.project || '',
+      task: data.task || '',
+      status: statusValue,
+      priority: priorityValue,
+      duration: data.duration || '',
+      desc: data.desc || '',
       tag: data.tag || '',
       remark: data.remark || '',
       date: data.date,
@@ -55,17 +58,31 @@ export async function createTask(data: TaskFormValues) {
     // Log the sanitized data
     console.log('Sanitized data for task creation:', JSON.stringify(cleanData, null, 2));
     
-    // Create new task with cleaned data
-    const newTask = new Task(cleanData);
-    console.log('Task model instance created with ID:', newTask._id);
+    // Create new task with Prisma
+    const savedTask = await db.task.create({
+      data: {
+        project: cleanData.project,
+        task: cleanData.task,
+        club: '',
+        status: cleanData.status,
+        priority: cleanData.priority,
+        duration: cleanData.duration,
+        desc: cleanData.desc,
+        tag: cleanData.tag,
+        remark: cleanData.remark,
+        date: cleanData.date,
+        hours: cleanData.hours,
+        overtime: cleanData.overtime,
+        assignedTo: cleanData.assignedTo
+      }
+    });
     
-    const savedTask = await newTask.save();
-    console.log('Task saved to database with ID:', savedTask._id.toString());
+    console.log('Task saved to database with ID:', savedTask.id);
     
     revalidatePath('/task');
     console.log('Revalidated path: /task');
     
-    return { success: true, taskId: savedTask._id.toString() };
+    return { success: true, taskId: savedTask.id };
   } catch (error: any) {
     console.error('Error creating task:', error);
     console.error('Error stack:', error.stack);
@@ -76,35 +93,38 @@ export async function createTask(data: TaskFormValues) {
 export async function getTasks() {
   console.log('=== Server Action: getTasks ===');
   try {
-    await connectDB();
-    console.log('Connected to DB for fetching tasks');
+    console.log('Fetching tasks with Prisma');
     
-    const tasks = await Task.find({}).sort({ createdAt: -1 });
+    const tasks = await db.task.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+    
     console.log(`Fetched ${tasks.length} tasks from database`);
     
-    // Create a simpler, safer serialization approach
+    // Map Prisma results to match the expected structure in frontend
     const simplifiedTasks = tasks.map(task => {
-      // Convert Mongoose document to plain object
-      const plainTask = task.toObject ? task.toObject() : task;
-      
       return {
-        _id: plainTask._id.toString(),
-        project: plainTask.project || '',
-        task: plainTask.task || '',
-        status: plainTask.status || '',
-        priority: plainTask.priority || '',
-        duration: plainTask.duration || '',
-        desc: plainTask.desc || '',
-        club: plainTask.club || '',
-        tag: plainTask.tag || '',
-        remark: plainTask.remark || '',
-        label: plainTask.label || '',
-        date: plainTask.date ? new Date(plainTask.date) : undefined,
-        hours: plainTask.hours || 0,
-        overtime: plainTask.overtime || 0,
-        assignedTo: plainTask.assignedTo || [],
-        createdAt: plainTask.createdAt ? new Date(plainTask.createdAt) : undefined,
-        updatedAt: plainTask.updatedAt ? new Date(plainTask.updatedAt) : undefined
+        _id: task.id,
+        id: task.id,
+        project: task.project || '',
+        task: task.task || '',
+        status: task.status as unknown as string,
+        priority: task.priority as unknown as string,
+        duration: task.duration || '',
+        desc: task.desc || '',
+        club: task.club || '',
+        tag: task.tag || '',
+        remark: task.remark || '',
+        label: task.label || '',
+        date: task.date,
+        hours: task.hours || 0,
+        overtime: task.overtime || 0,
+        assignedTo: task.assignedTo || [],
+        linkedActivity: task.linkedActivity,
+        createdAt: task.createdAt,
+        updatedAt: task.updatedAt
       };
     });
     
@@ -117,33 +137,37 @@ export async function getTasks() {
 
 export async function getTask(id: string) {
   try {
-    await connectDB();
-    const task = await Task.findById(id);
+    console.log('Fetching task with Prisma ID:', id);
+    
+    const task = await db.task.findUnique({
+      where: { id }
+    });
     
     if (!task) {
       return { error: 'Task not found' };
     }
     
-    // Create a simplified task object for the response
-    const plainTask = task.toObject ? task.toObject() : task;
+    // Map Prisma result to match the expected structure in frontend
     const simplifiedTask = {
-      _id: plainTask._id.toString(),
-      project: plainTask.project || '',
-      task: plainTask.task || '',
-      status: plainTask.status || '',
-      priority: plainTask.priority || '',
-      duration: plainTask.duration || '',
-      desc: plainTask.desc || '',
-      club: plainTask.club || '',
-      tag: plainTask.tag || '',
-      remark: plainTask.remark || '',
-      label: plainTask.label || '',
-      date: plainTask.date ? new Date(plainTask.date) : undefined,
-      hours: plainTask.hours || 0,
-      overtime: plainTask.overtime || 0,
-      assignedTo: plainTask.assignedTo || [],
-      createdAt: plainTask.createdAt ? new Date(plainTask.createdAt) : undefined,
-      updatedAt: plainTask.updatedAt ? new Date(plainTask.updatedAt) : undefined
+      _id: task.id,
+      id: task.id,
+      project: task.project || '',
+      task: task.task || '',
+      status: task.status as unknown as string,
+      priority: task.priority as unknown as string,
+      duration: task.duration || '',
+      desc: task.desc || '',
+      club: task.club || '',
+      tag: task.tag || '',
+      remark: task.remark || '',
+      label: task.label || '',
+      date: task.date,
+      hours: task.hours || 0,
+      overtime: task.overtime || 0,
+      assignedTo: task.assignedTo || [],
+      linkedActivity: task.linkedActivity,
+      createdAt: task.createdAt,
+      updatedAt: task.updatedAt
     };
     
     return { success: true, task: simplifiedTask };
@@ -169,24 +193,26 @@ export async function updateTask(id: string, data: Partial<TaskFormValues>) {
     }
     
     console.log('Authenticated user:', session.user.email);
-    await connectDB();
-    console.log('Connected to DB for update operation');
+    console.log('Updating task with Prisma');
     
     // Check if task exists before update
-    const existingTask = await Task.findById(id);
+    const existingTask = await db.task.findUnique({
+      where: { id }
+    });
+    
     if (!existingTask) {
       console.log('Task not found for update:', id);
       return { error: 'Task not found' };
     }
     
     // Create clean update data to prevent circular references
-    const cleanData: Partial<TaskFormValues> = {};
+    const cleanData: any = {};
     
     // Only include defined properties to avoid unnecessary updates
     if (data.project !== undefined) cleanData.project = data.project;
     if (data.task !== undefined) cleanData.task = data.task;
-    if (data.status !== undefined) cleanData.status = data.status;
-    if (data.priority !== undefined) cleanData.priority = data.priority;
+    if (data.status !== undefined) cleanData.status = mapStatusToPrismaEnum(data.status);
+    if (data.priority !== undefined) cleanData.priority = mapPriorityToPrismaEnum(data.priority);
     if (data.duration !== undefined) cleanData.duration = data.duration;
     if (data.desc !== undefined) cleanData.desc = data.desc;
     if (data.tag !== undefined) cleanData.tag = data.tag;
@@ -198,37 +224,32 @@ export async function updateTask(id: string, data: Partial<TaskFormValues>) {
     
     console.log('Clean update data:', JSON.stringify(cleanData, null, 2));
     
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
-      { $set: cleanData },
-      { new: true }
-    );
+    const updatedTask = await db.task.update({
+      where: { id },
+      data: cleanData
+    });
     
-    if (!updatedTask) {
-      console.log('Failed to update task:', id);
-      return { error: 'Task not found' };
-    }
+    console.log('Task successfully updated with ID:', updatedTask.id);
     
-    console.log('Task successfully updated with ID:', updatedTask._id.toString());
-    
-    // Create a simplified task object for the response
-    const plainTask = updatedTask.toObject ? updatedTask.toObject() : updatedTask;
+    // Map Prisma result to match the expected structure in frontend
     const simplifiedTask = {
-      _id: plainTask._id.toString(),
-      project: plainTask.project || '',
-      task: plainTask.task || '',
-      status: plainTask.status || '',
-      priority: plainTask.priority || '',
-      duration: plainTask.duration || '',
-      desc: plainTask.desc || '',
-      tag: plainTask.tag || '',
-      remark: plainTask.remark || '',
-      date: plainTask.date ? new Date(plainTask.date) : undefined,
-      hours: plainTask.hours || 0,
-      overtime: plainTask.overtime || 0,
-      assignedTo: plainTask.assignedTo || [],
-      createdAt: plainTask.createdAt ? new Date(plainTask.createdAt) : undefined,
-      updatedAt: plainTask.updatedAt ? new Date(plainTask.updatedAt) : undefined
+      _id: updatedTask.id,
+      id: updatedTask.id,
+      project: updatedTask.project || '',
+      task: updatedTask.task || '',
+      status: updatedTask.status as unknown as string,
+      priority: updatedTask.priority as unknown as string,
+      duration: updatedTask.duration || '',
+      desc: updatedTask.desc || '',
+      tag: updatedTask.tag || '',
+      remark: updatedTask.remark || '',
+      date: updatedTask.date,
+      hours: updatedTask.hours || 0,
+      overtime: updatedTask.overtime || 0,
+      assignedTo: updatedTask.assignedTo || [],
+      linkedActivity: updatedTask.linkedActivity,
+      createdAt: updatedTask.createdAt,
+      updatedAt: updatedTask.updatedAt
     };
     
     revalidatePath('/task');
@@ -254,29 +275,30 @@ export async function deleteTask(id: string) {
       return { error: 'Not authenticated' };
     }
 
-    await connectDB();
-    console.log('Connected to DB for delete operation');
+    console.log('Deleting task with Prisma');
     
-    const taskToDelete = await Task.findById(id);
+    // First check if task exists
+    const taskToDelete = await db.task.findUnique({
+      where: { id }
+    });
+    
     if (!taskToDelete) {
       console.log('Task not found for deletion:', id);
       return { error: 'Task not found' };
     }
     
-    // Log basic task info instead of full serialized object
+    // Log basic task info
     const taskInfo = {
-      _id: taskToDelete._id.toString(),
+      id: taskToDelete.id,
       task: taskToDelete.task || 'Unknown task',
       project: taskToDelete.project || 'Unknown project'
     };
     console.log('Found task to delete:', JSON.stringify(taskInfo, null, 2));
     
-    const deletedTask = await Task.findByIdAndDelete(id);
-    
-    if (!deletedTask) {
-      console.log('Failed to delete task:', id);
-      return { error: 'Task not found' };
-    }
+    // Delete the task
+    await db.task.delete({
+      where: { id }
+    });
     
     console.log('Task successfully deleted:', id);
     revalidatePath('/task');
@@ -300,18 +322,20 @@ export async function generateTasksFromProject(projectId: string) {
       return { error: 'Not authenticated' };
     }
 
-    await connectDB();
-    console.log('Connected to DB for generating tasks');
+    console.log('Generating tasks with Prisma');
     
-    // Get project details
-    const project = await Project.findById(projectId);
+    // Get project details using Prisma
+    const project = await db.project.findUnique({
+      where: { id: projectId }
+    });
+    
     if (!project) {
       console.log('Project not found:', projectId);
       return { error: 'Project not found' };
     }
     
     // Extract activities from the project
-    const { activities } = project;
+    const activities = project.activities as any[];
     if (!activities || activities.length === 0) {
       console.log('No activities found in the project');
       return { error: 'No activities found in the project' };
@@ -321,10 +345,16 @@ export async function generateTasksFromProject(projectId: string) {
     
     // First, remove existing tasks linked to this project to avoid duplicates
     console.log('Removing existing tasks linked to this project...');
-    const deleteResult = await Task.deleteMany({
-      'linkedActivity.projectId': projectId
+    const deleteResult = await db.task.deleteMany({
+      where: {
+        linkedActivity: {
+          path: ['projectId'],
+          equals: projectId
+        }
+      }
     });
-    console.log(`Deleted ${deleteResult.deletedCount} existing tasks`);
+    
+    console.log(`Deleted ${deleteResult.count} existing tasks`);
     
     // Group activities by system and subcategory to create tasks at the subcategory level
     const groupedActivities = new Map();
@@ -345,13 +375,13 @@ export async function generateTasksFromProject(projectId: string) {
     
     console.log(`Grouped activities into ${groupedActivities.size} subitems`);
     
-    // Create one task per subcategory
+    // Create one task per subcategory with proper enums
     const tasksToCreate = Array.from(groupedActivities.values()).map(group => ({
       project: project.customer,
       task: group.subcategory, // Use subcategory name as task name (e.g., "Overcurrent")
       club: group.system || '',
-      status: "pending",
-      priority: "pending",
+      status: 'pending' as TaskStatus,
+      priority: 'pending' as TaskPriority,
       duration: "4",
       desc: `${group.subcategory} task for ${project.customer} under ${group.system}`,
       label: group.category || '',
@@ -377,9 +407,12 @@ export async function generateTasksFromProject(projectId: string) {
     
     console.log(`Creating ${tasksToCreate.length} tasks from subitems`);
     
-    // Create tasks in bulk
-    const createdTasks = await Task.insertMany(tasksToCreate);
-    console.log(`Successfully created ${createdTasks.length} tasks`);
+    // Create tasks with Prisma
+    const createdTasks = await db.task.createMany({
+      data: tasksToCreate
+    });
+    
+    console.log(`Successfully created ${createdTasks.count} tasks`);
     
     // Revalidate task page path to update UI
     revalidatePath('/task');
@@ -387,7 +420,7 @@ export async function generateTasksFromProject(projectId: string) {
     
     return { 
       success: true, 
-      message: `${createdTasks.length} tasks created from project subitems` 
+      message: `${createdTasks.count} tasks created from project subitems` 
     };
   } catch (error: any) {
     console.error('Error generating tasks from project:', error);
@@ -399,125 +432,87 @@ export async function generateTasksFromProject(projectId: string) {
 // Sync all projects and tasks to ensure all project activities have corresponding tasks
 export async function syncProjectsWithTasks() {
   console.log('=== Server Action: syncProjectsWithTasks ===');
-  
   try {
     // Check authentication
     const session = await auth();
     if (!session?.user) {
-      console.log('User not authenticated for syncing projects with tasks');
+      console.log('User not authenticated for sync operation');
       return { error: 'Not authenticated' };
     }
 
-    await connectDB();
-    console.log('Connected to DB for syncing projects with tasks');
+    console.log('Syncing projects with Prisma');
     
-    // Get all projects
-    const projects = await Project.find({});
-    console.log(`Found ${projects.length} projects to check for tasks`);
-    
-    let totalTasksCreated = 0;
-    let processedProjects = 0;
+    // Get all projects using Prisma
+    const projects = await db.project.findMany();
+    console.log(`Found ${projects.length} projects to sync`);
     
     // Process each project
+    const results = [];
+    
     for (const project of projects) {
-      console.log(`Processing project: ${project.customer} (ID: ${project._id})`);
-      
-      // Skip projects without activities
-      if (!project.activities || project.activities.length === 0) {
-        console.log(`Project ${project.customer} has no activities to sync`);
-        processedProjects++;
-        continue;
+      try {
+        const projectId = project.id;
+        console.log(`Processing project: ${project.customer} (${projectId})`);
+        
+        // Generate tasks for this project
+        const result = await generateTasksFromProject(projectId);
+        
+        results.push({
+          projectId,
+          name: project.customer,
+          success: result.success,
+          message: result.message || result.error
+        });
+      } catch (error: any) {
+        console.error(`Error processing project ${project.id}:`, error);
+        results.push({
+          projectId: project.id,
+          name: project.customer,
+          success: false,
+          message: error.message
+        });
       }
-      
-      // Group activities by system and subcategory
-      const groupedActivities = new Map();
-      
-      // Group activities by "system-category-subcategory"
-      project.activities.forEach((activity: Activity) => {
-        const key = `${activity.system}-${activity.category}-${activity.subcategory}`;
-        if (!groupedActivities.has(key)) {
-          groupedActivities.set(key, {
-            system: activity.system,
-            category: activity.category,
-            subcategory: activity.subcategory,
-            activities: []
-          });
-        }
-        groupedActivities.get(key).activities.push(activity.activity);
-      });
-      
-      // Check existing tasks for this project
-      const existingTasks = await Task.find({
-        'linkedActivity.projectId': project._id.toString()
-      });
-      
-      // Create a map of existing tasks by subcategory for quick lookup
-      const existingTaskMap = new Map();
-      existingTasks.forEach(task => {
-        if (task.linkedActivity) {
-          const key = `${task.linkedActivity.system}-${task.linkedActivity.category}-${task.linkedActivity.subcategory}`;
-          existingTaskMap.set(key, task);
-        }
-      });
-      
-      // Find subitems without tasks
-      const subitemsNeedingTasks = [];
-      for (const [key, group] of groupedActivities.entries()) {
-        if (!existingTaskMap.has(key)) {
-          subitemsNeedingTasks.push(group);
-        }
-      }
-      
-      if (subitemsNeedingTasks.length === 0) {
-        console.log(`Project ${project.customer} has all subitems synced with tasks`);
-        processedProjects++;
-        continue;
-      }
-      
-      console.log(`Found ${subitemsNeedingTasks.length} subitems without tasks in project ${project.customer}`);
-      
-      // Create tasks for these subitems
-      const tasksToCreate = subitemsNeedingTasks.map(group => ({
-        project: project.customer,
-        task: group.subcategory, // Use subcategory name as task name (e.g., "Overcurrent")
-        club: group.system || '',
-        status: "pending",
-        priority: "pending",
-        duration: "4",
-        desc: `${group.subcategory} task for ${project.customer} under ${group.system}`,
-        label: group.category || '',
-        tag: group.system || '',
-        remark: `Auto-generated from project "${project.customer}"`,
-        linkedActivity: {
-          projectId: project._id.toString(),
-          system: group.system,
-          category: group.category,
-          subcategory: group.subcategory,
-          activity: '' // No specific activity as this is at subcategory level
-        },
-        assignedTo: project.team || []
-      }));
-      
-      // Create these tasks
-      if (tasksToCreate.length > 0) {
-        const createdTasks = await Task.insertMany(tasksToCreate);
-        console.log(`Created ${createdTasks.length} new tasks for project ${project.customer}`);
-        totalTasksCreated += createdTasks.length;
-      }
-      
-      processedProjects++;
     }
     
-    // Revalidate task page path
-    revalidatePath('/task');
+    console.log('Sync completed with results:', results);
     
-    return {
-      success: true,
-      message: `Synced ${processedProjects} projects and created ${totalTasksCreated} new tasks`
+    return { 
+      success: true, 
+      results,
+      message: `Processed ${results.length} projects` 
     };
   } catch (error: any) {
     console.error('Error syncing projects with tasks:', error);
-    console.error('Error stack:', error.stack);
     return { error: error.message || 'Failed to sync projects with tasks' };
+  }
+}
+
+// Helper function to map string status to Prisma enum
+function mapStatusToPrismaEnum(status: string): TaskStatus {
+  switch(status) {
+    case 'stuck':
+      return 'stuck';
+    case 'in_progress':
+      return 'in_progress';
+    case 'done':
+      return 'done';
+    case 'pending':
+    default:
+      return 'pending';
+  }
+}
+
+// Helper function to map string priority to Prisma enum
+function mapPriorityToPrismaEnum(priority: string): TaskPriority {
+  switch(priority) {
+    case 'high':
+      return 'high';
+    case 'medium':
+      return 'medium';
+    case 'low':
+      return 'low';
+    case 'pending':
+    default:
+      return 'pending';
   }
 } 

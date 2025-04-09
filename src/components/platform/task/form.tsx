@@ -52,6 +52,7 @@ const TEAM_MEMBERS = [
 
 interface Project {
   _id: string;
+  id?: string;
   customer: string;
 }
 
@@ -119,9 +120,10 @@ const TaskForm: React.FC<TaskCreateFormProps> = ({
 
       let result;
       
-      if (taskToEdit?._id) {
-        console.log('Updating existing task:', taskToEdit._id);
-        result = await updateTask(taskToEdit._id, data);
+      if (taskToEdit) {
+        const taskId = taskToEdit.id || taskToEdit._id;
+        console.log('Updating existing task:', taskId);
+        result = await updateTask(taskId, data);
       } else {
         console.log('Creating new task');
         result = await createTask(data);

@@ -15,16 +15,16 @@ export const useModal = () => {
 export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [modal, setModal] = useState<ModalState>({open: false, id: null});
 
-  const openModal = (id: string | null) => {
-    setModal({open: true, id: id});
+  const openModal = (id: string | null, data?: any) => {
+    setModal({open: true, id: id, data: data});
   };
 
   const closeModal = () => {
-    setModal({open: false, id: null});
+    setModal({open: false, id: null, data: undefined});
   };
 
   const handleCloseModal = () => {
-    setModal({open: false, id: null});
+    setModal({open: false, id: null, data: undefined});
   };
 
   return (

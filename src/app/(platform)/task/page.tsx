@@ -60,7 +60,9 @@ const TaskPage = () => {
       return;
     }
     
-    router.push(`/task/${task._id}`);
+    // Use task.id if available (Prisma), otherwise fall back to task._id (MongoDB)
+    const taskId = task.id || task._id;
+    router.push(`/task/${taskId}`);
   };
   
   return (

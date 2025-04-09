@@ -28,7 +28,10 @@ const DeleteTask = ({ task, onSuccess }: DeleteTaskProps) => {
     console.log('=== Client: Delete Task ===');
     console.log('Task to delete:', JSON.stringify(task, null, 2));
     
-    if (!task._id) {
+    // Use task.id (Prisma) if available, otherwise fall back to task._id (MongoDB)
+    const taskId = task.id || task._id;
+    
+    if (!taskId) {
       console.error('Cannot delete task: No task ID provided');
       return;
     }
@@ -37,8 +40,8 @@ const DeleteTask = ({ task, onSuccess }: DeleteTaskProps) => {
       console.log('Setting isDeleting to true');
       setIsDeleting(true);
       
-      console.log('Calling deleteTask API with ID:', task._id);
-      const result = await deleteTask(task._id);
+      console.log('Calling deleteTask API with ID:', taskId);
+      const result = await deleteTask(taskId);
       console.log('API response:', JSON.stringify(result, null, 2));
       
       if (result.error) {
