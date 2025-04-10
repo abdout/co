@@ -31,6 +31,11 @@ export default {
     Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: "email"
+        }
+      },
       profile(profile) {
         return {
           id: profile.id,
