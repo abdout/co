@@ -2,20 +2,35 @@
 
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../routes";
 
 export const Social = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onClick = (provider: "google" | "facebook") => {
-    console.log(`Signing in with ${provider}, callbackUrl: ${callbackUrl || DEFAULT_LOGIN_REDIRECT}`);
-    
-    signIn(provider, {
-      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-    });
+  const onClick = async (provider: "google" | "facebook") => {
+    try {
+      setIsLoading(true);
+      console.log(`Signing in with ${provider}, callbackUrl: ${callbackUrl || DEFAULT_LOGIN_REDIRECT}`);
+      
+      // Create a csrf token using a fetch request first
+      if (provider === "facebook") {
+        // Request the csrf token first by visiting the signin page
+        await fetch("/api/auth/csrf");
+      }
+      
+      await signIn(provider, {
+        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+        redirect: true,
+      });
+    } catch (error) {
+      console.error(`Error signing in with ${provider}:`, error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -25,6 +40,7 @@ export const Social = () => {
         className="w-full"
         variant="outline"
         onClick={() => onClick("google")}
+        disabled={isLoading}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path
@@ -39,6 +55,7 @@ export const Social = () => {
         className="w-full"
         variant="outline"
         onClick={() => onClick("facebook")}
+        disabled={isLoading}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path

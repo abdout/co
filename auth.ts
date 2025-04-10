@@ -32,6 +32,13 @@ export const {
   },
   // Add debug option to help troubleshoot Facebook OAuth issues in production
   debug: true,
+  // Add CSRF configuration
+  csrf: {
+    // The secret should match the one in your .env file
+    secret: process.env.NEXTAUTH_SECRET,
+    // Set longer cookie lifetime for CSRF tokens
+    cookieLifetime: 3600, // 1 hour
+  },
   events: {
     async linkAccount({ user }) {
       if (user.id) {
