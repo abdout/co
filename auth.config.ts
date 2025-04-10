@@ -40,6 +40,11 @@ export default {
           emailVerified: new Date(),
         };
       },
+      authorization: {
+        params: {
+          response_type: "code"
+        }
+      },
     }),
     Credentials({
       async authorize(credentials) {

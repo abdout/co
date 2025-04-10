@@ -1,7 +1,7 @@
 // import { SiteFooter } from "@/components/site-footer"
 
 import { SiteHeader } from "@/components/site/header"
-import { SiteFooter } from "@/components/template/footer/site-footer"
+
 
 
 
@@ -14,7 +14,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
     <div data-wrapper="" className="border-grid flex flex-1 flex-col -mx-4">
       <SiteHeader />
       <main className="flex flex-1 flex-col ">{children}</main>
-      <SiteFooter />
     </div>
   )
 }

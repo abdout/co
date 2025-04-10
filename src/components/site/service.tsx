@@ -58,8 +58,8 @@ export function ServicePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-16">
           {servicesItems.map((item) => (
             <Link key={item.id} href={item.url} className="group">
-              <div className="relative h-64 mb-4 overflow-hidden rounded-sm">
-                <div className="relative w-full h-full image-scale-hover">
+              <div className="relative h-64 mb-4 overflow-hidden rounded-sm animation-box bg-transparent">
+                <div className="relative w-full h-full">
                   <Image
                     src={item.image}
                     alt={item.title}

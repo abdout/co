@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useRef } from 'react';
-import { motion, useInView, animate } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../ui/button';
@@ -61,13 +60,7 @@ const clients = [
 
 const ClientLogo = ({ logo, alt, height }: { logo: string; alt: string; height: string }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="flex items-center justify-center p-4"
-    >
+    <div className="flex items-center justify-center p-4">
       <div className={`relative ${height} w-full`}>
         <Image
           src={logo}
@@ -76,7 +69,7 @@ const ClientLogo = ({ logo, alt, height }: { logo: string; alt: string; height: 
           className="object-contain"
         />
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -91,13 +84,7 @@ export function ClientSection() {
             <h1 className=" font-bold -mt-2"> Trust us</h1>
             
           </div>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ staggerChildren: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
-          >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {clients.map((client) => (
               <ClientLogo 
                 key={client.name} 
@@ -106,7 +93,7 @@ export function ClientSection() {
                 height={client.height}
               />
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
 
