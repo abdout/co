@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import NewsLetter from "./newsletter";
 
 const footerLinks = {
@@ -33,7 +32,7 @@ const footerLinks = {
   ]
 };
 
-export function Footer() {
+export function SiteFooter() {
   return (
     <footer className="bg-black text-white py-8 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
