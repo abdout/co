@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { UserSchema } from "./vaild";
-import { auth } from "auth";
+import { auth } from "../../auth";
 
 type CurrentState = { success: boolean; error: boolean };
 
