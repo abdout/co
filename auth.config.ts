@@ -21,7 +21,7 @@ export default {
       profile(profile) {
         return {
           id: profile.sub,
-          username: profile.name,
+          name: profile.name,
           email: profile.email,
           image: profile.picture,
           emailVerified: new Date(),
@@ -31,15 +31,10 @@ export default {
     Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      authorization: {
-        params: {
-          state: true,
-        }
-      },
       profile(profile) {
         return {
           id: profile.id,
-          username: profile.name,
+          name: profile.name,
           email: profile.email,
           image: profile.picture?.data?.url,
           emailVerified: new Date(),
