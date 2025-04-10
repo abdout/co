@@ -11,9 +11,22 @@ export const Social = () => {
   const callbackUrl = searchParams.get("callbackUrl");
 
   const onClick = (provider: "google" | "facebook") => {
-    signIn(provider, {
-      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-    });
+    console.log(`Attempting to sign in with ${provider}`);
+    
+    // Different handling for Facebook in production
+    if (provider === "facebook" && window.location.hostname !== "localhost") {
+      const redirectUrl = `${window.location.origin}/api/auth/callback/facebook`;
+      console.log(`Using custom Facebook redirect: ${redirectUrl}`);
+      
+      signIn(provider, {
+        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+        redirect: true,
+      });
+    } else {
+      signIn(provider, {
+        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      });
+    }
   }
 
   return (

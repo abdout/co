@@ -2,17 +2,17 @@
   "env": {
     "FACEBOOK_CLIENT_ID": "1798287087385367",
     "FACEBOOK_CLIENT_SECRET": "5523ce312499b8bdedee403ba3be0a4c",
-    "AUTH_REDIRECT_PROXY_URL": "https://co.databayt.org/api/auth"
+    "NEXTAUTH_URL": "https://co.databayt.org"
   },
   "rewrites": [
     {
-      "source": "/api/auth/callback/facebook",
-      "destination": "/api/auth/callback/facebook"
+      "source": "/api/auth/:path*",
+      "destination": "/api/auth/:path*"
     }
   ],
   "headers": [
     {
-      "source": "/api/auth/callback/facebook",
+      "source": "/api/auth/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
