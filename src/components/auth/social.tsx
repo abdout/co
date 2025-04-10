@@ -11,17 +11,15 @@ export const Social = () => {
   const callbackUrl = searchParams.get("callbackUrl");
 
   const onClick = (provider: "google" | "facebook") => {
-    console.log(`Attempting to sign in with ${provider}`);
+    console.log(`Signing in with ${provider}, callbackUrl: ${callbackUrl || DEFAULT_LOGIN_REDIRECT}`);
     
-    // Different handling for Facebook in production
-    if (provider === "facebook" && window.location.hostname !== "localhost") {
-      const redirectUrl = `${window.location.origin}/api/auth/callback/facebook`;
-      console.log(`Using custom Facebook redirect: ${redirectUrl}`);
-      
-      signIn(provider, {
-        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-        redirect: true,
-      });
+    if (provider === "facebook") {
+      // Force the Facebook auth to use a direct URL for more reliability
+      const url = `https://co.databayt.org/api/auth/signin/facebook?${new URLSearchParams({
+        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT
+      })}`;
+      console.log(`Redirecting to: ${url}`);
+      window.location.href = url;
     } else {
       signIn(provider, {
         callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,

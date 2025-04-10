@@ -2,14 +2,10 @@
   "env": {
     "FACEBOOK_CLIENT_ID": "1798287087385367",
     "FACEBOOK_CLIENT_SECRET": "5523ce312499b8bdedee403ba3be0a4c",
-    "NEXTAUTH_URL": "https://co.databayt.org"
+    "NEXTAUTH_URL": "https://co.databayt.org",
+    "NEXTAUTH_SECRET": "secret",
+    "AUTH_SECRET": "secret"
   },
-  "rewrites": [
-    {
-      "source": "/api/auth/:path*",
-      "destination": "/api/auth/:path*"
-    }
-  ],
   "headers": [
     {
       "source": "/api/auth/(.*)",

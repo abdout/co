@@ -31,7 +31,7 @@ export const {
     error: "/auth/error",
   },
   // Add debug option to help troubleshoot Facebook OAuth issues in production
-  debug: process.env.NODE_ENV === "development",
+  debug: true,
   events: {
     async linkAccount({ user }) {
       if (user.id) {
