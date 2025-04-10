@@ -31,7 +31,6 @@ export default {
     Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      authorization: "https://www.facebook.com/v19.0/dialog/oauth?scope=email",
       profile(profile) {
         return {
           id: profile.id,

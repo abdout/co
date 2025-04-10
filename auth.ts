@@ -44,25 +44,27 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
-      if (!user.id) return false
+      // Always allow OAuth sign-ins
+      if (!user.id) return false;
       
-      if (account?.provider !== "credentials") return true
+      if (account?.provider !== "credentials") return true;
 
-      const existingUser = await getUserById(user.id)
+      const existingUser = await getUserById(user.id);
 
-      if (!existingUser?.emailVerified) return false
+      // For credentials sign-in, check email verification
+      if (!existingUser?.emailVerified) return false;
 
       if (existingUser.isTwoFactorEnabled) {
-        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id)
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
 
-        if (!twoFactorConfirmation) return false
+        if (!twoFactorConfirmation) return false;
 
         await db.twoFactorConfirmation.delete({
           where: { id: twoFactorConfirmation.id }
-        })
+        });
       }
 
-      return true
+      return true;
     },
     async session({ token, session }) {
       if (token.sub && session.user) {

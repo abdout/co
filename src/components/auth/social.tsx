@@ -13,18 +13,9 @@ export const Social = () => {
   const onClick = (provider: "google" | "facebook") => {
     console.log(`Signing in with ${provider}, callbackUrl: ${callbackUrl || DEFAULT_LOGIN_REDIRECT}`);
     
-    if (provider === "facebook") {
-      // Force the Facebook auth to use a direct URL for more reliability
-      const url = `https://co.databayt.org/api/auth/signin/facebook?${new URLSearchParams({
-        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT
-      })}`;
-      console.log(`Redirecting to: ${url}`);
-      window.location.href = url;
-    } else {
-      signIn(provider, {
-        callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-      });
-    }
+    signIn(provider, {
+      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+    });
   }
 
   return (
