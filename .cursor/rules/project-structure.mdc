@@ -1,0 +1,99 @@
+---
+description: Project structure and file organization guidelines
+globs: src/**/*.ts src/**/*.tsx
+alwaysApply: false
+---
+# Project Structure
+
+## Main Structure
+
+- Next.js 15 application with App Router
+- Authentication using Next-Auth v5
+- Prisma ORM with PostgreSQL (Neon)
+- React 19 with Server Components
+
+```tree
+.
+├── .cursor/           # Cursor rules for AI assistance
+├── .next/             # Next.js build output
+├── .vercel/           # Vercel configuration
+├── prisma/            # Prisma schema and migrations
+│   ├── schema.prisma  # Database schema
+│   └── ...
+├── public/            # Static assets (images, fonts)
+├── src/
+│   ├── app/           # Next.js App Router routes
+│   │   ├── (platform)/    # Platform-specific routes
+│   │   │   ├── platform/  # Platform routes
+│   │   │   ├── resource/  # Resource management
+│   │   │   └── ...
+│   │   ├── (site)/        # Public-facing site routes
+│   │   ├── api/           # API routes
+│   │   │   ├── auth/      # Authentication API routes
+│   │   │   ├── admin/     # Admin API routes
+│   │   │   └── ...
+│   │   ├── auth/          # Auth pages
+│   │   │   ├── login/     # Login page
+│   │   │   ├── join/      # Signup page
+│   │   │   └── ...
+│   │   ├── onboarding/    # User onboarding flows
+│   │   └── ...
+│   ├── components/    # React components
+│   │   ├── auth/      # Authentication components
+│   │   ├── platform/  # Platform-specific components
+│   │   ├── site/      # Site components
+│   │   ├── ui/        # UI components (shadcn)
+│   │   ├── onboarding/# Onboarding components
+│   │   ├── team/      # Team management components
+│   │   ├── car/       # Car management components
+│   │   ├── kit/       # Kit management components
+│   │   └── ...
+│   ├── lib/           # Utility libraries
+│   │   ├── db.ts      # Database client
+│   │   ├── hooks/     # Custom React hooks
+│   │   ├── action.ts  # Server actions
+│   │   ├── valid.ts   # Validation utilities
+│   │   └── ...
+│   ├── server/        # Server-side code
+│   │   ├── login.ts   # Login server functions
+│   │   └── ...
+│   ├── model/         # Data models
+│   └── utils/         # Utility functions
+├── content/           # Content files
+├── auth.ts            # NextAuth configuration
+├── auth.config.ts     # Additional auth configuration
+├── next.config.mjs    # Next.js configuration
+├── middleware.ts      # Next.js middleware
+├── routes.ts          # Route configuration
+└── ...
+```
+
+## File Naming and Organization
+
+- Use kebab-case for file names (e.g., `header-component.tsx`)
+- Group related components in subdirectories 
+- Use PascalCase for component definitions (e.g., `export function HeaderComponent()`)
+- Server components are the default, client components must have `'use client'` directive
+- Group related functionality in dedicated directories
+
+## Authentication Structure
+
+- Authentication is handled through Next-Auth v5
+- `auth.ts` and `auth.config.ts` define the authentication setup
+- OAuth providers (Google, Facebook) are configured in `auth.config.ts`
+- User session data is stored in PostgreSQL via Prisma adapter
+
+## Components Organization
+
+- Shadcn UI components are in `components/ui/`
+- Platform-specific components in `components/platform/`
+- Authentication components in `components/auth/`
+- Public site components in `components/site/`
+- Specialized components are grouped by feature area (team, kit, car, etc.)
+
+## Data Fetching
+
+- Server components can fetch data directly
+- Client components should use SWR for data fetching
+- Server actions are used for data mutations
+- API routes follow RESTful conventions

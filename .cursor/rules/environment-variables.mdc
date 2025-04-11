@@ -1,0 +1,108 @@
+---
+description: Add environment variable
+globs: *.ts *.tsx *.env*
+alwaysApply: false
+---
+# Environment Variables
+
+## Required Environment Variables
+
+The application requires the following environment variables:
+
+```
+# Database Connection (Neon PostgreSQL)
+DATABASE_URL="postgresql://user:password@host:port/database?sslmode=require&pgbouncer=true"
+DIRECT_URL="postgresql://user:password@host:port/database?sslmode=require"
+
+# Authentication
+AUTH_SECRET="your-auth-secret"
+
+# OAuth Providers
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+FACEBOOK_CLIENT_ID="your-facebook-client-id"
+FACEBOOK_CLIENT_SECRET="your-facebook-client-secret"
+
+# Application URLs
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+DOMAIN="http://localhost:3000"
+NEXT_PUBLIC_MAIN_APP_URL="https://your-production-domain.com"
+
+# MongoDB (additional data storage)
+MONGODB_URI="mongodb+srv://username:password@cluster.mongodb.net/database"
+
+# Cloudinary (media storage)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
+NEXT_PUBLIC_CLOUDINARY_API_KEY="your-api-key"
+NEXT_PUBLIC_CLOUDINARY_API_SECRET="your-api-secret"
+NEXT_PUBLIC_CLOUDINARY_URL="cloudinary://api-key:api-secret@cloud-name"
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="upload-preset-name"
+
+# Email Service
+RESEND_API_KEY="your-resend-api-key"
+```
+
+## Loading Environment Variables
+
+Environment variables are loaded automatically by Next.js from the `.env` file. For client-side variables, prefix with `NEXT_PUBLIC_`.
+
+## Usage in Code
+
+Server-side:
+```typescript
+// Access server-side env vars directly
+const databaseUrl = process.env.DATABASE_URL;
+const authSecret = process.env.AUTH_SECRET;
+```
+
+Client-side:
+```typescript
+// Only NEXT_PUBLIC_ prefixed variables are available
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+const cloudinaryName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+```
+
+## Different Environments
+
+- `.env`: Default environment variables (checked into source control)
+- `.env.local`: Local overrides (not checked into source control)
+- `.env.development`: Development-specific variables
+- `.env.production`: Production-specific variables
+
+## Deployment
+
+For Vercel deployment, add environment variables in the Vercel dashboard:
+1. Go to your project in Vercel
+2. Navigate to Settings > Environment Variables
+3. Add all required environment variables
+
+## Security Best Practices
+
+1. Never commit sensitive environment variables to source control
+2. Rotate secrets regularly
+3. Use different values for development and production
+4. Limit access to production environment variables
+5. Only expose client-side variables that are truly needed client-side
+
+## Adding New Environment Variables
+
+When adding a new environment variable:
+
+1. Add to `.env.example` as documentation
+2. Update `.env` with the actual value
+3. For client-side variables, use the `NEXT_PUBLIC_` prefix
+4. Add to the Vercel environment variables if deployed
+
+Examples:
+
+### Server-side Variable
+```
+# In .env
+API_KEY=your_actual_api_key
+```
+
+### Client-side Variable
+```
+# In .env
+NEXT_PUBLIC_FEATURE_FLAG=true
+```

@@ -1,0 +1,144 @@
+---
+description: Form handling
+globs: src/components/**/*.tsx src/app/**/*.tsx
+alwaysApply: false
+---
+# Form Handling
+
+## Form Implementation
+
+We use React Hook Form with Zod for validation. Here's a standard pattern for forms:
+
+```tsx
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useTransition } from "react";
+import { loginUser } from "@/components/auth/login/action";
+
+// Define validation schema with Zod
+const formSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+});
+
+export function LoginForm() {
+  const [isPending, startTransition] = useTransition();
+  
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  // Form submission handler
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    startTransition(async () => {
+      const result = await loginUser(values);
+      
+      if (result.error) {
+        // Handle error
+        form.setError("root", { message: result.error });
+      }
+    });
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="email@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Processing..." : "Submit"}
+        </Button>
+      </form>
+    </Form>
+  );
+}
+```
+
+## Server Actions
+
+Form submissions should use server actions for data processing:
+
+```typescript
+"use server";
+
+import { z } from "zod";
+import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+
+// Validation schema
+const formSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+});
+
+export async function submitForm(formData: FormData) {
+  try {
+    // Validate the form data
+    const validatedData = formSchema.parse({
+      name: formData.get("name"),
+      email: formData.get("email"),
+    });
+    
+    // Process the form data (e.g., save to database)
+    await db.user.create({
+      data: validatedData,
+    });
+    
+    // Revalidate the page to update the data
+    revalidatePath("/users");
+    
+    return { success: true };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.errors[0].message };
+    }
+    
+    return { error: "An unexpected error occurred" };
+  }
+}
+```
+
+## Best Practices
+
+1. Always use client components (`"use client"`) for forms with user interaction
+2. Validate data both client-side and server-side
+3. Use React Hook Form for managing form state
+4. Use Zod for schema validation
+5. Handle loading states with useTransition or useState
+6. Provide clear error messages for validation failures
+7. Use FormMessage to display field-specific errors
+8. Use shadcn/ui Form components for consistency
