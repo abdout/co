@@ -1,4 +1,9 @@
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: Fetching data from the API using SWR
 globs: src/**/*.ts src/**/*.tsx
 alwaysApply: false

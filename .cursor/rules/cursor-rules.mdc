@@ -1,4 +1,9 @@
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: How to add or edit Cursor rules in our project
 globs: .cursor/**/*.mdc
 alwaysApply: false

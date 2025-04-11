@@ -1,4 +1,9 @@
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: Guidelines for implementing Facebook authentication
 globs: auth.ts auth.config.ts src/app/api/auth/**/*.ts src/components/auth/**/*.tsx
 alwaysApply: false

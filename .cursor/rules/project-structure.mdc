@@ -1,4 +1,9 @@
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: Project structure and file organization guidelines
 globs: src/**/*.ts src/**/*.tsx
 alwaysApply: false

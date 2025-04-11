@@ -1,4 +1,9 @@
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: Guidelines for testing the application with Vitest
 globs: 
 alwaysApply: false
