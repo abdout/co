@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build && node scripts/prisma-postbuild.js",
+    "build": "node vercel-prisma-fix.js && next build",
     "start": "next start",
     "lint": "next lint",
     "generate-docs": "ts-node scripts/generate-docs.ts",
@@ -15,7 +15,7 @@
     "build:mos": "next build",
     "seed:kits": "tsx src/utils/seed-kits.ts",
     "check:kits": "tsx src/utils/check-kits.ts",
-    "postinstall": "node prisma/deployment-generator.js",
+    "postinstall": "prisma generate",
     "generate:all": "pnpm generate-docs && pnpm generate-mos",
     "build:all": "pnpm build:docs && pnpm build:mos"
   },
