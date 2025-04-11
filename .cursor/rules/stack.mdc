@@ -1,0 +1,68 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Project technology stack and documentation references
+globs: **/*
+alwaysApply: true
+---
+
+# Project Technology Stack
+
+This project uses the following technologies, always preferring the latest versions (including RC and beta releases):
+
+## Frontend
+- **Next.js** - React framework with App Router
+- **React** - UI library
+- **TailwindCSS** - Utility-first CSS framework
+- **shadcn/ui** - Re-usable UI components built on Radix UI
+- **Radix UI** - Unstyled, accessible UI components
+- **React Hook Form** - Form management
+- **Zod** - Schema validation
+
+## Backend
+- **Next.js API Routes** - RESTful API endpoints
+- **Auth.js/NextAuth** - Authentication solution with OAuth and Credentials providers
+- **Prisma** - ORM for database access
+- **Neon** - Serverless Postgres database
+- **Resend** - Email service
+
+## Content
+- **ContentLayer** - Content management system
+- **MDX** - Markdown with JSX for content
+
+## Deployment
+- **Vercel** - Hosting and deployment platform
+
+## Documentation References
+- Auth.js: https://authjs.dev/getting-started
+- Auth.js Next.js: https://authjs.dev/getting-started/installation?framework=Next.js
+- Auth.js OAuth: https://authjs.dev/getting-started/authentication/oauth
+- Auth.js Credentials: https://authjs.dev/getting-started/authentication/credentials
+- Neon: https://neon.tech/docs/introduction
+- Prisma: https://www.prisma.io/docs
+- React Hook Form: https://www.react-hook-form.com/get-started/
+- Zod: https://zod.dev/
+- Next.js: https://nextjs.org/docs
+- React: https://react.dev/learn
+- TailwindCSS: https://tailwindcss.com/docs/installation/framework-guides/nextjs
+- shadcn/ui: https://ui.shadcn.com/docs
+- Vercel: https://vercel.com/docs
+- Radix UI: https://www.radix-ui.com/themes/docs/overview/getting-started
+- CSS (MDN): https://developer.mozilla.org/en-US/docs/Web/CSS
+- ContentLayer: https://contentlayer.dev/docs
+- MDX: https://mdxjs.com/docs/
+- Resend: https://resend.com/docs/introduction
+
+## Version Philosophy
+Always use the latest update of all technologies in the stack, including RC and beta versions when available.
+
+## Project Structure
+- App Router architecture
+- API routes for backend functionality
+- Prisma schema for database modeling
+- OAuth and credentials authentication with Auth.js
+- Form handling with React Hook Form and Zod validation
+- UI components from shadcn/ui with TailwindCSS styling

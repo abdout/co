@@ -18,20 +18,20 @@ export function HeroPage() {
         <div className="absolute inset-0 bg-black/25 backdrop-brightness-90"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-white">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-background">
         <div className="space-y-4 pt-24">
-          <h1 className="font-heading leading-wide text-lg sm:text-xl md:text-2xl lg:text-6xl font-bold text-white">
+          <h1 className="font-heading leading-wide text-lg sm:text-xl md:text-2xl lg:text-6xl font-bold text-background">
             Precision testing, <br /> confidence energize.
           </h1>
 
-          <p className="max-w-[42rem] leading-normal text-neutral-300 sm:text-xl sm:leading-8">
+          <p className="max-w-[42rem] leading-normal text-background/80 sm:text-xl sm:leading-8">
             Engineering reliability in testing and commissioning to ensure your facility&apos;s longevity while upholding the highest standards and best practices.
           </p>
 
           <div className="flex items-center gap-4 pt-8">
             <Link
               href="/quote"
-              className="px-6 py-3 text-sm font-medium rounded-full bg-white text-black hover:bg-white/90 transition-colors inline-flex items-center"
+              className="px-6 py-3 text-sm font-medium rounded-full bg-background text-primary hover:bg-white/90 transition-colors inline-flex items-center"
             >
               Get Quote
             </Link>

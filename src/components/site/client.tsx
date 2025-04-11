@@ -77,10 +77,10 @@ export function ClientSection() {
   return (
     <div className="relative">
       {/* White Section with Client Logos */}
-      <div className="dark bg-black py-16 ">
-        <div className="container text-primary mx-auto px-8">
+      <div className="bg-primary py-16 ">
+        <div className="container text-background mx-auto px-8">
           <div className=" my-10 ">
-            <h4 className="text-muted-foreground">clients </h4>
+            <h4 className="text-muted">clients </h4>
             <h1 className=" font-bold -mt-2"> Trust us</h1>
             
           </div>
@@ -101,11 +101,11 @@ export function ClientSection() {
       <div className="relative h-[130vh] bg-[url('/room.png')] bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 bg-black/50">
           <div className="container mx-auto px-4 mt-10 h-full flex flex-col items-center justify-center text-white">
-          <h2 className="text-center text-4xl md:text-5xl font-signifier mb-6 ">
+          <h2 className="text-center text-background text-4xl md:text-5xl font-signifier mb-6 ">
            Rental Shop 
           </h2>
 
-          <p className="text-lg text-neutral-300 mb-8 text-center">
+          <p className="text-lg text-background/80 mb-8 text-center">
             A wide range of professional testing equipment available for rent. <br/> Order online. receive at your doorstep. 
           </p>
 

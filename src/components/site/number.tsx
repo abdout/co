@@ -43,7 +43,7 @@ const Counter = ({ end, title }: CounterProps) => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.3 }}
         viewport={{ once: true }}
-        className="uppercase text-sm tracking-wider text-gray-600"
+        className="uppercase text-sm tracking-wider text-muted-foreground"
       >
         {title}
       </motion.div>
@@ -58,7 +58,7 @@ export function NumberSection() {
       <div className="relative h-[90vh] bg-[url('/switchgear.png')] bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 bg-black/50">
           <div className="container mt-40 px-8 mx-auto  h-full flex flex-col justify-center text-accent">
-          <h4 className="text-neutral-400">company </h4>
+          <h4 className="text-background/80">company </h4>
             <h1 className=" font-bold -mt-2">In numbers</h1>
           </div>
         </div>
@@ -67,7 +67,7 @@ export function NumberSection() {
       </div>
 
       {/* Counters Section */}
-      <div className="bg-white -mt-1 py-8">
+      <div className="bg-background text-primary -mt-1 py-8">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0 }}

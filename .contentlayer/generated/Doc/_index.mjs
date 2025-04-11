@@ -9,16 +9,16 @@ import docs__relay__motorProt__stallProtMdx from './docs__relay__motor-prot.__st
 import docs__relay__motorProt__startingTimeMdx from './docs__relay__motor-prot.__starting-time.mdx.json' assert { type: 'json' }
 import docs__relay__motorProt__thermalOlMdx from './docs__relay__motor-prot.__thermal-ol.mdx.json' assert { type: 'json' }
 import docs__relay__motorProt__unbalPhLossMdx from './docs__relay__motor-prot.__unbal.-ph-loss.mdx.json' assert { type: 'json' }
-import docs__relay__trafoDiff__biasCharactMdx from './docs__relay__trafo-diff.__bias-charact..mdx.json' assert { type: 'json' }
-import docs__relay__trafoDiff__ctPolarityMdx from './docs__relay__trafo-diff.__ct-polarity.mdx.json' assert { type: 'json' }
-import docs__relay__trafoDiff__indexMdx from './docs__relay__trafo-diff.__index.mdx.json' assert { type: 'json' }
-import docs__relay__trafoDiff__inrushRestraintMdx from './docs__relay__trafo-diff.__inrush-restraint.mdx.json' assert { type: 'json' }
 import docs__relay__underfreq__changeRateMdx from './docs__relay__underfreq.__change-rate.mdx.json' assert { type: 'json' }
 import docs__relay__underfreq__indexMdx from './docs__relay__underfreq.__index.mdx.json' assert { type: 'json' }
 import docs__relay__underfreq__pickupMdx from './docs__relay__underfreq.__pickup.mdx.json' assert { type: 'json' }
 import docs__relay__underfreq__timingMdx from './docs__relay__underfreq.__timing.mdx.json' assert { type: 'json' }
+import docs__relay__trafoDiff__biasCharactMdx from './docs__relay__trafo-diff.__bias-charact..mdx.json' assert { type: 'json' }
+import docs__relay__trafoDiff__ctPolarityMdx from './docs__relay__trafo-diff.__ct-polarity.mdx.json' assert { type: 'json' }
+import docs__relay__trafoDiff__indexMdx from './docs__relay__trafo-diff.__index.mdx.json' assert { type: 'json' }
+import docs__relay__trafoDiff__inrushRestraintMdx from './docs__relay__trafo-diff.__inrush-restraint.mdx.json' assert { type: 'json' }
 import docs__relay__undervolt__indexMdx from './docs__relay__undervolt.__index.mdx.json' assert { type: 'json' }
 import docs__relay__undervolt__pickupMdx from './docs__relay__undervolt.__pickup.mdx.json' assert { type: 'json' }
 import docs__relay__undervolt__timingMdx from './docs__relay__undervolt.__timing.mdx.json' assert { type: 'json' }
 
-export const allDocs = [docs__relay__genProt__excLossMdx, docs__relay__genProt__indexMdx, docs__relay__genProt__reversePowerMdx, docs__relay__genProt__statorEfMdx, docs__relay__motorProt__indexMdx, docs__relay__motorProt__stallProtMdx, docs__relay__motorProt__startingTimeMdx, docs__relay__motorProt__thermalOlMdx, docs__relay__motorProt__unbalPhLossMdx, docs__relay__trafoDiff__biasCharactMdx, docs__relay__trafoDiff__ctPolarityMdx, docs__relay__trafoDiff__indexMdx, docs__relay__trafoDiff__inrushRestraintMdx, docs__relay__underfreq__changeRateMdx, docs__relay__underfreq__indexMdx, docs__relay__underfreq__pickupMdx, docs__relay__underfreq__timingMdx, docs__relay__undervolt__indexMdx, docs__relay__undervolt__pickupMdx, docs__relay__undervolt__timingMdx]
+export const allDocs = [docs__relay__genProt__excLossMdx, docs__relay__genProt__indexMdx, docs__relay__genProt__reversePowerMdx, docs__relay__genProt__statorEfMdx, docs__relay__motorProt__indexMdx, docs__relay__motorProt__stallProtMdx, docs__relay__motorProt__startingTimeMdx, docs__relay__motorProt__thermalOlMdx, docs__relay__motorProt__unbalPhLossMdx, docs__relay__underfreq__changeRateMdx, docs__relay__underfreq__indexMdx, docs__relay__underfreq__pickupMdx, docs__relay__underfreq__timingMdx, docs__relay__trafoDiff__biasCharactMdx, docs__relay__trafoDiff__ctPolarityMdx, docs__relay__trafoDiff__indexMdx, docs__relay__trafoDiff__inrushRestraintMdx, docs__relay__undervolt__indexMdx, docs__relay__undervolt__pickupMdx, docs__relay__undervolt__timingMdx]

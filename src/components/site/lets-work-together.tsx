@@ -7,14 +7,14 @@ export default function LetsWorkTogether() {
   return (
    
   
-      <div className=" px-4 md:px-8 container bg-black dark py-20">
-        <h2 className="text-primary text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Let&apos;s Work Together</h2>
+      <div className=" px-4 md:px-8 container bg-primary  py-20">
+        <h2 className="text-background text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Let&apos;s Work Together</h2>
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 ">
           <div className="flex-1">
-            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mb-4 ">
+            <p className="text-background/70 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mb-4 ">
             Ready to elevate business with advanced automation solutions? Experience streamlined operations and enhanced efficiency for any industry.
             </p>
-            <div className="flex gap-4 mt-4 items-center text-primary">
+            <div className="flex gap-4 mt-4 items-center text-background">
               <a href="tel:+966557721603" aria-label="Call us">
                 <Icon icon="mdi:phone" width="30" height="30" />
               </a>
@@ -46,10 +46,10 @@ export default function LetsWorkTogether() {
               />
               <div className="flex gap-2">
 
-                <Button type="submit" className="w-fit px-8">
+                <Button type="submit" className="w-fit px-8 dark">
                   Submit
                 </Button>
-                <Button type="submit" variant="ghost" className="w-fit px-4 dark text-white">
+                <Button type="submit" variant="ghost" className="w-fit px-4 dark text-[#fcfcfc]">
                   Live chat
                 </Button>
               </div>

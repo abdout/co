@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: How to add or edit Cursor rules in our project
+globs: .cursor/**/*.mdc
+alwaysApply: false
+---
+# Cursor Rules
+
+## Purpose
+
+Cursor rules provide guidance for AI assistants (like GitHub Copilot, Claude) on project standards, patterns, and conventions. They help ensure consistent code and enable more accurate and context-aware AI assistance.
+
+## Rule File Location
+
+All rule files should be placed in the `.cursor/rules/` directory:
+
+```
+.cursor/rules/
+├── api-routes.mdc         # API route patterns
+├── cursor-rules.mdc       # This file - meta documentation
+├── data-fetching.mdc      # Data fetching patterns
+├── environment-variables.mdc # Environment variables
+├── facebook-auth.mdc      # Facebook authentication
+├── form-handling.mdc      # Form handling patterns
+├── prisma.mdc             # Prisma database usage
+├── project-structure.mdc  # Project structure overview
+├── ...
+```
+
+## Rule File Format
+
+Each rule file should follow this structure:
+
+```
+---
+description: Brief description of the rule
+globs: path/pattern/**/*  # Files where this rule applies
+alwaysApply: false        # Whether to always apply this rule
+---
+# Rule Title
+
+Detailed explanation of the rule...
+
+## Subsections
+
+Code examples, detailed guidelines, etc.
+
+```typescript
+// Example code
+function example() {
+  // Implementation following the rule
+}
+```
+```
+
+## Creating New Rules
+
+1. Identify a pattern or convention that should be documented
+2. Create a new `.mdc` file in the `.cursor/rules/` directory
+3. Use kebab-case for the filename (e.g., `component-naming.mdc`)
+4. Include the frontmatter with description and globs
+5. Document the rule with clear examples and explanations
+6. Use markdown formatting for readability
+
+## Updating Rules
+
+When updating rules:
+1. Make sure changes reflect current project practices
+2. Update examples to match current codebase
+3. Keep explanations clear and concise
+4. Include both good and bad examples where helpful
+
+## Effective Rule Writing
+
+1. Be specific and clear about requirements
+2. Use code examples to illustrate patterns
+3. Explain the reasoning behind conventions
+4. Include tips for common edge cases
+5. Format with proper markdown for readability

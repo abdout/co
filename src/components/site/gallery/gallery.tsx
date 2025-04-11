@@ -105,11 +105,11 @@ export const Gallery = ({ images = defaultImages }: GalleryProps) => {
   const displayImages = [...images, ...images, ...images];
   
   return (
-    <section id="gallery-section">
-      <div className="gallery-container space-y-6">
+    <section id="gallery-section ">
+      <div className="gallery-container space-y-6 bg-primary">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold mb-4 text-primary dark">Moment</h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <h2 className="text-5xl font-bold mb-4 text-background">Moment</h2>
+          <p className="text-background/70 max-w-2xl mx-auto">
             Image collection
           </p>
         </div>

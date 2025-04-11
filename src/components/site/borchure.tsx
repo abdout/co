@@ -36,7 +36,7 @@ export function BorchurePage() {
               Your browser does not support the video tag.
             </video>
             <div className="absolute inset-0 bg-black/10"></div>
-            <div className="absolute bottom-4 right-4 text-white text-sm">
+            <div className="absolute bottom-4 right-4 text-background text-sm">
               company
             </div>
           </div>

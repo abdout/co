@@ -1,0 +1,116 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Guidelines for implementing Facebook authentication
+globs: auth.ts auth.config.ts src/app/api/auth/**/*.ts src/components/auth/**/*.tsx
+alwaysApply: false
+---
+# Facebook Authentication
+
+## Configuration
+
+Facebook authentication is configured in `auth.config.ts`:
+
+```typescript
+import Facebook from "next-auth/providers/facebook";
+
+// Inside the NextAuth configuration object
+providers: [
+  Facebook({
+    clientId: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    authorization: {
+      params: {
+        scope: "email public_profile"
+      }
+    },
+    profile(profile) {
+      try {
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture?.data?.url,
+          emailVerified: new Date(),
+        };
+      } catch (error) {
+        console.error("Error processing Facebook profile:", error);
+        throw error;
+      }
+    },
+  }),
+]
+```
+
+## Environment Variables
+
+Required environment variables in `.env`:
+
+```
+FACEBOOK_CLIENT_ID=your_facebook_app_id
+FACEBOOK_CLIENT_SECRET=your_facebook_app_secret
+```
+
+## Implementation
+
+The Facebook authentication button is implemented in `src/components/auth/social.tsx`:
+
+```tsx
+"use client";
+
+import { signIn } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+
+export const SocialButton = () => {
+  const onClick = () => {
+    signIn("facebook", {
+      callbackUrl: "/dashboard",
+    });
+  };
+
+  return (
+    <Button onClick={onClick} variant="outline">
+      <FacebookIcon className="mr-2 h-4 w-4" />
+      Continue with Facebook
+    </Button>
+  );
+};
+```
+
+## Callback Route
+
+The Facebook callback URL must be configured in the Facebook Developer Console:
+- Callback URL: `https://yourdomain.com/api/auth/callback/facebook`
+- This route is automatically handled by NextAuth
+
+## Error Handling
+
+Error handling for Facebook authentication:
+
+```typescript
+// In src/app/api/auth/[...nextauth]/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { GET as AuthGET, POST as AuthPOST } from "../../../../../auth";
+
+export async function GET(request: NextRequest) {
+  try {
+    return await AuthGET(request);
+  } catch (error) {
+    console.error("Auth GET route error:", error);
+    return new NextResponse(JSON.stringify({ error: "Authentication error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+}
+```
+
+## Vercel Deployment
+
+For Vercel deployment, ensure:
+1. Prisma generates correctly with `binaryTargets = ["native", "rhel-openssl-3.0.x"]`
+2. OAuth callback URLs are correctly configured
+3. Environment variables are set in the Vercel dashboard 

@@ -34,7 +34,7 @@ export function SiteHeader() {
     )}>
       <div className=" h-14 mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-accent font-bold flex items-center">
+          <Link href="/" className="text-background font-bold flex items-center">
             <span className="text-xl font-fabriga">company</span>
           </Link>
 
@@ -44,7 +44,7 @@ export function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm font-fabriga font-medium text-neutral-300 hover:text-accent transition-colors px-4 cursor-pointer"
+                  "text-sm font-fabriga font-medium text-background/80 hover:text-background transition-colors px-4 cursor-pointer"
                 )}
               >
                 {link.label}

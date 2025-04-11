@@ -34,7 +34,7 @@ const footerLinks = {
 
 export function SiteFooter() {
   return (
-    <footer className="bg-black text-white py-8 ">
+    <footer className="bg-primary text-background py-8 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="flex mb-16">
           <div className="w-[27%]">
@@ -48,7 +48,7 @@ export function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-base text-white/60 hover:text-white transition-colors"
+                    className="text-base text-background/70 hover:text-background transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -64,7 +64,7 @@ export function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-base text-white/60 hover:text-white transition-colors"
+                    className="text-base text-background/70 hover:text-background transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -80,7 +80,7 @@ export function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-base text-white/60 hover:text-white transition-colors"
+                    className="text-base text-background/70 hover:text-background transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -96,7 +96,7 @@ export function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-base text-white/60 hover:text-white transition-colors"
+                    className="text-base text-background/70 hover:text-background transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -108,23 +108,26 @@ export function SiteFooter() {
         </div>
         <div className="pt-14">
           <div className="flex flex-col md:flex-row items-start">
-            <Link href="/" className="w-[26.5%] text-white font-bold text-xl mb-4 md:mb-0">
-              <span className="text-xl font-fabriga">company</span>
-            </Link>
+            {/* <Link href="/" className="w-[26.5%] text-background font-bold text-xl mb-4 md:mb-0">
+              <span className="text-2xl font-fabriga">company</span>
+            </Link> */}
+            <Link href="/" className="w-[26.5%] text-background font-bold flex items-center">
+            <span className="text-xl font-fabriga">company</span>
+          </Link>
 
-            <div className="w-[73.5%] text-xs  text-white/40 mt-2 ">
+              <div className="w-[73.5%] text-xs  text-background/70 mt-2 ">
               © 2025 COMPANY Ltd. /
-              <Link href="/terms-of-use" className="hover:text-white/60 transition-colors ml-1 mr-1">
+              <Link href="/terms-of-use" className="hover:text-background/70 transition-colors ml-1 mr-1">
                 Terms
               </Link> /
-              <Link href="/privacy-policy" className="hover:text-white/60 transition-colors ml-1 mr-1">
+              <Link href="/privacy-policy" className="hover:text-background/70 transition-colors ml-1 mr-1">
                 Privacy
               </Link> /
               <br />
-              <Link href="/safety" className="hover:text-white/60 transition-colors ml-1 mr-1">
+              <Link href="/safety" className="hover:text-background/70 transition-colors ml-1 mr-1">
                 Safety
               </Link> /
-              <Link href="/status" className="hover:text-white/60 transition-colors ml-1">
+              <Link href="/status" className="hover:text-background/70 transition-colors ml-1">
                 Status
               </Link>
             </div>

@@ -1,0 +1,127 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Modular, reusable auth block for cross-project implementation
+globs: **/*
+alwaysApply: true
+---
+
+# Modular Authentication Block Structure
+
+This project implements a modular, reusable authentication system that can be injected into any project.
+
+## Project Structure
+
+### Pages
+- `src/app/(auth)/login/page.tsx` - Login page
+- `src/app/(auth)/join/page.tsx` - Registration page
+- `src/app/(auth)/reset/page.tsx` - Password reset page
+- `src/app/(auth)/new-password/page.tsx` - New password setup
+- `src/app/(auth)/new-verification/page.tsx` - Email verification
+- `src/app/(auth)/error/page.tsx` - Auth error page
+
+### API Routes
+- `src/app/api/auth/[...nextauth]/route.ts` - Next Auth handlers
+
+### Auth Components
+- `src/auth/` - All reusable auth components and utilities
+  - `src/auth/login/form.tsx` - Login form component
+  - `src/auth/login/action.ts` - Login form actions
+  - `src/auth/join/form.tsx` - Registration form component
+  - `src/auth/join/action.ts` - Registration form actions
+  - `src/auth/reset/form.tsx` - Password reset form
+  - `src/auth/password/form.tsx` - Password management
+  - `src/auth/verification/form.tsx` - Email verification
+  - `src/auth/social.tsx` - OAuth provider buttons
+  - `src/auth/auth.ts` - Main auth configuration
+  - `src/auth/auth.config.ts` - Provider setup
+  - `src/auth/validation.ts` - Schema validation
+  - `src/auth/middleware.ts` - Auth middleware
+  - `src/auth/routes.ts` - Auth-related routes
+
+### UI Components
+- All UI components are built with:
+- **Tailwind CSS v4** - Mobile-first responsive design
+- **Sonner** - Toast notifications
+- **shadcn/ui** - Re-usable UI components
+
+## Technology Stack
+
+### Authentication
+- **Auth.js (NextAuth.js)** - Latest version for OAuth and Credentials providers
+- **Prisma** - ORM with Auth.js adapter
+- **bcryptjs** - Password hashing
+- **React Hook Form** - Form management for auth forms
+- **Zod** - Schema validation for auth inputs
+
+### UI/UX
+- **Tailwind CSS v4** - Mobile-first responsive styling
+- **Sonner** - Toast notifications for auth feedback
+  - Shared from root project (uses project's toast provider)
+- **Theme & globals.css** - Styling inherited from root project
+
+### OAuth Providers
+- **Google** - Google OAuth provider
+- **Facebook** - Facebook OAuth provider
+
+### Frontend
+- **Next.js** with App Router - React framework 
+- **React** - UI library
+
+### Backend
+- **Prisma** - ORM for database user models
+- **Two-factor authentication** - Enhanced security
+
+### Testing
+- **Vitest** - Testing framework for auth components
+- Location: `src/auth/test/`
+
+## Implementation Guidelines
+
+1. **Modularity First**: Structure components to be easily copied to new projects
+2. **Consistent API**: Maintain consistent auth interfaces across projects
+3. **Flexible Providers**: Support for Google and Facebook OAuth plus credentials
+4. **Proper Error Handling**: Clear error states with toast notifications
+5. **Type Safety**: Use TypeScript for all components
+6. **Form Validation**: Implement Zod schemas for all forms
+7. **Responsive Design**: Mobile-first approach with Tailwind CSS v4
+   - All components responsive across devices
+   - Optimized for touch interfaces on mobile
+   - Accessible form controls
+
+## Responsive Design Pattern
+- Uses Tailwind CSS v4 breakpoints (mobile-first approach)
+- Adapts layout based on screen size
+- Form components expand to fill available space on mobile
+- Side-by-side layouts on larger screens
+- Touch-friendly input sizing on mobile devices
+
+## Toast Notifications
+- Uses Sonner toast from root project
+- Used for:
+  - Authentication success/failure messages
+  - Form validation feedback
+  - Session state changes
+  - Password reset confirmations
+  - Email verification status
+
+## Documentation References
+- Auth.js: https://authjs.dev/
+- Auth.js Next.js: https://authjs.dev/reference/nextjs
+- Auth.js OAuth: https://authjs.dev/getting-started/providers/oauth
+- Auth.js Credentials: https://authjs.dev/getting-started/providers/credentials
+- Prisma: https://www.prisma.io/docs
+- React Hook Form: https://react-hook-form.com/
+- Zod: https://zod.dev/
+- Tailwind CSS: https://tailwindcss.com/
+- Vitest: https://vitest.dev/
+- Sonner: https://sonner.emilkowal.ski/
+
+## Version Philosophy
+Always use the latest update of all technologies in the stack, including RC and beta versions when available.
+
+## Documentation
+A detailed README is available at `src/auth/readme/README.md` 

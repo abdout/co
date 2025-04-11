@@ -1,0 +1,42 @@
+---
+description: How to use Prisma in the project
+globs: prisma/**/* src/**/*.ts src/**/*.tsx
+alwaysApply: false
+---
+# Prisma Usage
+
+## Database Configuration
+- We use PostgreSQL with Neon's serverless database
+- Database connection is established in `src/lib/db.ts`
+- Schema is located at `prisma/schema.prisma`
+
+## Importing Prisma
+
+```typescript
+// Import the db client from lib/db.ts
+import { db } from "@/lib/db";
+```
+
+## Schema Structure
+
+Main models:
+- `User`: Authentication and user data
+- `Account`: OAuth provider accounts
+- `Team`: Team information with relation to users
+- `Task`: Task tracking with project association
+- `Project`: Project management data
+- `Kit`: Equipment/kit inventory management
+- `Car`: Vehicle tracking and management
+- `Daily`: Daily reports/activities
+
+## Binary Targets
+We use the following binary targets for Vercel deployment:
+```prisma
+binaryTargets = ["native", "rhel-openssl-3.0.x"]
+```
+
+## Best Practices
+- Always use transactions for multi-operation database changes
+- Include appropriate indexes on frequently queried fields
+- Use relations rather than storing IDs as strings where appropriate
+- Add appropriate error handling for database operations

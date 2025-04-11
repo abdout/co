@@ -1,9 +1,9 @@
-"use client";
+// "use client";
 
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
-export const useCurrentUser = () => {
-  const { data: session } = useSession();
+// export const useCurrentUser = () => {
+//   const { data: session } = useSession();
   
-  return session?.user;
-}; 
+//   return session?.user;
+// }; 
