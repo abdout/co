@@ -42,25 +42,30 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
-      if (!user.id) return false
-      
-      if (account?.provider !== "credentials") return true
+      try {
+        if (!user.id) return false
+        
+        if (account?.provider !== "credentials") return true
 
-      const existingUser = await getUserById(user.id)
+        const existingUser = await getUserById(user.id)
 
-      if (!existingUser?.emailVerified) return false
+        if (!existingUser?.emailVerified) return false
 
-      if (existingUser.isTwoFactorEnabled) {
-        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id)
+        if (existingUser.isTwoFactorEnabled) {
+          const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id)
 
-        if (!twoFactorConfirmation) return false
+          if (!twoFactorConfirmation) return false
 
-        await db.twoFactorConfirmation.delete({
-          where: { id: twoFactorConfirmation.id }
-        })
+          await db.twoFactorConfirmation.delete({
+            where: { id: twoFactorConfirmation.id }
+          })
+        }
+
+        return true
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
       }
-
-      return true
     },
     async session({ token, session }) {
       if (token.sub && session.user) {

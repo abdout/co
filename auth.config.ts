@@ -33,17 +33,22 @@ export default {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: "email"
+          scope: "email public_profile"
         }
       },
       profile(profile) {
-        return {
-          id: profile.id,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture?.data?.url,
-          emailVerified: new Date(),
-        };
+        try {
+          return {
+            id: profile.id,
+            name: profile.name,
+            email: profile.email,
+            image: profile.picture?.data?.url,
+            emailVerified: new Date(),
+          };
+        } catch (error) {
+          console.error("Error processing Facebook profile:", error);
+          throw error;
+        }
       },
     }),
     Credentials({
