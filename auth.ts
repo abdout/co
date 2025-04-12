@@ -7,6 +7,10 @@ import { getUserById } from "@/components/auth/user"
 import { getTwoFactorConfirmationByUserId } from "@/components/auth/verification/2f-confirmation"
 import { getAccountByUserId } from "@/components/auth/account"
 import authConfig from "./auth.config"
+import { validateEnv } from "@/lib/env-check"
+
+// Validate environment variables
+validateEnv();
 
 // Extend the built-in session types
 declare module "next-auth" {
@@ -43,16 +47,35 @@ export const {
   },
   events: {
     async linkAccount({ user }) {
+      console.log("OAuth account linked:", user.email);
       if (user.id) {
         await db.user.update({
           where: { id: user.id },
           data: { emailVerified: new Date() }
         })
       }
+    },
+    async signIn({ user, account, isNewUser }) {
+      console.log("Sign-in event:", { 
+        userId: user.id, 
+        email: user.email,
+        provider: account?.provider,
+        isNewUser
+      });
+    },
+    async error(error) {
+      console.error("Auth error event:", error);
     }
   },
   callbacks: {
     async signIn({ user, account }) {
+      // Log sign-in attempt for debugging
+      console.log("Sign-in attempt:", { 
+        userId: user.id, 
+        provider: account?.provider,
+        email: user.email
+      });
+      
       if (!user.id) return false
       
       if (account?.provider !== "credentials") return true
@@ -111,6 +134,7 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  debug: process.env.NODE_ENV === "development",
+  // Enable debug mode temporarily to get detailed error information
+  debug: true, // Set to true for both dev and production to debug
   ...authConfig,
 })

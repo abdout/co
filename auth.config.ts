@@ -38,26 +38,29 @@ export default {
       },
       profile(profile) {
         try {
-          console.log("Processing Facebook profile:", JSON.stringify(profile, null, 2));
+          console.log("Facebook profile data:", JSON.stringify(profile, null, 2));
           
-          if (!profile.email) {
-            console.error("Facebook profile missing email:", profile);
-            throw new Error("Email not provided by Facebook");
+          const email = profile.email || `${profile.id}@facebook.com`;
+          
+          if (!profile.id) {
+            console.error("Facebook profile missing ID");
+            throw new Error("ID not provided by Facebook");
           }
           
           return {
             id: profile.id,
-            username: profile.name,
-            email: profile.email,
-            image: profile.picture?.data?.url,
+            username: profile.name || 'Facebook User',
+            email: email,
+            image: profile.picture?.data?.url || null,
             emailVerified: new Date(),
           };
         } catch (error) {
-          console.error("Error processing Facebook profile:", error);
+          console.error("Facebook profile processing error:", error);
+          console.error("Original profile data:", profile);
+          
           throw error;
         }
       },
-      checks: ["state"],
     }),
     Credentials({
       async authorize(credentials) {
