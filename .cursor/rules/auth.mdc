@@ -6,6 +6,11 @@ alwaysApply: false
 ---
 description: 
 globs: 
+alwaysApply: false
+---
+---
+description: 
+globs: 
 alwaysApply: true
 ---
 ---
@@ -99,6 +104,10 @@ This project implements a modular, reusable authentication system that can be in
 ### Email Services
 - **Resend** - Email delivery for verification and password reset
 
+## Working examples
+- https://github.com/abdout/nmbd
+- https://github.com/abdout/block
+
 ## Known Issues and Solutions
 
 ### Facebook OAuth
@@ -145,4 +154,4 @@ This project implements a modular, reusable authentication system that can be in
 Always use the latest update of all technologies in the stack.
 
 ## Documentation
-A detailed README is available at `src/auth/readme/README.md` 
+A detailed README is available at `src/components/auth/README.md` 

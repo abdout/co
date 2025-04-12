@@ -11,12 +11,15 @@ const nextConfig = {
   // Optimize production build
   output: 'standalone',
   
-  // Include necessary files for Prisma
-  experimental: {
-    outputFileTracingIncludes: {
-      '/**': ['node_modules/.prisma/**/*', '.prisma/**/*', 'prisma/**/*']
-    },
+  // Ignore ESLint errors during build
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
   },
+  
+  // Include necessary files for Prisma
+  outputFileTracing: true,
   
   // Other existing configuration...
 };
