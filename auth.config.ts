@@ -31,39 +31,14 @@ export default {
     Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: "email public_profile"
-        }
-      },
       profile(profile) {
-        try {
-          console.log("Facebook profile data:", JSON.stringify(profile, null, 2));
-          
-          const email = profile.email || `${profile.id}@facebook.com`;
-          
-          const imageUrl = profile.picture?.data?.url || 
-                          profile.picture || 
-                          `https://graph.facebook.com/${profile.id}/picture?type=large`;
-          
-          return {
-            id: profile.id,
-            username: profile.name || profile.username || 'Facebook User',
-            email: email,
-            image: imageUrl,
-            emailVerified: new Date(),
-          };
-        } catch (error) {
-          console.error("Facebook profile processing error:", error);
-          console.error("Original profile data:", JSON.stringify(profile));
-          
-          return {
-            id: profile.id || Math.random().toString(36).substring(2),
-            username: 'Facebook User',
-            email: `${Date.now()}@temporary.com`,
-            emailVerified: new Date(),
-          };
-        }
+        return {
+          id: profile.id,
+          username: profile.name || "Facebook User",
+          email: profile.email || `${profile.id}@facebook.com`,
+          image: profile.picture?.data?.url || null,
+          emailVerified: new Date(),
+        };
       },
     }),
     Credentials({
