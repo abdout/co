@@ -3,6 +3,15 @@
 ## Current Issues
 
 ### Critical
+- [x] Prisma Client Initialization Error on Vercel deployment
+  - **Root Cause**: Prisma can't find the query engine for RHEL platform used by Vercel
+  - **Solution**: 
+    1. Add `binaryTargets = ["native", "rhel-openssl-3.0.x"]` to schema.prisma
+    2. Create .vercelignore to preserve Prisma files
+    3. Add vercel-build script to ensure Prisma generates before build
+    4. Update db.ts with better error handling
+  - **Status**: Implemented - Fixed Prisma deployment issue
+
 - [x] Facebook OAuth redirects to error page (500 Internal Server Error)
   - **Root Cause**: 
     1. Mismatch between callback URL in Facebook Developer Console and application
@@ -33,6 +42,36 @@
 - [x] Enhance error messages in auth error page
   - **Solution**: Updated error-card.tsx to show specific error messages based on error type
   - **Status**: Completed
+
+## Debugging Prisma on Vercel
+
+When encountering Prisma errors on Vercel, particularly with error message:
+```
+PrismaClientInitializationError: Prisma Client could not locate the Query Engine for runtime "rhel-openssl-3.0.x"
+```
+
+Use these steps to fix:
+
+1. **Update schema.prisma**: Add `binaryTargets = ["native", "rhel-openssl-3.0.x"]` to the generator section.
+
+2. **Configure build scripts**:
+   - Ensure `postinstall` script has `prisma generate`
+   - Add a `vercel-build` script with `prisma generate && next build`
+
+3. **Preserve Prisma files** in deployment:
+   - Create `.vercelignore` with:
+     ```
+     !node_modules/.prisma/
+     !.prisma/
+     !node_modules/@prisma/client/
+     ```
+
+4. **Check logs**: Visit `/api/debug/prisma` endpoint to verify Prisma connection.
+
+5. **Common solutions**:
+   - Regenerate Prisma client locally and commit node_modules/.prisma
+   - Use direct database URL connection for serverless environments
+   - Set NODE_ENV=production in environment variables
 
 ## Debugging Facebook OAuth 500 Errors
 
@@ -85,6 +124,7 @@ When encountering 500 errors with Facebook OAuth, check:
 - [x] Enhanced error handling for OAuth flows
 - [x] Environment validation
 - [x] Improved error page with specific error messages
+- [x] Fixed Prisma deployment issues on Vercel
 
 ## Testing Notes
 - When testing OAuth login, ensure you're using the correct environment variables

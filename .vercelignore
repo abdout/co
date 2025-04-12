@@ -1,0 +1,8 @@
+# Keep Prisma binaries
+!node_modules/.prisma/
+!.prisma/
+!node_modules/@prisma/client/
+!node_modules/.pnpm/@prisma+client*/
+
+# Include relevant Prisma engines
+!*.node 
