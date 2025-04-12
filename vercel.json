@@ -14,5 +14,22 @@
     "NEXT_PUBLIC_VERCEL_ENV": "production",
     "PRISMA_BINARY_TARGETS": "rhel-openssl-3.0.x",
     "NODE_ENV": "production"
-  }
+  },
+  "headers": [
+    {
+      "source": "/api/auth/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/auth/callback/facebook",
+      "destination": "/api/auth/callback/facebook"
+    }
+  ]
 } 
