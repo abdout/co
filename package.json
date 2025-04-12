@@ -16,7 +16,7 @@
     "seed:kits": "tsx src/utils/seed-kits.ts",
     "check:kits": "tsx src/utils/check-kits.ts",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && next build",
+    "vercel-build": "node vercel-build.js",
     "generate:all": "pnpm generate-docs && pnpm generate-mos",
     "build:all": "pnpm build:docs && pnpm build:mos",
     "update-auth-docs": "tsx scripts/update-auth-docs.ts",
