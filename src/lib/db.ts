@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { neon, neonConfig } from '@neondatabase/serverless';
+import path from "path";
+import fs from "fs";
 
 // This disables the https connection pooling so we can do our own
 neonConfig.fetchConnectionCache = false;
@@ -7,38 +9,57 @@ neonConfig.fetchConnectionCache = false;
 // Get connection string from environment variables
 const connectionString = process.env.DATABASE_URL as string;
 
-// Prisma client creation with error handling
-function createPrismaClient() {
+// Add prisma binary error handling for Vercel deployments
+const handlePrismaClientInitialization = () => {
   try {
-    return new PrismaClient({
-      datasources: {
-        db: {
-          url: connectionString,
-        },
-      },
-      // Log queries in development
-      log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-    });
-  } catch (error) {
-    console.error("Failed to create Prisma client:", error);
-    // Fallback to a basic client with minimal options
+    // Try creating the default Prisma client
     return new PrismaClient();
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('PrismaClientInitializationError') && 
+          error.message.includes('could not locate the Query Engine')) {
+        
+        console.error('Attempting to recover from Prisma Engine error...');
+        
+        // Find all possible engine locations
+        const possibleLocations = [
+          path.join(process.cwd(), 'node_modules/.prisma/client'),
+          path.join(process.cwd(), '.prisma/client'),
+          path.join(process.cwd(), 'prisma/client'),
+          path.join(process.cwd(), '.next/server'),
+          path.join(process.cwd(), 'node_modules/@prisma/client')
+        ];
+        
+        // Debug output to help diagnose the issue
+        console.log('Looking for Prisma engine in:');
+        possibleLocations.forEach(location => {
+          const exists = fs.existsSync(location);
+          console.log(`- ${location}: ${exists ? 'EXISTS' : 'NOT FOUND'}`);
+          if (exists) {
+            const files = fs.readdirSync(location);
+            const engineFiles = files.filter(f => f.includes('engine'));
+            console.log(`  Engine files: ${engineFiles.join(', ')}`);
+          }
+        });
+        
+        // Rethrow the error with more context
+        throw new Error(`Prisma engine not found. Error: ${error.message}. Please ensure the Prisma engine is properly installed and the binaryTargets in schema.prisma includes "rhel-openssl-3.0.x".`);
+      }
+    }
+    // For any other error, just rethrow it
+    throw error;
   }
-}
-
-// Add PrismaClient to the global namespace to prevent multiple instances in development
-// See: https://www.prisma.io/docs/guides/performance-and-optimization/connection-management
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
 };
 
-// Export db client - cache client in development, create new in production
-export const db = globalForPrisma.prisma ?? createPrismaClient();
+// PrismaClient is attached to the `global` object in development to prevent
+// exhausting your database connection limit.
+// Learn more: https://pris.ly/d/help/next-js-best-practices
 
-// Keep one connection open in development
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = db;
-}
+const globalForPrisma = global as unknown as { db: PrismaClient };
+
+export const db = globalForPrisma.db || handlePrismaClientInitialization();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.db = db;
 
 // For debugging Prisma issues
 export function debugPrismaEngine() {
