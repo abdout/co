@@ -27,8 +27,19 @@ export const {
   signOut,
 } = NextAuth({
   pages: {
-    signIn: "/auth/login",
-    error: "/auth/error",
+    signIn: "/login",
+    error: "/error",
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   events: {
     async linkAccount({ user }) {
@@ -100,5 +111,6 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
+  debug: process.env.NODE_ENV === "development",
   ...authConfig,
 })

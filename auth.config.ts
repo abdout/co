@@ -21,7 +21,7 @@ export default {
       profile(profile) {
         return {
           id: profile.sub,
-          name: profile.name,
+          username: profile.name,
           email: profile.email,
           image: profile.picture,
           emailVerified: new Date(),
@@ -33,18 +33,31 @@ export default {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: "email"
+          scope: "email public_profile"
         }
       },
       profile(profile) {
-        return {
-          id: profile.id,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture?.data?.url,
-          emailVerified: new Date(),
-        };
+        try {
+          console.log("Processing Facebook profile:", JSON.stringify(profile, null, 2));
+          
+          if (!profile.email) {
+            console.error("Facebook profile missing email:", profile);
+            throw new Error("Email not provided by Facebook");
+          }
+          
+          return {
+            id: profile.id,
+            username: profile.name,
+            email: profile.email,
+            image: profile.picture?.data?.url,
+            emailVerified: new Date(),
+          };
+        } catch (error) {
+          console.error("Error processing Facebook profile:", error);
+          throw error;
+        }
       },
+      checks: ["state"],
     }),
     Credentials({
       async authorize(credentials) {

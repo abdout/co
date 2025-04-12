@@ -9,7 +9,8 @@ import { siteConfig } from "./constant"
 import { cn } from "@/lib/utils"
 import { Icons } from "./icons"
 import { MobileNav } from "./mobile-nav"
-import { useCurrentUser } from "@/hooks/use-current-user"
+import { useCurrentUser } from "@/components/auth/use-current-user"
+
 
 interface MainNavProps {
   items?: MainNavItem[]

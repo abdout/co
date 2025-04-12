@@ -1,6 +1,11 @@
 ---
 description: 
 globs: 
+alwaysApply: false
+---
+---
+description: 
+globs: 
 alwaysApply: true
 ---
 ---
@@ -15,6 +20,13 @@ This project implements a modular, reusable authentication system that can be in
 
 ## Project Structure
 
+### Core Files
+- `auth.ts` - Main Auth.js configuration with callbacks
+- `auth.config.ts` - Provider configuration (Google, Facebook, Credentials)
+- `middleware.ts` - Auth-based route protection
+- `routes.ts` - Route definitions (public, auth, api paths)
+- `next-auth.d.ts` - Type definitions for session and user
+
 ### Pages
 - `src/app/(auth)/login/page.tsx` - Login page
 - `src/app/(auth)/join/page.tsx` - Registration page
@@ -24,23 +36,44 @@ This project implements a modular, reusable authentication system that can be in
 - `src/app/(auth)/error/page.tsx` - Auth error page
 
 ### API Routes
-- `src/app/api/auth/[...nextauth]/route.ts` - Next Auth handlers
+- `src/app/api/auth/[...nextauth]/route.ts` - Next Auth handlers (exports GET, POST)
 
-### Auth Components
-- `src/auth/` - All reusable auth components and utilities
-  - `src/auth/login/form.tsx` - Login form component
-  - `src/auth/login/action.ts` - Login form actions
-  - `src/auth/join/form.tsx` - Registration form component
-  - `src/auth/join/action.ts` - Registration form actions
-  - `src/auth/reset/form.tsx` - Password reset form
-  - `src/auth/password/form.tsx` - Password management
-  - `src/auth/verification/form.tsx` - Email verification
-  - `src/auth/social.tsx` - OAuth provider buttons
-  - `src/auth/auth.ts` - Main auth configuration
-  - `src/auth/auth.config.ts` - Provider setup
-  - `src/auth/validation.ts` - Schema validation
-  - `src/auth/middleware.ts` - Auth middleware
-  - `src/auth/routes.ts` - Auth-related routes
+### Auth Components & Utilities
+- `src/components/auth/` - All reusable auth components and utilities
+  - `src/components/auth/login/form.tsx` - Login form component
+  - `src/components/auth/login/action.ts` - Login form actions (server actions)
+  - `src/components/auth/join/form.tsx` - Registration form component
+  - `src/components/auth/join/action.ts` - Registration form actions
+  - `src/components/auth/reset/form.tsx` - Password reset form
+  - `src/components/auth/password/form.tsx` - Password management
+  - `src/components/auth/password/token.ts` - Password reset token handling
+  - `src/components/auth/verification/form.tsx` - Email verification
+  - `src/components/auth/verification/2f-token.ts` - Two-factor token handling
+  - `src/components/auth/verification/2f-confirmation.ts` - Two-factor confirmation
+  - `src/components/auth/verification/verification-token.ts` - Email verification token
+  - `src/components/auth/social.tsx` - OAuth provider buttons
+  - `src/components/auth/card-wrapper.tsx` - Shared auth card component
+  - `src/components/auth/header.tsx` - Auth header component
+  - `src/components/auth/back-button.tsx` - Back button component
+  - `src/components/auth/form-error.tsx` - Error display component
+  - `src/components/auth/form-success.tsx` - Success display component
+  - `src/components/auth/error-card.tsx` - Auth error page component
+  - `src/components/auth/user.ts` - User data retrieval functions
+  - `src/components/auth/account.ts` - Account data retrieval functions
+  - `src/components/auth/role-gate.tsx` - Role-based access control
+  - `src/components/auth/user-button.tsx` - User avatar/menu button
+  - `src/components/auth/logout-button.tsx` - Logout button component
+  - `src/components/auth/login-button.tsx` - Login button component
+  - `src/components/auth/user-info.tsx` - User information display
+  - `src/components/auth/validation.ts` - Form validation schemas
+  - `src/components/auth/use-current-user.ts` - Hook for current user
+  - `src/components/auth/use-current-role.ts` - Hook for current role
+
+### Library Functions
+- `src/lib/auth.ts` - Auth helpers (currentUser, currentRole)
+- `src/lib/db.ts` - Database connection with Prisma
+- `src/lib/mail.ts` - Email sending functionality
+- `src/lib/tokens.ts` - Token generation and management
 
 ### UI Components
 - All UI components are built with:
@@ -51,33 +84,37 @@ This project implements a modular, reusable authentication system that can be in
 ## Technology Stack
 
 ### Authentication
-- **Auth.js (NextAuth.js)** - Latest version for OAuth and Credentials providers
+- **Auth.js v5** - Latest version for OAuth and Credentials providers
 - **Prisma** - ORM with Auth.js adapter
 - **bcryptjs** - Password hashing
 - **React Hook Form** - Form management for auth forms
 - **Zod** - Schema validation for auth inputs
 
-### UI/UX
-- **Tailwind CSS v4** - Mobile-first responsive styling
-- **Sonner** - Toast notifications for auth feedback
-  - Shared from root project (uses project's toast provider)
-- **Theme & globals.css** - Styling inherited from root project
-
 ### OAuth Providers
 - **Google** - Google OAuth provider
+  - Scopes: email, profile, offline access
 - **Facebook** - Facebook OAuth provider
+  - Scopes: email, public_profile
 
-### Frontend
-- **Next.js** with App Router - React framework 
-- **React** - UI library
+### Email Services
+- **Resend** - Email delivery for verification and password reset
 
-### Backend
-- **Prisma** - ORM for database user models
-- **Two-factor authentication** - Enhanced security
+## Known Issues and Solutions
 
-### Testing
-- **Vitest** - Testing framework for auth components
-- Location: `src/auth/test/`
+### Facebook OAuth
+- **Issue**: Facebook OAuth may redirect to error page
+- **Cause**: Misconfigured callback URLs or incorrect client ID/secret
+- **Solution**: 
+  1. Ensure callback URL in Facebook Developer Console matches `http://localhost:3000/api/auth/callback/facebook`
+  2. Use only one set of credentials (prefer `.env.local` for development)
+  3. Add proper error handling to the profile mapping function
+
+### Environment Variables
+- Facebook and Google OAuth require properly configured environment variables
+- The app uses both `.env` and `.env.local` files, with `.env.local` taking precedence
+- Current Facebook app IDs:
+  - `.env`: 1798287087385367
+  - `.env.local`: 1985407775320438 (prioritized)
 
 ## Implementation Guidelines
 
@@ -88,40 +125,24 @@ This project implements a modular, reusable authentication system that can be in
 5. **Type Safety**: Use TypeScript for all components
 6. **Form Validation**: Implement Zod schemas for all forms
 7. **Responsive Design**: Mobile-first approach with Tailwind CSS v4
-   - All components responsive across devices
-   - Optimized for touch interfaces on mobile
-   - Accessible form controls
 
-## Responsive Design Pattern
-- Uses Tailwind CSS v4 breakpoints (mobile-first approach)
-- Adapts layout based on screen size
-- Form components expand to fill available space on mobile
-- Side-by-side layouts on larger screens
-- Touch-friendly input sizing on mobile devices
-
-## Toast Notifications
-- Uses Sonner toast from root project
-- Used for:
-  - Authentication success/failure messages
-  - Form validation feedback
-  - Session state changes
-  - Password reset confirmations
-  - Email verification status
+## Debugging Tips
+- Enable debug mode in NextAuth configuration for verbose logs
+- Use try/catch in provider profile functions with console.log
+- Check the network tab for failed OAuth redirects
+- Verify callback URLs match exactly with provider settings
+- Monitor server logs for authentication errors
 
 ## Documentation References
 - Auth.js: https://authjs.dev/
 - Auth.js Next.js: https://authjs.dev/reference/nextjs
 - Auth.js OAuth: https://authjs.dev/getting-started/providers/oauth
-- Auth.js Credentials: https://authjs.dev/getting-started/providers/credentials
 - Prisma: https://www.prisma.io/docs
-- React Hook Form: https://react-hook-form.com/
-- Zod: https://zod.dev/
-- Tailwind CSS: https://tailwindcss.com/
-- Vitest: https://vitest.dev/
-- Sonner: https://sonner.emilkowal.ski/
+- Facebook Login: https://developers.facebook.com/docs/facebook-login
+- Google Identity: https://developers.google.com/identity
 
 ## Version Philosophy
-Always use the latest update of all technologies in the stack, including RC and beta versions when available.
+Always use the latest update of all technologies in the stack.
 
 ## Documentation
 A detailed README is available at `src/auth/readme/README.md` 

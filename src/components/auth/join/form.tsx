@@ -39,7 +39,7 @@ export const RegisterForm = ({
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      name: "",
     },
   });
 
@@ -75,14 +75,14 @@ export const RegisterForm = ({
               <div className="grid gap-4">
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="name"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="Username"
+                          placeholder="Name"
                         />
                       </FormControl>
                       <FormMessage />
