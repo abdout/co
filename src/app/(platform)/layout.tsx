@@ -1,14 +1,10 @@
 // import Footer from "@/components/template/footer/footer"
 import "../globals.css";
 import PlatformHeader from "@/components/template/header-platform/platform-header"
-// import { MemberProvider } from "@/components/member/context";
 import { UploadProvider } from "@/components/upload/context";
-import { ProjectProvider } from "@/components/nmbd-project/context";
-
-// import { MainProvider } from "@/provider/main";
 import { ModalProvider } from "@/components/atom/modal/context";
 import { Toaster } from "@/components/ui/sonner";
-import { MainProvider } from "@/provider/main";
+
 
 interface AppLayoutProps {
   children: React.ReactNode
