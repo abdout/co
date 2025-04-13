@@ -37,6 +37,16 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning >
       <head>
         <link rel="preload" href="./fonts/Rubik-Black.ttf" as="font" crossOrigin="anonymous" />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            // Remove Facebook #_=_ hash on page load
+            if (window.location.hash === '#_=_') {
+              history.replaceState 
+                ? window.history.replaceState(null, null, window.location.href.split('#')[0])
+                : window.location.hash = '';
+            }
+          `
+        }} />
       </head>
       <body
         className={cn(
