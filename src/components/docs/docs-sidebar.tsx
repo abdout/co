@@ -22,8 +22,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarRail,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
 
 // Helper function to convert a string to a slug
 function toSlug(text: string): string {
@@ -35,12 +35,14 @@ function toSlug(text: string): string {
 
 export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
-      <SidebarContent>
+    <Sidebar 
+      className="[&_[data-sidebar=rail]]:hidden border-none pt-14" 
+      {...props}
+    >
+      <SidebarContent className="px-2 pt-4">
         <SidebarGroup>
-          <SidebarGroupLabel>Documentation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <ScrollArea className="h-[calc(100vh-5rem)]">
+            <ScrollArea className="h-[calc(100vh-6rem)]">
               <SidebarMenu>
                 {sidebarData.map((itemData, index) => (
                   <ItemTree key={index} itemData={itemData} />
@@ -50,7 +52,6 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarRail />
     </Sidebar>
   )
 }
