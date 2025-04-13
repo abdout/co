@@ -9,7 +9,7 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/service", label: "Service" },
   { href: "/shop", label: "Shop" },
-  { href: "/platform", label: "Platform" },
+  { href: "/dashboard", label: "Platform" },
 ];
 
 export function SiteHeader() {
