@@ -1,0 +1,151 @@
+# Impedance Testing for Distance Relays
+
+## Overview
+
+Impedance testing is a critical procedure for validating distance relay operation. Distance relays protect transmission lines by measuring the apparent impedance to a fault. This test verifies that the relay correctly identifies faults within its protection zones by injecting voltages and currents to simulate various fault conditions at different locations.
+
+## Required Equipment
+
+- Multi-phase Relay Test Set with impedance plane testing capability
+- Test Leads and Connection Cables
+- Distance Relay Setting Sheets and Drawings
+- Laptop with Relay Test Software (if applicable)
+- Calculation Sheets or Software for Test Values
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays can cause inadvertent circuit breaker operations. Always follow isolation procedures to prevent unwanted tripping during testing.
+
+1. Obtain necessary work permits and authorizations
+2. Block relay trip outputs to circuit breakers or inform system operators
+3. Disable auto-reclosing schemes during testing
+4. Use appropriate PPE
+5. Verify test equipment is properly grounded
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation
+   - Line impedance data
+   - Protection scheme diagrams
+   - Manufacturer's instruction manual
+   - Previous test results (if available)
+   - CT and VT ratios and connections
+
+2. Calculate test points:
+   - Determine at least 3 test points for each protection zone
+   - Include points at 80%, 100%, and 120% of each zone boundary
+   - Calculate the current and voltage values for each test point
+
+### 2. Connection
+
+1. Isolate the relay from the CT and VT circuits
+2. Connect the test set to the relay:
+   - Voltage outputs to relay voltage inputs
+   - Current outputs to relay current inputs
+   - Binary inputs to relay trip contacts
+
+3. Verify connections before applying test signals
+
+### 3. Testing Methodology
+
+#### 3.1 Search Test Method
+
+1. Configure the test to search along a specific R-X trajectory
+2. Set the starting point outside the zone and the end point inside the zone
+3. Set the search step size (typically 1-5% of the zone reach)
+4. Begin the test and allow the test set to determine the exact operate point
+5. Record the impedance value at which the relay operates
+6. Compare with the expected value
+
+#### 3.2 Shot Test Method
+
+1. Calculate specific test points for each zone
+2. Configure test shots for each point (voltage, current, and phase angle)
+3. Apply the test shot and observe whether the relay operates
+4. Record the operation time for each point
+5. Repeat for each test point across all zones
+
+### 4. Zone Verification Tests
+
+Test each zone with the following fault types:
+
+1. **Zone 1 (Typically set to 80-85% of line impedance)**
+   - Phase-to-Ground faults (A-G, B-G, C-G)
+   - Phase-to-Phase faults (A-B, B-C, C-A)
+   - Three-Phase faults
+
+2. **Zone 2 (Typically set to 120-150% of line impedance)**
+   - Repeat the same fault types as Zone 1
+   - Verify correct time delay operation
+
+3. **Zone 3 (Backup protection, if applicable)**
+   - Repeat the same fault types 
+   - Verify longer time delay operation
+
+4. **Directional Test**
+   - Test points in forward direction (within protected line)
+   - Test points in reverse direction (should not operate)
+
+## Acceptance Criteria
+
+| Parameter | Acceptable Performance |
+| --------- | ---------------------- |
+| Reach Accuracy | ±5% of set value |
+| Directional Integrity | No operation for reverse faults |
+| Operating Time (Zone 1) | Typically <30ms |
+| Operating Time (Zone 2) | Within ±5% of time delay setting |
+| Operating Time (Zone 3) | Within ±5% of time delay setting |
+
+## Troubleshooting
+
+If test results show discrepancies:
+
+1. Verify the relay settings match test plan
+2. Check CT and VT ratios are correctly accounted for
+3. Verify proper phase rotation in test connections
+4. Check if polarizing quantities are correctly applied
+5. For electromechanical relays, check for mechanical issues affecting operation
+6. For digital/numerical relays, verify configuration matches the intended protection philosophy
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Location/Line: _______________
+- CT Ratio: _______________
+- VT Ratio: _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Zone Settings**
+| Zone | Reach (Ω Secondary) | Angle (°) | Time Delay (s) |
+| ---- | ------------------- | --------- | -------------- |
+| Z1   | | | |
+| Z2   | | | |
+| Z3   | | | |
+
+**Test Results**
+| Zone | Fault Type | Test Point | Expected (Ω) | Measured (Ω) | Deviation (%) | Operating Time (ms) | Pass/Fail |
+| ---- | ---------- | ---------- | ------------ | ------------ | ------------- | ------------------- | --------- |
+| Z1   | A-G        | 80%        | | | | | |
+| Z1   | A-G        | 100%       | | | | | |
+| Z1   | A-B        | 80%        | | | | | |
+| Z1   | A-B        | 100%       | | | | | |
+| Z1   | ABC        | 80%        | | | | | |
+| Z2   | A-G        | 80%        | | | | | |
+| Z2   | A-B        | 80%        | | | | | |
+```
+
+## Related Activities
+
+- [Zone Timing Tests](/docs/relay/distance/zone-timing)
+- [Directional Testing](/docs/relay/distance/directional)
+- [Polarization Tests](/docs/relay/distance/polarization)

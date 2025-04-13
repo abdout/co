@@ -1,100 +1,113 @@
-import { notFound } from 'next/navigation';
-// Replace contentlayer imports with placeholder empty arrays and types
-// import { allDocs } from '.contentlayer/generated';
-// import type { Doc } from '.contentlayer/generated';
-import { Mdx } from '@/components/ui/mdx-components';
+import fs from 'fs'
+import path from 'path'
+import { notFound } from 'next/navigation'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import { sidebarData } from '@/components/docs/constant'
 
-// Create placeholder type and data
-interface Doc {
-  title: string;
-  description: string;
-  body: {
-    code: string;
-    raw: string;
-  };
-  slug: string;
-  slugAsParams: string;
-  url: string;
-  category: string;
-  subCategory: string;
-  activityName: string;
-  _raw: {
-    flattenedPath: string;
-  };
-  _id: string;
-  _type: 'Doc';
+// Helper function to convert a string to a slug
+function toSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
 }
 
-// Empty docs array as placeholder
-const allDocs: Doc[] = [];
-
-interface DocPageProps {
-  params: {
-    slug?: string[];
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
+// Function to safely read params
+async function readParams(params: any) {
+  return params?.slug || []
 }
 
-async function getDocFromParams(params: DocPageProps['params']) {
+// Function to get content based on slug path
+async function getDocContent(slugs: string[] = []) {
   try {
-    const slug = params.slug?.join('/') || 'index';
-    const doc = allDocs.find((doc) => doc._raw.flattenedPath === `docs/${slug}`);
-    
-    if (!doc) {
-      return null;
+    // If no slugs provided, show the index page
+    if (slugs.length === 0) {
+      const indexPath = path.join(process.cwd(), 'content', 'docs', 'index.mdx')
+      if (fs.existsSync(indexPath)) {
+        return fs.readFileSync(indexPath, 'utf8')
+      }
+      
+      // Fallback content if index.mdx doesn't exist
+      return `
+# Documentation
+
+Welcome to the documentation. Please select a topic from the sidebar.
+      `
     }
 
-    return doc;
+    // Try multiple possible paths
+    const possiblePaths = [
+      // Path 1: Exact path with .mdx extension
+      path.join(process.cwd(), 'content', 'docs', ...slugs) + '.mdx',
+      
+      // Path 2: Directory path with index.mdx
+      path.join(process.cwd(), 'content', 'docs', ...slugs, 'index.mdx')
+    ]
+
+    // Check each possible path
+    for (const filePath of possiblePaths) {
+      if (fs.existsSync(filePath)) {
+        console.log(`Found file at: ${filePath}`)
+        return fs.readFileSync(filePath, 'utf8')
+      }
+    }
+    
+    console.log(`No file found for slugs: ${slugs.join('/')}`)
+    console.log(`Tried paths:`)
+    possiblePaths.forEach(p => console.log(`- ${p}`))
+    
+    return null
   } catch (error) {
-    console.error('Error fetching doc:', error);
-    return null;
+    console.error('Error reading MDX file:', error)
+    return null
   }
 }
 
-export default async function DocPage({ params }: DocPageProps) {
-  try {
-    const doc = await getDocFromParams(params);
+// Generate static paths at build time
+export async function generateStaticParams() {
+  const paths: { slug: string[] }[] = []
+  
+  // Add index path
+  paths.push({ slug: [] })
+  
+  // Add paths for each item, subitem, and activity in the sidebar data
+  sidebarData.forEach(itemData => {
+    const itemSlug = toSlug(itemData.item)
     
-    // If the doc doesn't exist, return a 404
-    if (!doc) {
-      // Fallback to a placeholder UI if we're still generating docs
-      return (
-        <div className="container max-w-4xl py-12 px-8">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Documentation</h1>
-            <p className="text-lg text-muted-foreground">
-              Path: {params.slug ? params.slug.join('/') : 'index'}
-            </p>
-          </div>
-          <div className="mt-8">
-            <p>The documentation system is almost ready!</p>
-            <p className="mt-4">To see content here:</p>
-            <ol className="list-decimal pl-6 mt-2">
-              <li>Run <code>pnpm generate-docs</code> to create MDX files</li>
-              <li>Configure ContentLayer in your project</li>
-              <li>Refresh this page</li>
-            </ol>
-          </div>
-        </div>
-      );
-    }
+    // Add path for the item
+    paths.push({ slug: [itemSlug] })
+    
+    itemData.subitems.forEach(subitem => {
+      const subitemSlug = toSlug(subitem.name)
+      
+      // Add path for the subitem
+      paths.push({ slug: [itemSlug, subitemSlug] })
+      
+      subitem.activities.forEach(activity => {
+        const activitySlug = toSlug(activity)
+        
+        // Add path for the activity
+        paths.push({ slug: [itemSlug, subitemSlug, activitySlug] })
+      })
+    })
+  })
+  
+  return paths
+}
 
-    // Return the actual document
-    return (
-      <div className="container max-w-4xl py-12 px-8">
-        <div className="space-y-4">
-          <h1 className="text-3xl font-bold tracking-tight">{doc.title}</h1>
-          {doc.description && (
-            <p className="text-lg text-muted-foreground">{doc.description}</p>
-          )}
-        </div>
-        <div className="mt-8">
-          <Mdx code={doc.body.code} />
-        </div>
-      </div>
-    );
-  } catch (error) {
-    console.error('Error rendering doc:', error);
-    return notFound();
+export default async function DocPage({ params }: { params: { slug?: string[] } }) {
+  // Await the params to fix the error
+  const slugs = await readParams(params)
+  
+  // Log the requested path for debugging
+  console.log(`Requested path: /docs/${slugs.join('/')}`)
+  
+  const content = await getDocContent(slugs)
+  
+  if (!content) {
+    console.log('Content not found, returning 404')
+    notFound()
   }
+  
+  return <MDXRemote source={content} />
 } 

@@ -1,0 +1,182 @@
+# Ratio and Phase Angle Testing for Differential Relays
+
+## Overview
+
+Ratio and phase angle testing is essential for differential relay commissioning and maintenance. This procedure verifies that the currents from both sides of the protected equipment are properly matched in magnitude and phase to prevent relay misoperation during normal conditions while ensuring sensitive fault detection during internal faults.
+
+## Required Equipment
+
+- Multi-phase Relay Test Set with differential testing capability
+- Test Leads and Connection Cables
+- Differential Relay Setting Sheets
+- CT Nameplate Data and Wiring Diagrams
+- Laptop with Relay Test Software (if applicable)
+- Calculator for Ratio Calculations
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays can cause inadvertent circuit breaker operations. Always follow isolation procedures to prevent unwanted tripping during testing.
+
+1. Obtain necessary work permits and authorizations
+2. Block relay trip outputs to circuit breakers or inform system operators
+3. Isolate all sides of the protected equipment during testing
+4. Use appropriate PPE
+5. Verify test equipment is properly grounded
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation
+   - CT data including ratios, polarities, and connections
+   - Relay manual for CT compensation settings
+   - Previous test results (if available)
+
+2. Calculate expected CT ratio compensation:
+   - For transformer differential relays, account for transformer vector group
+   - For line/feeder differential relays, account for CT ratio differences
+   - For generator differential relays, account for any winding configurations
+
+3. Verify relay settings match the required compensation factors
+
+### 2. Connection
+
+1. Isolate the relay from the CT circuits
+2. Connect the test set to the relay:
+   - Primary-side current inputs
+   - Secondary-side current inputs
+   - Binary inputs to relay trip contacts
+
+3. Verify connections before applying test signals
+
+### 3. Ratio Test
+
+1. Configure the test set to inject balanced three-phase currents:
+   - Apply nominal current to primary side only
+   - Measure the differential and restraint currents in the relay
+   - The differential current should be minimal (ideally zero)
+
+2. Repeat the test by applying nominal current to secondary side only
+   - Again measure differential and restraint currents
+
+3. Calculate the actual ratio error:
+   ```
+   Ratio Error (%) = (Differential Current / Restraint Current) × 100%
+   ```
+
+4. Test with different current levels (25%, 50%, 100% of nominal)
+   - Verify ratio remains consistent across the operating range
+
+### 4. Phase Angle Test
+
+1. Configure the test set to inject balanced currents to both sides simultaneously:
+   - Apply same magnitude to both primary and secondary sides
+   - Set the phase relationship according to the vector group compensation
+   - For transformers, account for the phase shift (e.g., Dyn11 = 30° shift)
+
+2. Measure the differential current with proper phase relationship
+   - Should be minimal (ideally zero)
+
+3. Deliberately introduce phase errors in 5° increments
+   - Record differential current at each step
+   - Determine the phase error sensitivity of the relay
+
+4. For three-winding transformers or special configurations:
+   - Test each pair of windings separately
+   - Verify all combinations of phase relationships
+
+### 5. Through-Fault Stability Test
+
+1. Configure the test set to simulate through-fault conditions:
+   - Apply balanced currents equal in magnitude but 180° out of phase
+   - Gradually increase current from 1× to 5× nominal
+   - Verify relay remains stable (no tripping)
+
+2. Repeat with unbalanced currents to simulate external phase-to-phase faults
+   - Verify stability is maintained during asymmetrical conditions
+
+### 6. Internal Fault Test
+
+1. Configure the test set to simulate internal fault conditions:
+   - Apply current to primary side only
+   - Or apply unequal currents to both sides to create differential current
+
+2. Verify relay operates correctly for internal faults
+   - Record operating times at different fault levels
+   - Verify minimum pickup according to settings
+
+## Acceptance Criteria
+
+| Parameter | Acceptable Performance |
+| --------- | ---------------------- |
+| Ratio Error | <5% (typically <2% for digital relays) |
+| Phase Angle Error | <5° (typically <3° for digital relays) |
+| Through-Fault Stability | No operation up to 5× nominal current |
+| Internal Fault Detection | Operates at or below pickup setting |
+| Operating Time | As per manufacturer specifications (typically <30ms) |
+
+## Troubleshooting
+
+If test results show unacceptable ratio or phase errors:
+
+1. Verify CT nameplate data and compare with relay settings
+2. Check relay settings for correct CT ratio compensation
+3. For transformer differential, verify transformer vector group compensation
+4. Check CT polarity and connections
+5. Verify test connections are correct
+6. For digital relays, check software settings for CT compensation factors
+7. For electromechanical relays, check tap settings
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Protected Equipment: _______________
+- CT Ratios: Primary Side: _______________ Secondary Side: _______________
+- Vector Group (for transformers): _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Ratio Test Results**
+| Test | Applied Current (A) | Side | Restraint Current (pu) | Differential Current (pu) | Error (%) | Pass/Fail |
+| ---- | ------------------- | ---- | ---------------------- | ------------------------- | --------- | --------- |
+| 1    | Nominal             | P    | | | | |
+| 2    | Nominal             | S    | | | | |
+| 3    | 50% Nominal         | P    | | | | |
+| 4    | 50% Nominal         | S    | | | | |
+
+**Phase Angle Test Results**
+| Test | Applied Angle Difference (°) | Expected Diff Current | Measured Diff Current | Error (%) | Pass/Fail |
+| ---- | ---------------------------- | --------------------- | --------------------- | --------- | --------- |
+| 1    | 0° (or vector group angle)   | 0                     | | | |
+| 2    | +5° from expected            | | | | |
+| 3    | -5° from expected            | | | | |
+| 4    | +10° from expected           | | | | |
+
+**Through-Fault Stability Test**
+| Test | Fault Current (× In) | Expected Response | Actual Response | Pass/Fail |
+| ---- | -------------------- | ----------------- | --------------- | --------- |
+| 1    | 1×                   | No Operation      | | |
+| 2    | 3×                   | No Operation      | | |
+| 3    | 5×                   | No Operation      | | |
+
+**Internal Fault Test**
+| Test | Fault Current (× In) | Differential Current (pu) | Operating Time (ms) | Pass/Fail |
+| ---- | -------------------- | ------------------------- | ------------------- | --------- |
+| 1    | Pickup setting       | | | |
+| 2    | 2× Pickup            | | | |
+| 3    | 5× Pickup            | | | |
+```
+
+## Related Activities
+
+- [Slope Characteristic Testing](/docs/relay/differential/slope-char)
+- [Harmonic Restraint Testing](/docs/relay/differential/harm-restr)
+- [Insulation Resistance Testing](/docs/relay/differential/ins-resist)
+- [Functional Testing](/docs/relay/differential/functional)

@@ -1,0 +1,167 @@
+# Directional Testing for Distance Relays
+
+## Overview
+
+Directional testing is essential for verifying that distance relays correctly discriminate between forward and reverse faults. This capability ensures that the relay only trips for faults within its protected zone and remains stable for faults in the opposite direction. Proper directional discrimination is critical for selective protection coordination in transmission networks.
+
+## Required Equipment
+
+- Multi-phase Relay Test Set with directional testing capability
+- Test Leads and Connection Cables
+- Distance Relay Setting Sheets and Drawings
+- Laptop with Relay Test Software (if applicable)
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays can cause inadvertent circuit breaker operations. Always follow isolation procedures to prevent unwanted tripping during testing.
+
+1. Obtain necessary work permits and authorizations
+2. Block relay trip outputs to circuit breakers or inform system operators
+3. Disable auto-reclosing schemes during testing
+4. Use appropriate PPE
+5. Verify test equipment is properly grounded
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation, particularly directional elements
+   - Line impedance data and system configuration
+   - Protection scheme diagrams
+   - Manufacturer's instruction manual
+   - Previous test results (if available)
+
+2. Identify directional parameters:
+   - Directional characteristic angle
+   - Polarizing method (self-polarized, cross-polarized, memory polarized)
+   - Forward and reverse zones of protection
+
+### 2. Connection
+
+1. Isolate the relay from the CT and VT circuits
+2. Connect the test set to the relay:
+   - Voltage outputs to relay voltage inputs
+   - Current outputs to relay current inputs
+   - Binary inputs to relay trip contacts
+
+3. Verify connections before applying test signals
+
+### 3. Forward and Reverse Testing
+
+#### 3.1 Forward Direction Test
+
+1. Configure the test set to apply fault quantities in the forward direction:
+   - Set the test point inside each forward-looking zone
+   - Apply appropriate voltage and current at the characteristic angle
+   - Apply faults at 0°, 30°, 60°, and 90° angles to verify coverage
+
+2. Run the test and observe that:
+   - The relay correctly detects the direction as forward
+   - The relay operates within the expected operating time for each zone
+   - Record the operating time for each test point
+
+#### 3.2 Reverse Direction Test
+
+1. Configure test to apply fault quantities in the reverse direction:
+   - Set the test point at various locations in the reverse direction
+   - Apply appropriate voltage and current at the negative characteristic angle
+   - Test at multiple angles in the reverse direction
+
+2. Run the test and observe that:
+   - The relay correctly detects the direction as reverse
+   - The relay does not operate for reverse faults unless reverse-looking zones are present
+   - If reverse-looking zones exist, verify their correct operation
+
+### 4. Directional Boundary Test
+
+1. Determine the directional boundary by:
+   - Starting at a fault angle of 90° and gradually decreasing
+   - Finding the exact angle at which the relay changes from forward to reverse detection
+   - This angle should be close to ±90° from the characteristic angle
+
+2. Test directional sensitivity near the boundary:
+   - Test points just inside the forward region
+   - Test points just inside the reverse region
+   - Verify stable operation at the boundary
+
+### 5. Memory Polarization Test (where applicable)
+
+1. Test the memory polarization function by:
+   - Applying pre-fault voltage for a few cycles
+   - Reducing voltage to simulate close-in three-phase faults
+   - Verify the relay correctly determines direction using memorized voltage
+
+2. Test the memory reset time:
+   - Apply healthy voltage for sufficient time to establish memory
+   - Remove voltage and determine how long the memory lasts
+   - Verify this matches the manufacturer's specifications
+
+## Acceptance Criteria
+
+| Test Parameter | Acceptable Performance |
+| -------------- | ---------------------- |
+| Forward Detection | Reliable operation for all faults in forward direction |
+| Reverse Detection | No operation for reverse faults (unless reverse zones are configured) |
+| Boundary Angle | Within ±5° of expected value |
+| Memory Function | Correct directional determination for zero-voltage faults |
+| Memory Duration | As per manufacturer specifications (typically 8-16 cycles) |
+
+## Troubleshooting
+
+If directional testing shows unexpected results:
+
+1. Verify voltage and current polarities are correct at the relay terminals
+2. Check that the characteristic angle setting in the relay matches the test
+3. For memory polarization issues, check that sufficient pre-fault voltage was applied
+4. Verify VT and CT connections match the relay's expected configuration
+5. Check for any directional blocking or supervision elements that might be affecting operation
+6. For digital relays, verify the correct polarizing method is selected in the settings
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Location/Line: _______________
+- Characteristic Angle: _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Forward Direction Tests**
+| Test | Fault Angle | Zone | Expected Result | Actual Result | Operating Time (ms) | Pass/Fail |
+| ---- | ----------- | ---- | --------------- | ------------- | ------------------- | --------- |
+| F1   | 0°          | Z1   | Operate         | | | |
+| F2   | 30°         | Z1   | Operate         | | | |
+| F3   | 60°         | Z1   | Operate         | | | |
+| F4   | 0°          | Z2   | Operate         | | | |
+
+**Reverse Direction Tests**
+| Test | Fault Angle | Zone | Expected Result | Actual Result | Operating Time (ms) | Pass/Fail |
+| ---- | ----------- | ---- | --------------- | ------------- | ------------------- | --------- |
+| R1   | 180°        | Z1   | No operation    | | | |
+| R2   | 210°        | Z1   | No operation    | | | |
+| R3   | 240°        | Z1   | No operation    | | | |
+
+**Directional Boundary Tests**
+| From Direction | To Direction | Transition Angle | Expected Angle | Deviation | Pass/Fail |
+| -------------- | ------------ | ---------------- | -------------- | --------- | --------- |
+| Forward        | Reverse      | | | | |
+| Reverse        | Forward      | | | | |
+
+**Memory Polarization Tests**
+| Test | Fault Type | Pre-fault Duration | Result | Pass/Fail |
+| ---- | ---------- | ------------------ | ------ | --------- |
+| M1   | 3-phase    | 5 cycles           | | |
+| M2   | 3-phase    | Memory limit       | | |
+```
+
+## Related Activities
+
+- [Impedance Testing](/docs/relay/distance/impedance)
+- [Zone Timing Tests](/docs/relay/distance/zone-timing)
+- [Polarization Tests](/docs/relay/distance/polarization)

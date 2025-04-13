@@ -1,0 +1,109 @@
+# Contact Resistance Testing
+
+## Overview
+
+Contact resistance testing (also known as micro-ohm testing) is a critical maintenance procedure for circuit breakers to verify the integrity of the main contacts. High contact resistance can lead to excessive heating, reduced current carrying capacity, and potential equipment failure. This test measures the resistance across closed contacts using a specialized micro-ohmmeter.
+
+## Required Equipment
+
+- Micro-ohmmeter/Ductor Tester (100A or higher capacity recommended)
+- Test Leads with Heavy-Duty Clamps
+- Personal Protective Equipment (PPE)
+- Circuit Breaker Manufacturer's Technical Documentation
+- Test Record Sheets
+- Temperature Measurement Device (optional)
+
+## Safety Precautions
+
+> **WARNING**: Always isolate the circuit breaker completely from any power source before performing contact resistance tests. Verify isolation with appropriate testing devices.
+
+1. Wear appropriate PPE including insulated gloves and safety glasses
+2. Ensure the circuit breaker is visibly open and racked out/isolated
+3. Apply appropriate lockout/tagout procedures
+4. Discharge any stored energy in the circuit breaker mechanism
+5. Verify zero voltage on all terminals before connection
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Review the manufacturer's specifications for:
+   - Acceptable contact resistance values
+   - Test current recommendations
+   - Connection points for specific breaker model
+
+2. Record ambient temperature (resistance readings should be temperature corrected)
+3. Ensure all test leads and connection points are clean and free of oxidation
+4. Verify test equipment calibration is current
+
+### 2. Connection
+
+1. Connect the micro-ohmmeter leads to the circuit breaker terminals:
+   - Source side terminal (Line)
+   - Load side terminal (Load)
+   - Follow a consistent pattern for multi-pole breakers (test each pole separately)
+
+2. Ensure connections are tight and secure with proper contact area
+
+### 3. Testing
+
+1. Place the circuit breaker in the CLOSED position
+2. Set the test current according to manufacturer's recommendations (typically 100A)
+3. Initiate the test and record the resistance value for each pole
+4. Release the test current
+5. Repeat measurements at least twice to ensure consistency
+
+### 4. Interpretation
+
+| Circuit Breaker Type | Typical Acceptable Values |
+| -------------------- | ------------------------- |
+| Low Voltage (≤1kV) | 50-200 μΩ |
+| Medium Voltage (>1kV to 36kV) | 40-150 μΩ |
+| High Voltage (>36kV) | 30-100 μΩ |
+
+> **NOTE**: Always refer to manufacturer's specifications as acceptable values vary by breaker type, rating, and age.
+
+## Acceptance Criteria
+
+1. The measured resistance should be below the maximum value specified by the manufacturer
+2. Resistance values should be consistent across all phases (within ±10%)
+3. Results should be consistent with historical test records for the same breaker
+
+## Troubleshooting
+
+If contact resistance measurements are high or inconsistent:
+
+1. Check for loose connections at the test points
+2. Clean the breaker terminals and retest
+3. Inspect for visible signs of contact erosion, burning, or pitting
+4. Check contact alignment and pressure
+5. For SF6 breakers, verify proper gas pressure before concluding contact issues
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Circuit Breaker ID: _______________
+- Manufacturer/Model: _______________
+- Rated Current: _______________
+- Test Date: _______________
+- Ambient Temperature: _______________
+- Test Current Applied: _______________
+- Technician: _______________
+
+| Phase/Pole | Measurement 1 (μΩ) | Measurement 2 (μΩ) | Average (μΩ) | Pass/Fail |
+| ---------- | ----------------- | ----------------- | ------------ | --------- |
+| Phase A/R  | | | | |
+| Phase B/S  | | | | |
+| Phase C/T  | | | | |
+```
+
+## Related Activities
+
+- [Timing Open-Close Test](/docs/component/circuit-breaker/timing-open-close)
+- [Insulation Resistance Testing](/docs/component/circuit-breaker/ins-resist)
+- [Coil Pickup Testing](/docs/component/circuit-breaker/coil-pickup)
+- [SF6 Gas Pressure & Purity Test](/docs/component/circuit-breaker/sf6-gas-press-purity)
+- [Vacuum Integrity Testing](/docs/component/circuit-breaker/vacuum-integrity)
+- [Mechanical Operation Test](/docs/component/circuit-breaker/mech-operation)

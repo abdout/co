@@ -1,0 +1,205 @@
+# Trip Unit Calibration for Air Circuit Breakers
+
+## Overview
+
+Trip unit calibration is a critical procedure for air circuit breakers (ACBs) to ensure proper protection coordination and reliable operation. Modern ACBs use electronic trip units that require periodic testing and calibration to verify their pickup values, time delays, and overall protection characteristics match the intended settings.
+
+## Required Equipment
+
+- Primary Current Injection Test Set (up to 3000A capacity)
+- Secondary Injection Test Set (for electronic trip units)
+- Test Leads and Cables with Heavy-Duty Clamps
+- Timing Device (if not integrated in test set)
+- ACB Manufacturer's Technical Manual
+- Protection Coordination Study Documents
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Primary injection testing involves high currents that generate significant heat and electromagnetic forces. Follow all safety procedures to prevent injury.
+
+1. Obtain necessary work permits and lockout/tagout authorizations
+2. Isolate the circuit breaker completely from the power system
+3. Disconnect any control or auxiliary circuits if not part of the test
+4. Ensure adequate ventilation for high-current testing
+5. Verify all test connections are secure before applying test currents
+6. Wear appropriate PPE including insulated gloves and eye protection
+7. Keep unauthorized personnel away from the test area
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - ACB nameplate data and technical specifications
+   - Trip unit settings and protection coordination study
+   - Manufacturer's testing guidelines
+   - Previous test results (if available)
+
+2. Record the current settings of the trip unit:
+   - Long-time pickup (Ir)
+   - Long-time delay (tr)
+   - Short-time pickup (Isd)
+   - Short-time delay (tsd)
+   - Instantaneous pickup (Ii)
+   - Ground fault pickup (Ig)
+   - Ground fault delay (tg)
+
+3. Verify test equipment capacity is sufficient for the required test currents
+
+### 2. Secondary Injection Testing (where applicable)
+
+1. Connect the secondary test set to the trip unit according to manufacturer's instructions:
+   - For electronic trip units with test ports, use the dedicated test connector
+   - For microprocessor-based trip units, connect to test points if direct interface is available
+
+2. Perform the secondary injection tests:
+   - Apply simulated current signals
+   - Verify pickup values for each protection function
+   - Verify time delays for each protection function
+   - Test zone interlocking if applicable
+
+### 3. Primary Injection Testing
+
+#### 3.1 Long-Time Pickup and Delay Test
+
+1. Connect the primary injection test set to the ACB:
+   - For single-phase testing, connect in series with one pole
+   - For three-phase testing, connect all three poles in series or use a three-phase test set
+
+2. Long-time pickup test:
+   - Start at approximately 90% of the expected pickup value
+   - Increase current in small increments (2-5%)
+   - Record the current at which the long-time element picks up
+   - Pickup should be within ±10% of the setting
+
+3. Long-time delay test:
+   - Apply 300% of the long-time pickup setting
+   - Record the time from current initiation to trip
+   - Compare with the expected time according to the time-current curve
+
+#### 3.2 Short-Time Pickup and Delay Test
+
+1. Short-time pickup test:
+   - Start at approximately 90% of the expected short-time pickup
+   - Increase current in small increments
+   - Record the current at which the short-time element picks up
+   - Pickup should be within ±10% of the setting
+
+2. Short-time delay test:
+   - Apply 150% of the short-time pickup setting
+   - Record the time from current initiation to trip
+   - Compare with the expected time according to the time-current curve
+   - If I²t function is enabled, test at two different current levels
+
+#### 3.3 Instantaneous Pickup Test
+
+1. Start at approximately 90% of the expected instantaneous pickup
+2. Increase current in small increments
+3. Record the current at which the instantaneous element trips the breaker
+4. Pickup should be within ±10% of the setting
+5. Note: This test requires high current and should be kept as brief as possible
+
+#### 3.4 Ground Fault Pickup and Delay Test
+
+1. Connect the test set according to the ground fault scheme:
+   - For residual ground fault sensing, inject through proper terminals
+   - For zero-sequence sensing, use the appropriate sensor connections
+
+2. Ground fault pickup test:
+   - Start at approximately 90% of the expected ground fault pickup
+   - Increase current in small increments
+   - Record the current at which the ground fault element picks up
+
+3. Ground fault delay test:
+   - Apply 150% of the ground fault pickup setting
+   - Record the time from current initiation to trip
+   - Compare with the expected time according to the time-current curve
+
+### 4. Additional Tests
+
+1. Zone Selective Interlocking (ZSI) test (if applicable):
+   - Verify proper blocking and receiving functions
+   - Test coordination between different levels
+
+2. Alarm and indicator functions test:
+   - Verify all LEDs, displays, and indicators function correctly
+   - Test pre-trip alarms if available
+
+## Acceptance Criteria
+
+| Parameter | Acceptable Performance |
+| --------- | ---------------------- |
+| Long-Time Pickup | Within ±10% of setting |
+| Long-Time Delay | Within ±10% of specified time at 300% pickup |
+| Short-Time Pickup | Within ±10% of setting |
+| Short-Time Delay | Within ±10% of specified time at 150% pickup |
+| Instantaneous Pickup | Within ±10% of setting |
+| Ground Fault Pickup | Within ±10% of setting |
+| Ground Fault Delay | Within ±10% of specified time at 150% pickup |
+
+## Troubleshooting
+
+If test results are outside acceptable limits:
+
+1. Verify test equipment is properly calibrated
+2. Check trip unit settings match the test plan
+3. Inspect CT connections and ratios
+4. Check for mechanical binding in the tripping mechanism
+5. Verify the presence of control power for electronic trip units
+6. Check for signs of overheating or physical damage
+7. For electronic trip units, perform a self-test or diagnostic function
+8. Consider replacing the trip unit if calibration cannot be achieved
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- ACB ID: _______________
+- Manufacturer/Model: _______________
+- Trip Unit Type: _______________
+- Frame Size: _______________
+- Nominal Current (In): _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Trip Unit Settings**
+| Function | Setting | Unit |
+| -------- | ------- | ---- |
+| Long-Time Pickup (Ir) | | × In |
+| Long-Time Delay (tr) | | seconds |
+| Short-Time Pickup (Isd) | | × Ir |
+| Short-Time Delay (tsd) | | seconds |
+| I²t Function | | On/Off |
+| Instantaneous Pickup (Ii) | | × In |
+| Ground Fault Pickup (Ig) | | Amperes |
+| Ground Fault Delay (tg) | | seconds |
+
+**Long-Time Test Results**
+| Test Current (A) | Expected Trip Time (s) | Actual Trip Time (s) | Deviation (%) | Pass/Fail |
+| ---------------- | ---------------------- | -------------------- | ------------- | --------- |
+| | | | | |
+
+**Short-Time Test Results**
+| Test Current (A) | Expected Trip Time (s) | Actual Trip Time (s) | Deviation (%) | Pass/Fail |
+| ---------------- | ---------------------- | -------------------- | ------------- | --------- |
+| | | | | |
+
+**Instantaneous Test Results**
+| Pickup Setting (A) | Measured Pickup (A) | Deviation (%) | Pass/Fail |
+| ------------------ | ------------------- | ------------- | --------- |
+| | | | |
+
+**Ground Fault Test Results**
+| Test Current (A) | Expected Trip Time (s) | Actual Trip Time (s) | Deviation (%) | Pass/Fail |
+| ---------------- | ---------------------- | -------------------- | ------------- | --------- |
+| | | | | |
+```
+
+## Related Activities
+
+- [Contact Resistance Testing](/docs/low-voltage/acb/contact-resist)
+- [Timing Open-Close Test](/docs/low-voltage/acb/timing-open-close)
+- [Insulation Resistance Testing](/docs/low-voltage/acb/ins-resist)

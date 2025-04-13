@@ -1,0 +1,119 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: "Documentation template for maintenance procedures. Use this as a starting point when creating new documentation files."
+globs: ["content/docs/**/*.mdx", "src/app/(platform)/docs/**/*.{tsx,ts}", "src/content/docs/**/*.mdx"]
+alwaysApply: false
+---
+---
+title: '{ACTIVITY_NAME}'
+description: 'Detailed procedure for performing {ACTIVITY_NAME} on {SUBCATEGORY} {CATEGORY}'
+category: '{CATEGORY}'
+subCategory: '{SUBCATEGORY}'
+activityName: '{ACTIVITY_NAME}'
+---
+
+# {ACTIVITY_NAME}
+
+## Overview
+
+This document provides a step-by-step procedure for performing {ACTIVITY_NAME} on {SUBCATEGORY} equipment. This maintenance activity is critical for ensuring the proper operation and longevity of the equipment.
+
+## Safety Precautions
+
+<div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
+  <p className="font-bold">CAUTION!</p>
+  <p>Before beginning any maintenance procedure, ensure the following safety measures:</p>
+  <ul className="list-disc ml-5 mt-2">
+    <li>Equipment is properly de-energized and isolated</li>
+    <li>Lock-out/Tag-out procedures are in place</li>
+    <li>Proper PPE is worn at all times</li>
+    <li>Work permits have been obtained if required</li>
+  </ul>
+</div>
+
+## Required Tools and Equipment
+
+- Test equipment 1
+- Test equipment 2
+- Tools required for the procedure
+- Calibrated measuring instruments
+- Safety equipment
+
+## Pre-Test Checks
+
+1. Verify that the equipment is properly isolated and de-energized
+2. Check test equipment calibration status
+3. Ensure all necessary documentation is available (drawings, specifications, previous test records)
+4. Verify environmental conditions are suitable for testing
+
+## Test Procedure
+
+### Step 1: Equipment Preparation
+
+1. Access the equipment following proper procedures
+2. Clean the equipment surfaces if necessary
+3. Identify test points and connections
+4. Set up test equipment according to manufacturer's instructions
+
+### Step 2: Perform Measurements
+
+1. Connect test equipment to the appropriate test points
+2. Initialize test equipment and record baseline readings
+3. Conduct the following measurements:
+   - Measurement 1
+   - Measurement 2
+   - Measurement 3
+
+### Step 3: Data Analysis
+
+1. Compare measurements with acceptable ranges:
+
+| Parameter | Minimum | Maximum | Units |
+|-----------|---------|---------|-------|
+| Value 1   | X       | Y       | Unit  |
+| Value 2   | X       | Y       | Unit  |
+| Value 3   | X       | Y       | Unit  |
+
+2. Evaluate results against previous test data
+3. Identify any anomalies or trends
+
+## Acceptance Criteria
+
+The following criteria must be met for a successful test:
+
+- Criterion 1: [description]
+- Criterion 2: [description]
+- Criterion 3: [description]
+
+## Post-Test Actions
+
+1. Disconnect and remove all test equipment
+2. Return equipment to service condition
+3. Document test results in maintenance system
+4. Create notification for any required follow-up actions
+5. Return work permit if applicable
+
+## Troubleshooting
+
+If test results do not meet acceptance criteria:
+
+1. Verify test equipment setup and calibration
+2. Re-check connections and test points
+3. Consult equipment manuals for specific guidance
+4. If issues persist, consult specialized personnel or equipment vendor
+
+## Reference Documents
+
+- Equipment manufacturer's manual
+- Applicable standards: [list]
+- Internal procedures: [list]
+
+## Revision History
+
+| Version | Date | Author | Description of Changes |
+|---------|------|--------|------------------------|
+| 1.0     | DATE | AUTHOR | Initial document       |

@@ -1,0 +1,177 @@
+# Turns Ratio Testing for Power Transformers
+
+## Overview
+
+Turns ratio testing is a fundamental diagnostic procedure for power transformers that verifies the ratio of primary to secondary windings. This test confirms that the transformer's voltage transformation ratio matches design specifications and nameplate ratings, ensuring proper voltage levels during operation. This test can also detect winding deformation, tap changer issues, and internal winding faults.
+
+## Required Equipment
+
+- Transformer Turns Ratio (TTR) Test Set
+- Test Leads and Connection Cables
+- Calculator for Ratio Calculations
+- Transformer Nameplate Data and Schematic Diagrams
+- Temperature Measurement Device
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **DANGER**: Power transformers contain hazardous voltages even when disconnected. Follow all safety procedures and ensure proper isolation before testing.
+
+1. Obtain necessary work permits and lockout/tagout authorizations
+2. Completely isolate the transformer from all sources of power
+3. De-energize and ground all terminals
+4. Test for absence of voltage on all terminals
+5. Connect safety grounds during preparation and remove only when ready for testing
+6. Wear appropriate PPE including insulated gloves
+7. Ensure test personnel are trained in electrical safety
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Transformer nameplate data
+   - Manufacturer's test reports (if available)
+   - Vector group information
+   - Tap changer position indicators and settings
+   - Previous test results (if available)
+
+2. Record ambient and transformer oil temperatures
+3. Calculate the expected turns ratio for each winding:
+   ```
+   Expected Ratio = Primary Voltage / Secondary Voltage
+   ```
+4. For transformers with tap changers, determine expected ratio at each tap position
+
+### 2. Test Setup
+
+1. Verify the transformer is completely isolated and properly grounded
+2. Remove temporary grounds from terminals to be tested
+3. Connect the TTR test set to the transformer:
+   - H-terminal leads to primary winding
+   - X-terminal leads to secondary winding
+   - Follow manufacturer's instructions for specific connections
+
+4. For three-phase transformers, test each phase individually:
+   - H1-H0 to X1-X0
+   - H2-H0 to X2-X0
+   - H3-H0 to X3-X0
+
+### 3. Ratio Testing
+
+1. Set the TTR test voltage according to manufacturer's guidelines and transformer size
+2. For each phase and tap position:
+   - Apply test voltage
+   - Record the measured turns ratio
+   - Calculate the percentage deviation from expected value:
+     ```
+     % Deviation = ((Measured Ratio - Expected Ratio) / Expected Ratio) × 100%
+     ```
+   - Record the excitation current
+
+3. For tap changers:
+   - Test each tap position from lowest to highest
+   - Record ratio measurements at each position
+   - Verify tap position indicators match actual tap position
+
+### 4. Phase Displacement Test (for three-phase transformers)
+
+1. Measure the phase displacement between primary and secondary windings
+2. Verify against the expected phase shift based on the vector group:
+   - Dyn11: 30° lag (secondary lags primary by 30°)
+   - Dyn1: 30° lead (secondary leads primary by 30°)
+   - YNyn0: 0° (no phase shift)
+
+3. Record the phase displacement angle for each phase pair
+
+### 5. Special Considerations
+
+1. For auto-transformers:
+   - Test the overall ratio and series winding ratio
+   - Calculate the expected ratios accordingly
+
+2. For transformers with tertiary windings:
+   - Test each winding pair (HV-MV, HV-LV, MV-LV)
+   - Calculate expected ratios for each pair
+
+3. For transformers with multiple secondary windings:
+   - Test each primary-secondary winding pair separately
+
+## Acceptance Criteria
+
+| Parameter | Acceptable Performance |
+| --------- | ---------------------- |
+| Turns Ratio Deviation | Within ±0.5% of expected ratio for distribution transformers |
+| | Within ±0.1% of expected ratio for power transformers |
+| Phase Displacement | Within ±1° of expected vector group angle |
+| Excitation Current | Consistent across all three phases (±10%) |
+| | Within manufacturer's specifications |
+| Tap Changer Steps | Equal ratio increments between adjacent taps (±0.8%) |
+
+## Troubleshooting
+
+If test results are outside acceptable limits:
+
+1. Verify nameplate data and calculations are correct
+2. Check test connections for proper contact and polarity
+3. Ensure tap position matches the setting used for calculations
+4. Look for residual magnetism (can be eliminated by proper demagnetization)
+5. Check for possible internal faults:
+   - Shorted turns: Ratio will be lower than expected
+   - Open circuits: Ratio will be higher than expected or infinite
+   - Tap changer issues: Irregular ratio patterns between taps
+
+6. High excitation current can indicate:
+   - Core problems
+   - Shorted turns
+   - Incorrect test connections
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Transformer ID: _______________
+- Manufacturer: _______________
+- Serial Number: _______________
+- MVA Rating: _______________
+- Voltage Ratio: _______________
+- Vector Group: _______________
+- Oil Temperature: _______________
+- Ambient Temperature: _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Single-Phase or Phase-to-Phase Tests**
+| Tap Position | Winding | Theoretical Ratio | Measured Ratio | Deviation (%) | Excitation Current (mA) | Pass/Fail |
+| ------------ | ------- | ----------------- | -------------- | ------------- | ----------------------- | --------- |
+| Nominal | H1-H0/X1-X0 | | | | | |
+| Nominal | H2-H0/X2-X0 | | | | | |
+| Nominal | H3-H0/X3-X0 | | | | | |
+
+**Tap Changer Tests (Principal Tap)**
+| Tap Position | Theoretical Ratio | Measured Ratio | Deviation (%) | Excitation Current (mA) | Pass/Fail |
+| ------------ | ----------------- | -------------- | ------------- | ----------------------- | --------- |
+| 1 (Lowest) | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+| ... | | | | | |
+| (Highest) | | | | | |
+
+**Phase Displacement Test**
+| Phase Pair | Vector Group | Expected Angle (°) | Measured Angle (°) | Deviation (°) | Pass/Fail |
+| ---------- | ------------ | ------------------ | ------------------ | ------------- | --------- |
+| H1-X1 | | | | | |
+| H2-X2 | | | | | |
+| H3-X3 | | | | | |
+```
+
+## Related Activities
+
+- [Insulation Resistance Testing](/docs/transformer/power-transformer/ins-resist)
+- [Winding Resistance Testing](/docs/transformer/power-transformer/wind-resist)
+- [Magnetizing Current Testing](/docs/transformer/power-transformer/mag-current)
+- [Dielectric Absorption Testing](/docs/transformer/power-transformer/dielec-absorp)
+- [Dissolved Gas Analysis](/docs/transformer/power-transformer/diss-gas-analysis)
+- [Sweep Frequency Response Analysis](/docs/transformer/power-transformer/sweep-freq-resp)

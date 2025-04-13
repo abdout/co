@@ -1,0 +1,194 @@
+# Slope Characteristic Testing for Differential Relays
+
+## Overview
+
+Slope characteristic testing is a critical procedure for differential relays to verify the relay's stability during through-fault conditions while maintaining sensitivity for internal faults. The slope (or percentage bias) characteristic defines how the relay's operating threshold increases with higher through-current to compensate for CT saturation and ratio errors.
+
+## Required Equipment
+
+- Multi-phase Relay Test Set with differential testing capability
+- Test Leads and Connection Cables
+- Differential Relay Setting Sheets
+- Laptop with Relay Test Software (if applicable)
+- Graphing Tools for Characteristic Plotting
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays can cause inadvertent circuit breaker operations. Always follow isolation procedures to prevent unwanted tripping during testing.
+
+1. Obtain necessary work permits and authorizations
+2. Block relay trip outputs to circuit breakers or inform system operators
+3. Isolate all sides of the protected equipment during testing
+4. Use appropriate PPE
+5. Verify test equipment is properly grounded
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation, particularly slope settings
+   - Manufacturer's instruction manual
+   - Previous test results (if available)
+
+2. Identify the slope characteristic parameters:
+   - First slope (typically 25-40%)
+   - Second slope (typically 50-100%), if dual-slope relay
+   - Slope transition point (typically 2-5 times nominal)
+   - Minimum pickup current
+
+3. Prepare a test plan with test points:
+   - At least 3 points on each slope segment
+   - Points just above and below the operate threshold
+   - Points just above and below the slope transition point
+
+### 2. Connection
+
+1. Isolate the relay from the CT circuits
+2. Connect the test set to the relay:
+   - Primary-side current inputs
+   - Secondary-side current inputs
+   - Binary inputs to relay trip contacts
+
+3. Verify connections before applying test signals
+
+### 3. Minimum Pickup Test
+
+1. Configure the test set for minimum pickup determination:
+   - Apply equal currents to all phases
+   - In-phase on all windings
+   - Gradually increase the difference between primary and secondary currents
+
+2. Determine the minimum differential current required for relay operation
+3. Verify this matches the relay settings
+
+### 4. First Slope Region Test
+
+1. Configure the test for points along the first slope:
+   - Apply restraint current below the transition point
+   - Apply differential current just below the expected operate threshold
+   - Gradually increase differential current until relay operates
+   - Record the exact operate point
+
+2. Repeat the test for at least 3 different restraint current values in the first slope region:
+   - Near minimum pickup
+   - At mid-range (approximately 1.5 times nominal)
+   - Near the slope transition point
+
+3. Calculate the actual slope value from test results:
+   ```
+   Slope1 (%) = (Differential Current / Restraint Current) × 100%
+   ```
+
+### 5. Second Slope Region Test (if applicable)
+
+1. Configure the test for points along the second slope:
+   - Apply restraint current above the transition point
+   - Apply differential current just below the expected operate threshold
+   - Gradually increase differential current until relay operates
+   - Record the exact operate point
+
+2. Repeat the test for at least 3 different restraint current values in the second slope region:
+   - Just above the transition point
+   - At approximately 2 times the transition point
+   - At a high current value (if safe for the relay)
+
+3. Calculate the actual second slope value from test results:
+   ```
+   Slope2 (%) = (Differential Current / Restraint Current) × 100%
+   ```
+
+### 6. Slope Transition Point Test
+
+1. Configure the test to verify the transition point:
+   - Apply restraint current near the expected transition point
+   - Apply differential current between the first and second slope thresholds
+   - Gradually increase the restraint current
+   - Record the restraint current at which the relay changes from operate to restrain
+
+2. Verify the transition point matches the relay settings
+
+### 7. Multi-Slope Graph Verification
+
+1. Plot the test results on an XY graph:
+   - X-axis: Restraint current
+   - Y-axis: Differential current
+   - Plot the expected characteristic from settings
+   - Plot the measured operate points
+
+2. Verify that the measured points align with the expected characteristic
+
+## Acceptance Criteria
+
+| Parameter | Acceptable Performance |
+| --------- | ---------------------- |
+| Minimum Pickup | Within ±10% of setting |
+| First Slope | Within ±5% of setting |
+| Second Slope | Within ±5% of setting |
+| Transition Point | Within ±10% of setting |
+| Overall Characteristic | Measured points follow expected curve |
+
+## Troubleshooting
+
+If test results show discrepancies:
+
+1. Verify that the relay settings match the test plan
+2. Check test connections for proper polarity
+3. For digital relays, verify parameter units (per unit, amperes, percent)
+4. For electromechanical relays, check mechanical adjustments
+5. Check for any additional biasing or restraint functions that might be active
+6. Verify test current magnitudes are within the relay's operating range
+7. For high-current tests, ensure adequate cooling time between tests
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Protected Equipment: _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Relay Settings**
+| Parameter | Setting |
+| --------- | ------- |
+| Minimum Pickup | |
+| First Slope | |
+| Second Slope | |
+| Transition Point | |
+
+**Minimum Pickup Test**
+| Applied Differential Current (A) | Restraint Current (A) | Relay Operation | Pass/Fail |
+| -------------------------------- | --------------------- | --------------- | --------- |
+| | | | |
+
+**First Slope Region Test**
+| Test | Restraint Current (A) | Theoretical Threshold (A) | Measured Threshold (A) | Calculated Slope (%) | Pass/Fail |
+| ---- | --------------------- | ------------------------- | ---------------------- | -------------------- | --------- |
+| 1    | | | | | |
+| 2    | | | | | |
+| 3    | | | | | |
+
+**Second Slope Region Test**
+| Test | Restraint Current (A) | Theoretical Threshold (A) | Measured Threshold (A) | Calculated Slope (%) | Pass/Fail |
+| ---- | --------------------- | ------------------------- | ---------------------- | -------------------- | --------- |
+| 1    | | | | | |
+| 2    | | | | | |
+| 3    | | | | | |
+
+**Slope Transition Point Test**
+| Test | Applied Differential Current (A) | Transition Point Setting (A) | Measured Transition (A) | Deviation (%) | Pass/Fail |
+| ---- | -------------------------------- | ---------------------------- | ----------------------- | ------------- | --------- |
+| 1    | | | | | |
+```
+
+## Related Activities
+
+- [Ratio and Phase Angle Testing](/docs/relay/differential/ratph-angle)
+- [Harmonic Restraint Testing](/docs/relay/differential/harm-restr)
+- [Insulation Resistance Testing](/docs/relay/differential/ins-resist)
+- [Functional Testing](/docs/relay/differential/functional)

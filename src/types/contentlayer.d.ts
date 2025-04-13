@@ -3,6 +3,10 @@ declare module 'contentlayer/generated' {
   export interface Doc {
     title: string;
     description: string;
+    category: string;
+    subCategory: string;
+    activityName: string;
+    published: boolean;
     body: {
       code: string;
       raw: string;
@@ -10,14 +14,17 @@ declare module 'contentlayer/generated' {
     slug: string;
     slugAsParams: string;
     url: string;
-    category: string;
-    subCategory: string;
-    activityName: string;
     _raw: {
+      flattenedPath: string;
+      sourceFilePath: string;
+      sourceFileName: string;
+      sourceFileDir: string;
+      contentType: string;
       flattenedPath: string;
     };
     _id: string;
     _type: 'Doc';
+    type: 'Doc';
   }
 
   export interface Activity {

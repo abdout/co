@@ -1,0 +1,129 @@
+# Overcurrent Relay Pickup Testing
+
+## Overview
+
+Pickup testing is a critical procedure to verify the exact current value at which an overcurrent relay begins to operate. This test confirms that the relay will correctly detect fault currents and initiate protective actions, ensuring system reliability and equipment protection.
+
+## Required Equipment
+
+- Relay Test Set (with current injection capability)
+- Test Leads and Connection Cables
+- Multimeter
+- Stopwatch (if not integrated in test set)
+- Relay Manufacturer's Manual and Setting Sheets
+- Calculator
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays that are in service can cause inadvertent tripping and service interruption. Follow proper procedures to prevent unwanted operations.
+
+1. Obtain necessary work permits and authorizations
+2. If testing an in-service relay:
+   - Block any trip outputs to circuit breakers
+   - Notify system operators of testing activities
+   - Disable auto-reclosing systems
+3. Use appropriate PPE including insulated gloves and eye protection
+4. Verify proper isolation of testing circuits from live power circuits
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation and protection scheme drawings
+   - Manufacturer's instruction manual
+   - Previous test results (if available)
+   - Current transformer (CT) ratios and connections
+
+2. Record relay nameplate data and current settings
+3. Calculate expected pickup values based on settings:
+   - Primary pickup current = Tap setting × CT ratio
+   - Secondary pickup current = Tap setting
+
+### 2. Connection
+
+1. Connect the test set to the relay:
+   - Isolation: Disconnect the relay from the CTs (use test blocks where available)
+   - Current injection: Connect test set current outputs to relay current inputs
+   - Sensing: Connect timing inputs to relay trip contacts
+
+2. Verify all connections before applying test currents
+3. Set up the test set for manual current control or preset ramp function
+
+### 3. Pickup Testing
+
+#### Manual Method:
+1. Start with current at 90% of the expected pickup value
+2. Increase current slowly in small increments (1-2% steps)
+3. Observe for relay pickup indication (LED, flag, or contact operation)
+4. Record the exact current value at which pickup occurs
+5. Reduce current to zero
+6. Repeat the test 3 times to ensure consistency
+7. Average the three readings
+
+#### Ramp Method:
+1. Configure the test set for current ramping:
+   - Start current: 90% of expected pickup
+   - End current: 110% of expected pickup
+   - Ramp rate: 1% per second
+2. Start the test and observe for relay operation
+3. Record the pickup current
+4. Repeat the test 3 times
+5. Average the readings
+
+### 4. Tolerance Verification
+
+Calculate the pickup accuracy:
+```
+Accuracy (%) = ((Measured Pickup - Expected Pickup) / Expected Pickup) × 100%
+```
+
+## Acceptance Criteria
+
+| Relay Type | Acceptable Pickup Tolerance |
+| ---------- | --------------------------- |
+| Electromechanical | ±10% |
+| Static/Digital | ±7% |
+| Numerical/Microprocessor | ±5% |
+
+## Troubleshooting
+
+If pickup test results are outside acceptable tolerances:
+
+1. Verify relay settings match test plan
+2. Check test connections for proper contact and polarity
+3. Inspect relay for visible damage or signs of overheating
+4. Check auxiliary power supply voltage to the relay
+5. For electromechanical relays, check for:
+   - Dirt or dust on moving parts
+   - Binding of the disc or armature
+   - Damaged bearings
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Location: _______________
+- CT Ratio: _______________
+- Test Date: _______________
+- Technician: _______________
+
+| Function | Tap Setting | Expected Pickup (A) | Test 1 (A) | Test 2 (A) | Test 3 (A) | Average (A) | Deviation (%) | Pass/Fail |
+| -------- | ----------- | ------------------- | ---------- | ---------- | ---------- | ----------- | ------------- | --------- |
+| Phase A  | | | | | | | | |
+| Phase B  | | | | | | | | |
+| Phase C  | | | | | | | | |
+| Ground   | | | | | | | | |
+```
+
+## Related Activities
+
+- [Timing Test](/docs/relay/overcurrent/timing)
+- [Characteristic Curve Verification](/docs/relay/overcurrent/char-curve)
+- [Insulation Resistance Test](/docs/relay/overcurrent/ins-resist)
+- [Burden Measurement](/docs/relay/overcurrent/burden)

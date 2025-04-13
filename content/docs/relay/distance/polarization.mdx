@@ -1,0 +1,181 @@
+# Polarization Tests for Distance Relays
+
+## Overview
+
+Polarization testing is essential for verifying the distance relay's ability to correctly determine fault direction under various system conditions. Proper polarization ensures reliable directional discrimination, especially during close-in faults, weak infeed conditions, and voltage collapse scenarios. This test validates the relay's polarizing method and its effectiveness in maintaining directional integrity.
+
+## Required Equipment
+
+- Multi-phase Relay Test Set with polarization test capability
+- Test Leads and Connection Cables
+- Distance Relay Setting Sheets and Drawings
+- Laptop with Relay Test Software (if applicable)
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays can cause inadvertent circuit breaker operations. Always follow isolation procedures to prevent unwanted tripping during testing.
+
+1. Obtain necessary work permits and authorizations
+2. Block relay trip outputs to circuit breakers or inform system operators
+3. Disable auto-reclosing schemes during testing
+4. Use appropriate PPE
+5. Verify test equipment is properly grounded
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation, particularly polarization method settings
+   - Manufacturer's instruction manual
+   - Protection scheme diagrams
+   - Previous test results (if available)
+
+2. Identify the polarization method used by the relay:
+   - Self-polarization (using fault phase voltage)
+   - Cross-polarization (using healthy phase voltages)
+   - Memory polarization (using pre-fault voltage memory)
+   - Quadrature polarization (using voltage 90° shifted from the reference)
+   - Zero-sequence polarization (for ground distance elements)
+   - Positive-sequence polarization (for modern numerical relays)
+
+### 2. Connection
+
+1. Isolate the relay from the CT and VT circuits
+2. Connect the test set to the relay:
+   - Voltage outputs to relay voltage inputs
+   - Current outputs to relay current inputs
+   - Binary inputs to relay trip contacts
+
+3. Verify connections before applying test signals
+
+### 3. Self-Polarization Test (if applicable)
+
+1. Configure the test for self-polarized operation:
+   - Apply balanced three-phase voltages and zero current
+   - Apply a single-phase fault with moderate fault resistance
+   - Gradually reduce the faulted phase voltage while maintaining current
+
+2. Observe the minimum voltage at which directional discrimination remains stable
+3. Verify operation down to the minimum specified voltage level (typically 5-10% of nominal)
+
+### 4. Cross-Polarization Test (if applicable)
+
+1. Configure the test for cross-polarized operation:
+   - Apply balanced pre-fault voltages
+   - Apply a phase-to-phase fault
+   - Reduce both faulted phase voltages to very low values (1-2%)
+   - Maintain healthy phase voltage
+
+2. Verify the relay correctly determines fault direction using healthy phase voltages
+3. Test with different fault types (A-B, B-C, C-A)
+
+### 5. Memory Polarization Test (if applicable)
+
+1. Configure the test for memory-polarized operation:
+   - Apply balanced pre-fault voltages for sufficient time (typically 5-10 cycles)
+   - Apply a close-in three-phase fault with all phase voltages near zero
+   - Maintain fault current at the desired angle
+
+2. Verify the relay correctly determines fault direction using memorized voltage
+3. Test the memory duration by incrementally increasing the fault duration
+4. Determine the maximum time memory polarization remains effective
+
+### 6. Zero-Sequence Polarization Test (for ground distance elements)
+
+1. Configure the test for zero-sequence polarization:
+   - Apply balanced pre-fault conditions
+   - Apply a single-phase-to-ground fault
+   - Vary the zero-sequence current angle relative to voltage
+
+2. Verify the ground distance element operates correctly based on zero-sequence quantities
+3. Test with different fault resistances to validate performance
+
+### 7. Loss of Potential (LOP) Test
+
+1. Configure a test to simulate loss of potential condition:
+   - Apply normal load conditions
+   - Remove all three-phase voltages while maintaining current
+   - Verify the relay blocks distance elements or switches to current-only operation
+
+2. Verify LOP detection time
+3. Verify relay behavior during LOP condition (blocking, alarming, etc.)
+
+## Acceptance Criteria
+
+| Test Parameter | Acceptable Performance |
+| -------------- | ---------------------- |
+| Self-Polarization | Maintains directional integrity down to specified minimum voltage |
+| Cross-Polarization | Correct directional discrimination for phase-phase faults with low voltage |
+| Memory Polarization | Correct operation for zero-voltage faults within memory duration |
+| Memory Duration | As per manufacturer specifications (typically 8-16 cycles) |
+| Zero-Sequence Polarization | Correct ground fault direction determination |
+| LOP Detection | Properly detects and responds to loss of potential |
+
+## Troubleshooting
+
+If polarization test results show unexpected behavior:
+
+1. Verify the correct polarization method is enabled in the relay settings
+2. Check that sufficient pre-fault voltage was applied for memory polarization tests
+3. Verify voltage and current connections match the relay's expected configuration
+4. For zero-sequence polarization issues, check the zero-sequence compensation factor settings
+5. For LOP issues, verify the detection criteria settings
+6. Ensure test parameters match the relay manufacturer's requirements
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Location/Line: _______________
+- Polarization Method(s): _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Self-Polarization Test**
+| Fault Type | Voltage Level (%) | Direction Determination | Pass/Fail |
+| ---------- | ----------------- | ----------------------- | --------- |
+| A-G        | 50%               | | |
+| A-G        | 20%               | | |
+| A-G        | 10%               | | |
+| A-G        | 5%                | | |
+
+**Cross-Polarization Test**
+| Fault Type | Faulted V (%) | Healthy V (%) | Direction Determination | Pass/Fail |
+| ---------- | ------------- | ------------- | ----------------------- | --------- |
+| A-B        | 2%            | 100%          | | |
+| B-C        | 2%            | 100%          | | |
+| C-A        | 2%            | 100%          | | |
+
+**Memory Polarization Test**
+| Fault Type | Pre-fault Duration (cyc) | Fault Duration (cyc) | Direction Determination | Pass/Fail |
+| ---------- | ------------------------ | -------------------- | ----------------------- | --------- |
+| 3-phase    | 10                       | 5                    | | |
+| 3-phase    | 10                       | 10                   | | |
+| 3-phase    | 10                       | 15                   | | |
+| 3-phase    | 10                       | Memory limit         | | |
+
+**Zero-Sequence Polarization Test**
+| Fault Type | Fault Resistance (Ω) | Direction Determination | Pass/Fail |
+| ---------- | -------------------- | ----------------------- | --------- |
+| A-G        | 0                    | | |
+| A-G        | 10                   | | |
+| A-G        | 50                   | | |
+
+**Loss of Potential Test**
+| Test Condition | Expected Response | Actual Response | Detection Time (ms) | Pass/Fail |
+| -------------- | ----------------- | --------------- | ------------------- | --------- |
+| 3-phase LOP    | Blocking          | | | |
+| Single-phase LOP | Alarming         | | | |
+```
+
+## Related Activities
+
+- [Impedance Testing](/docs/relay/distance/impedance)
+- [Directional Testing](/docs/relay/distance/directional)
+- [Zone Timing Tests](/docs/relay/distance/zone-timing)

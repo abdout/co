@@ -1,0 +1,106 @@
+# Coil Pickup
+
+## Overview
+
+Circuit breaker coil pickup testing is a critical procedure to verify the minimum voltage at which a breaker's trip or close coils will operate. This test ensures that the coil will function reliably under various grid conditions, particularly during undervoltage situations.
+
+## Required Equipment
+
+- DC Variable Power Supply (0-250V DC)
+- Digital Multimeter
+- Test Leads
+- Stopwatch/Timer
+- Personal Protective Equipment (PPE)
+- Clipboard with Test Sheet
+
+## Safety Precautions
+
+> **WARNING**: Ensure the circuit breaker is isolated from all power sources before beginning the test. Follow lockout/tagout procedures as per site safety protocols.
+
+1. Wear appropriate PPE including safety glasses and insulated gloves
+2. Verify circuit breaker is in the open position
+3. Ensure control circuit is de-energized and isolated
+4. Inform all personnel in the area that testing is in progress
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Review circuit breaker manufacturer specifications for:
+   - Rated coil voltage
+   - Minimum pickup voltage (typically 70-85% of rated voltage)
+   - Maximum dropout voltage (typically 30-60% of rated voltage)
+
+2. Disconnect all external control circuits from the breaker
+3. Connect the variable DC power supply to the trip/close coil terminals
+4. Set multimeter to DC voltage range and connect in parallel with the coil
+
+### 2. Trip Coil Pickup Test
+
+1. Slowly increase the voltage from zero
+2. Record the exact voltage at which the trip mechanism operates (pickup value)
+3. Reduce the voltage to zero
+4. Repeat the test three times to ensure consistency
+
+### 3. Close Coil Pickup Test
+
+1. Reset the breaker to the closed position (if applicable)
+2. Connect the DC supply to the close coil circuit
+3. Slowly increase the voltage from zero
+4. Record the exact voltage at which the close mechanism operates
+5. Reduce the voltage to zero
+6. Repeat the test three times to ensure consistency
+
+### 4. Dropout Voltage Test (Optional)
+
+1. Apply rated voltage to the coil
+2. Slowly reduce the voltage until the coil releases
+3. Record this dropout voltage
+4. Repeat three times for consistency
+
+## Acceptance Criteria
+
+| Parameter | Acceptable Range | Typical Values |
+| --------- | ---------------- | -------------- |
+| Trip Coil Pickup | 70-85% of rated voltage | 70-85V for 110V DC coil |
+| Close Coil Pickup | 70-85% of rated voltage | 70-85V for 110V DC coil |
+| Trip Coil Dropout | 30-60% of rated voltage | 30-60V for 110V DC coil |
+| Close Coil Dropout | 30-60% of rated voltage | 30-60V for 110V DC coil |
+
+## Troubleshooting
+
+If the coil pickup or dropout voltages are outside acceptable ranges:
+
+1. Check for mechanical binding in the trip or close mechanism
+2. Examine coil for signs of overheating or damage
+3. Measure coil resistance and compare to manufacturer specifications
+4. Check plunger movement for smooth operation
+5. Inspect auxiliary contacts for proper alignment
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Circuit Breaker ID: _______________
+- Manufacturer: _______________
+- Rated Coil Voltage: _______________
+- Test Date: _______________
+- Technician: _______________
+
+| Test | Trial 1 | Trial 2 | Trial 3 | Average | Pass/Fail |
+| ---- | ------- | ------- | ------- | ------- | --------- |
+| Trip Coil Pickup (V) | | | | | |
+| Close Coil Pickup (V) | | | | | |
+| Trip Coil Dropout (V) | | | | | |
+| Close Coil Dropout (V) | | | | | |
+```
+
+## Related Activities
+
+- [Contact Resistance Testing](/docs/component/circuit-breaker/contact-resist)
+- [Timing Open-Close Test](/docs/component/circuit-breaker/timing-open-close)
+- [Insulation Resistance Testing](/docs/component/circuit-breaker/ins-resist)
+- [SF6 Gas Pressure & Purity Test](/docs/component/circuit-breaker/sf6-gas-press-purity)
+- [Vacuum Integrity Testing](/docs/component/circuit-breaker/vacuum-integrity)
+- [Mechanical Operation Test](/docs/component/circuit-breaker/mech-operation)

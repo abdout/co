@@ -1,0 +1,245 @@
+# Insulation Resistance Testing for Power Transformers
+
+## Overview
+
+<p className="text-muted-foreground">
+Insulation resistance (IR) testing is a critical diagnostic procedure used to evaluate the condition of a power transformer's insulation system. This non-destructive test measures the resistance between windings and between windings and ground, helping to detect potential deterioration, contamination, or moisture ingress in the insulation. Regular IR testing is essential for predictive maintenance programs and can identify insulation issues before they result in catastrophic failure.
+</p>
+
+## Required Equipment
+
+- High Voltage Insulation Resistance Tester (Megger) with appropriate voltage range (typically 2500V, 5000V, or 10000V)
+- Test Leads suitable for high voltage applications
+- Discharge Rods with adequate voltage rating
+- Temperature Measurement Device
+- Calculator for temperature correction
+- Insulating Mats and Barriers
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+- Previous Test Records (if available)
+
+## Safety Precautions
+
+> **DANGER**: This test involves application of high DC voltage. Failure to follow proper safety procedures can result in serious injury or death.
+
+<p className="text-muted-foreground">
+1. Obtain necessary work permits and lockout/tagout authorizations
+2. Ensure the transformer is completely de-energized and isolated from all sources
+3. Properly ground all parts of the transformer not under test
+4. Verify test equipment is in good condition with no damaged insulation on leads
+5. Place warning signs and barriers around the work area
+6. Never touch the transformer terminals or test leads during testing
+7. Always discharge capacitive test objects after each measurement:
+   - Using the discharge function of the test equipment if available
+   - Using properly rated discharge rods
+   - Maintaining the discharge for at least 4 times the charging duration
+8. Follow the "five-point rule" before touching any conductor:
+   - Visibly isolated
+   - Locked out and tagged
+   - Tested for absence of voltage
+   - Grounded
+   - Barriers in place
+</p>
+
+## Test Procedure
+
+### 1. Preparation
+
+<p className="text-muted-foreground">
+1. Review transformer nameplate data and previous test results
+2. Select appropriate test voltage based on transformer rating:
+   | Winding Voltage Rating | Recommended Test Voltage |
+   | --------------------- | ------------------------ |
+   | < 1 kV                | 500V or 1000V           |
+   | 1 kV to 2.5 kV        | 1000V                   |
+   | 2.5 kV to 5 kV        | 2500V                   |
+   | 5 kV to 12 kV         | 5000V                   |
+   | > 12 kV               | 10000V                  |
+
+3. Measure and record ambient and transformer oil/winding temperatures
+4. Disconnect all external connections including:
+   - Bushings
+   - Surge arresters
+   - Capacitors
+   - Voltage transformers
+   - Current transformers (short secondary windings)
+   - Neutral grounding
+   - Tertiary connections
+
+5. Clean all bushings and ensure they are dry
+</p>
+
+### 2. Test Connections
+
+<p className="text-muted-foreground">
+Prepare for the following insulation resistance tests:
+
+1. High Voltage (HV) winding to ground with all other windings grounded
+2. Medium Voltage (MV) winding to ground with all other windings grounded
+3. Low Voltage (LV) winding to ground with all other windings grounded
+4. HV winding to LV winding (with MV and ground connected)
+5. HV winding to MV winding (with LV and ground connected)
+6. MV winding to LV winding (with HV and ground connected)
+</p>
+
+### 3. Insulation Resistance Measurement
+
+<p className="text-muted-foreground">
+For each test connection:
+
+1. Verify all connections are secure and proper
+2. Set the test voltage on the insulation resistance tester
+3. Apply the test voltage and maintain for 10 minutes
+4. Record readings at 30 seconds, 1 minute, and then at 1-minute intervals up to 10 minutes
+5. Calculate polarization index (PI):
+   - PI = 10-minute resistance value ÷ 1-minute resistance value
+6. Calculate dielectric absorption ratio (DAR):
+   - DAR = 60-second resistance value ÷ 30-second resistance value
+7. Thoroughly discharge the winding after each test before changing connections
+</p>
+
+### 4. Temperature Correction
+
+<p className="text-muted-foreground">
+1. Convert all measurements to a standard reference temperature (typically 20°C or 40°C):
+   - For oil-filled transformers: R₂₀ = Rₜ × Kₜ
+   - Where Kₜ is the temperature correction factor from standard tables
+</p>
+
+### 5. Core Insulation Test (if applicable)
+
+<p className="text-muted-foreground">
+1. Remove the core ground connection
+2. Measure insulation resistance between core and tank
+3. Reconnect the core ground connection after testing
+</p>
+
+## Acceptance Criteria
+
+| Parameter | Condition | Acceptable Values |
+| --------- | --------- | ----------------- |
+| Minimum IR Value | New transformers | > 1000 MΩ at 20°C |
+| | Transformers in service | > 500 MΩ at 20°C |
+| Polarization Index (PI) | Good insulation | > 2.0 |
+| | Questionable insulation | 1.25 - 2.0 |
+| | Poor insulation | < 1.25 |
+| Dielectric Absorption Ratio (DAR) | Good insulation | > 1.4 |
+| | Questionable insulation | 1.25 - 1.4 |
+| | Poor insulation | < 1.25 |
+| Pattern | General | Stable or increasing resistance over time |
+| Comparison | Between phases | Within 20% of each other |
+| | With previous tests | Less than 50% decrease |
+
+## Troubleshooting
+
+<p className="text-muted-foreground">
+If test results are outside acceptable limits:
+
+1. Check for moisture in the insulation:
+   - Verify oil quality and moisture content
+   - Check silica gel breather condition
+
+2. Verify for contamination:
+   - External contamination on bushings
+   - Internal contamination in oil or windings
+
+3. Look for possible thermal degradation:
+   - Review loading history
+   - Check for evidence of overheating
+
+4. Inspect for mechanical problems:
+   - Displacement of windings
+   - Loose connections
+
+5. Consider additional diagnostics:
+   - Dissolved gas analysis (DGA)
+   - Power factor testing
+   - Frequency response analysis
+</p>
+
+## Documentation
+
+<p className="text-muted-foreground">
+Record the following information:
+</p>
+
+```markdown
+# Transformer Insulation Resistance Test Report
+
+- Transformer ID: _______________
+- Location: _______________
+- Manufacturer: _______________
+- Serial Number: _______________
+- MVA Rating: _______________
+- Voltage Ratio: _______________
+- Cooling Type: _______________
+- Year of Manufacture: _______________
+- Insulation Type: _______________
+
+- Test Date: _______________
+- Ambient Temperature: _______________°C
+- Oil Temperature: _______________°C
+- Winding Temperature: _______________°C
+- Humidity: _______________%
+- Weather Conditions: _______________
+- Megger Make/Model: _______________
+- Technician: _______________
+
+## Test Results
+
+**Test Voltage: _______________ V**
+
+| Test Connection | 30 sec (MΩ) | 1 min (MΩ) | 2 min (MΩ) | 3 min (MΩ) | ... | 10 min (MΩ) | DAR | PI |
+|-----------------|-------------|------------|------------|------------|-----|-------------|-----|----| 
+| HV to Ground    |             |            |            |            |     |             |     |    |
+| MV to Ground    |             |            |            |            |     |             |     |    |
+| LV to Ground    |             |            |            |            |     |             |     |    |
+| HV to LV        |             |            |            |            |     |             |     |    |
+| HV to MV        |             |            |            |            |     |             |     |    |
+| MV to LV        |             |            |            |            |     |             |     |    |
+| Core to Ground  |             |            |            |            |     |             |     |    |
+
+## Temperature Corrected Values (20°C)
+
+| Test Connection | 1 min (MΩ) | 10 min (MΩ) | DAR | PI |
+|-----------------|------------|-------------|-----|----| 
+| HV to Ground    |            |             |     |    |
+| MV to Ground    |            |             |     |    |
+| LV to Ground    |            |             |     |    |
+| HV to LV        |            |             |     |    |
+| HV to MV        |            |             |     |    |
+| MV to LV        |            |             |     |    |
+| Core to Ground  |            |             |     |    |
+
+## Comparison with Previous Results
+
+| Test Connection | Current (MΩ) | Previous (MΩ) | Date of Previous | % Change |
+|-----------------|--------------|---------------|------------------|----------| 
+| HV to Ground    |              |               |                  |          |
+| MV to Ground    |              |               |                  |          |
+| LV to Ground    |              |               |                  |          |
+| HV to LV        |              |               |                  |          |
+| HV to MV        |              |               |                  |          |
+| MV to LV        |              |               |                  |          |
+| Core to Ground  |              |               |                  |          |
+
+## Observations and Recommendations:
+
+_____________________________________________________
+_____________________________________________________
+_____________________________________________________
+
+## Pass/Fail Status:
+□ Pass   □ Conditional Pass   □ Fail
+
+Signature: _____________________
+```
+
+## Related Activities
+
+- [Turns Ratio Testing](/docs/transformer/power-transformer/turns-ratio)
+- [Winding Resistance Testing](/docs/transformer/power-transformer/winding-resist)
+- [Power Factor Testing](/docs/transformer/power-transformer/power-factor)
+- [Dielectric Absorption Testing](/docs/transformer/power-transformer/diel-absorption)
+- [Dissolved Gas Analysis](/docs/transformer/power-transformer/dga)
+- [Oil Testing](/docs/transformer/power-transformer/oil-testing)

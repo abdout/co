@@ -1,0 +1,178 @@
+# Zone Timing Tests for Distance Relays
+
+## Overview
+
+Zone timing testing is crucial for verifying that distance relays operate within the specified time delays for each protection zone. This ensures proper coordination with other protection devices in the power system, preventing unnecessary outages while maintaining fast clearing times for faults within the primary protection zone.
+
+## Required Equipment
+
+- Multi-phase Relay Test Set with timing test capability
+- Test Leads and Connection Cables
+- Distance Relay Setting Sheets and Drawings
+- Laptop with Relay Test Software (if applicable)
+- High-precision Timer (if not integrated in test set)
+- Personal Protective Equipment (PPE)
+- Test Record Forms
+
+## Safety Precautions
+
+> **WARNING**: Testing protection relays can cause inadvertent circuit breaker operations. Always follow isolation procedures to prevent unwanted tripping during testing.
+
+1. Obtain necessary work permits and authorizations
+2. Block relay trip outputs to circuit breakers or inform system operators
+3. Disable auto-reclosing schemes during testing
+4. Use appropriate PPE
+5. Verify test equipment is properly grounded
+
+## Test Procedure
+
+### 1. Preparation
+
+1. Obtain and review:
+   - Relay settings documentation, particularly time delay settings
+   - Protection coordination studies
+   - Manufacturer's instruction manual
+   - Previous test results (if available)
+
+2. Record the expected operating times for each zone:
+   - Zone 1: Typically instantaneous (no intentional time delay)
+   - Zone 2: Typically 0.2 to 0.5 seconds
+   - Zone 3: Typically 0.6 to 1.0 seconds
+   - Zone 4: As per specific settings (if applicable)
+
+3. Prepare test points that are clearly within each zone (typically 80% of the zone reach)
+
+### 2. Connection
+
+1. Isolate the relay from the CT and VT circuits
+2. Connect the test set to the relay:
+   - Voltage outputs to relay voltage inputs
+   - Current outputs to relay current inputs
+   - Binary inputs to relay trip contacts for timing measurement
+
+3. Verify connections before applying test signals
+
+### 3. Zone Timing Tests
+
+#### 3.1 Zone 1 Timing Test
+
+1. Configure the test set to apply a fault at approximately 80% of Zone 1 reach:
+   - Set appropriate voltage and current magnitudes
+   - Apply the test values instantaneously (state-based test)
+   - Set timer to start when fault is applied and stop on relay trip contact
+
+2. Run the test 3-5 times to verify consistency
+3. Record all operating times
+4. Calculate the average operating time
+
+#### 3.2 Zone 2 Timing Test
+
+1. Configure the test set to apply a fault at approximately 80% of Zone 2 reach (but outside Zone 1):
+   - Set appropriate voltage and current magnitudes
+   - Apply the test values instantaneously
+   - Set timer to start when fault is applied and stop on relay trip contact
+
+2. Run the test 3-5 times to verify consistency
+3. Record all operating times
+4. Calculate the average operating time
+5. Verify the time delay matches the Zone 2 time setting
+
+#### 3.3 Zone 3 Timing Test
+
+1. Configure the test set to apply a fault at approximately 80% of Zone 3 reach (but outside Zone 2):
+   - Set appropriate voltage and current magnitudes
+   - Apply the test values instantaneously
+   - Set timer to start when fault is applied and stop on relay trip contact
+
+2. Run the test 3-5 times to verify consistency
+3. Record all operating times
+4. Calculate the average operating time
+5. Verify the time delay matches the Zone 3 time setting
+
+### 4. Dynamic Zone Coordination Test
+
+1. Configure a dynamic test that simulates a fault evolving from Zone 3 to Zone 2 to Zone 1:
+   - Start with a fault in Zone 3
+   - After Zone 3 time delay minus 50ms, move the fault to Zone 2
+   - After Zone 2 time delay minus 50ms, move the fault to Zone 1
+
+2. Verify that the relay:
+   - Initiates tripping only when the last transition occurs (Zone 1)
+   - Does not prematurely operate at Zone 3 or Zone 2 time
+
+### 5. Timer Reset Test (if applicable)
+
+1. Apply a fault in Zone 2 or Zone 3
+2. Remove the fault before the time delay expires
+3. Verify that the timer resets correctly
+4. Determine the minimum time required for timer reset
+
+## Acceptance Criteria
+
+| Zone | Operating Time Criteria |
+| ---- | ----------------------- |
+| Zone 1 | <50ms (typical) or as per manufacturer specifications |
+| Zone 2 | Set time ±5% (typically 200-500ms) |
+| Zone 3 | Set time ±5% (typically 600-1000ms) |
+| Timer Reset | Reset time as per manufacturer specifications |
+
+## Troubleshooting
+
+If timing test results show discrepancies:
+
+1. Verify the time delay settings in the relay match the test plan
+2. Check for any additional supervision elements that might affect operation
+3. Ensure that the test fault is clearly within the intended zone
+4. For digital relays, verify the timer coordination settings
+5. For electromechanical relays, check for mechanical issues affecting timing elements
+6. Verify that the timer start/stop connections to the test set are correct
+
+## Documentation
+
+Record the following information:
+
+```markdown
+- Relay ID: _______________
+- Manufacturer/Model: _______________
+- Location/Line: _______________
+- Test Date: _______________
+- Technician: _______________
+
+**Zone Time Delay Settings**
+| Zone | Time Delay Setting (ms) |
+| ---- | ----------------------- |
+| Z1   | |
+| Z2   | |
+| Z3   | |
+| Z4   | |
+
+**Zone Timing Test Results**
+| Zone | Test | Operating Time (ms) | Average (ms) | Expected (ms) | Deviation (%) | Pass/Fail |
+| ---- | ---- | ------------------- | ------------ | ------------- | ------------- | --------- |
+| Z1   | 1    | | | | | |
+| Z1   | 2    | | | | | |
+| Z1   | 3    | | | | | |
+| Z2   | 1    | | | | | |
+| Z2   | 2    | | | | | |
+| Z2   | 3    | | | | | |
+| Z3   | 1    | | | | | |
+| Z3   | 2    | | | | | |
+| Z3   | 3    | | | | | |
+
+**Timer Reset Test**
+| Zone | Applied Time (ms) | Reset Time (ms) | Pass/Fail |
+| ---- | ----------------- | --------------- | --------- |
+| Z2   | | | |
+| Z3   | | | |
+
+**Dynamic Zone Coordination Test**
+| Test Scenario | Expected Result | Actual Result | Pass/Fail |
+| ------------- | --------------- | ------------- | --------- |
+| Z3→Z2→Z1      | Operation in Z1 | | |
+```
+
+## Related Activities
+
+- [Impedance Testing](/docs/relay/distance/impedance)
+- [Directional Testing](/docs/relay/distance/directional)
+- [Polarization Tests](/docs/relay/distance/polarization)
