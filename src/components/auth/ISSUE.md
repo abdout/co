@@ -37,6 +37,21 @@
   - **Solution**: Added try/catch block with improved logging in the Facebook profile function
   - **Status**: Completed
 
+- [ ] Remove Facebook auth URL hash fragment (#_=_)
+  - **Root Cause**: Facebook appends #_=_ to redirect URLs after successful authentication
+  - **Solution**: 
+    1. Add client-side code to clean URL on successful redirect
+    2. Create a custom callback handler that removes the fragment
+  - **Status**: New issue - Needs implementation
+
+- [ ] Google OAuth redirect_uri_mismatch error (400)
+  - **Root Cause**: Redirect URI in Google Cloud Console doesn't match the callback URL used by the application
+  - **Solution**: 
+    1. Register `https://co.databayt.org/api/auth/callback/google` in Google Cloud Console
+    2. Verify the exact redirect URI is allowed in OAuth configuration
+    3. Check if there are any environment variables with incorrect URIs
+  - **Status**: New issue - Needs investigation
+
 ### Medium Priority
 - [x] Improve debugging for OAuth authentication
   - **Solution**: Added comprehensive logging in the auth callbacks
@@ -100,6 +115,51 @@ When encountering 500 errors with Facebook OAuth, check:
 5. **Debug Routes**: Use the provided debug endpoints:
    - `/api/auth/debug/facebook` - Check Facebook auth configuration
    - Monitor Vercel deployment logs for Prisma or authentication errors
+
+## Debugging Google OAuth Errors
+
+When encountering Google OAuth errors, check:
+
+1. **Redirect URI Configuration**: Ensure the exact callback URL is registered in Google Cloud Console:
+   - Required URL: `https://co.databayt.org/api/auth/callback/google`
+   - No trailing slashes or additional parameters
+   - Must match exactly what's in the OAuth consent screen configuration
+
+2. **Environment Variables**: Check that `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are correctly set.
+
+3. **Application Settings**: Verify your OAuth consent screen is properly configured:
+   - Application should be verified (or in testing with test users added)
+   - Required scopes (email, profile) are configured
+   - Authorized domains include your application domain
+
+4. **Debug Routes**: Create a debug endpoint for Google OAuth similar to the Facebook one:
+   ```typescript
+   // src/app/api/auth/debug/google/route.ts
+   import { NextResponse } from "next/server";
+
+   export async function GET() {
+     const baseUrl = process.env.NEXTAUTH_URL || 
+                   process.env.VERCEL_URL || 
+                   "http://localhost:3000";
+     
+     const expectedCallbackUrl = `${baseUrl}/api/auth/callback/google`;
+     
+     return NextResponse.json({
+       status: "ok",
+       configuration: {
+         clientId: process.env.GOOGLE_CLIENT_ID ? "Set" : "Not set",
+         clientSecret: process.env.GOOGLE_CLIENT_SECRET ? "Set" : "Not set",
+         expectedCallbackUrl,
+         baseUrl,
+       }
+     });
+   }
+   ```
+
+5. **Common Errors**:
+   - `redirect_uri_mismatch`: The redirect URI in the request doesn't match any registered URIs
+   - `invalid_client`: Client ID or secret is incorrect
+   - `access_denied`: User denied permission or app is not properly configured
 
 ## Planned Enhancements
 

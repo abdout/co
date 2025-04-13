@@ -100,11 +100,6 @@ This project implements a modular, reusable authentication system that can be in
   - Scopes: email, profile, offline access
 - **Facebook** - Facebook OAuth provider
   - Scopes: email, public_profile
-  - Configuration:
-    1. Callback URL must be exact: `https://yourdomain.com/api/auth/callback/facebook`
-    2. App must be in "Live" mode
-    3. Facebook Login product must be added to app
-    4. Permissions must include email and public_profile
 
 ### Email Services
 - **Resend** - Email delivery for verification and password reset
@@ -119,24 +114,16 @@ This project implements a modular, reusable authentication system that can be in
 - **Issue**: Facebook OAuth may redirect to error page
 - **Cause**: Misconfigured callback URLs or incorrect client ID/secret
 - **Solution**: 
-  1. Ensure callback URL in Facebook Developer Console matches exactly `https://yourdomain.com/api/auth/callback/facebook`
+  1. Ensure callback URL in Facebook Developer Console matches `http://localhost:3000/api/auth/callback/facebook`
   2. Use only one set of credentials (prefer `.env.local` for development)
   3. Add proper error handling to the profile mapping function
-  4. Configure Next.js correctly for Vercel deployment
-  5. Use simplified profile handler in auth.config.ts
-
-### Vercel Deployment
-- **Issue**: Prisma engine errors on Vercel
-- **Solution**:
-  1. Configure schema.prisma with `binaryTargets = ["native", "rhel-openssl-3.0.x"]`
-  2. Set up proper next.config.js with externals for Prisma
-  3. Use eslint and typescript bypass for production builds
-  4. Create vercel-build.js script that properly runs prisma generate
 
 ### Environment Variables
 - Facebook and Google OAuth require properly configured environment variables
 - The app uses both `.env` and `.env.local` files, with `.env.local` taking precedence
-- For Vercel deployments, add `NEXTAUTH_URL` with your production domain
+- Current Facebook app IDs:
+  - `.env`: 1798287087385367
+  - `.env.local`: 1985407775320438 (prioritized)
 
 ## Implementation Guidelines
 
@@ -154,8 +141,6 @@ This project implements a modular, reusable authentication system that can be in
 - Check the network tab for failed OAuth redirects
 - Verify callback URLs match exactly with provider settings
 - Monitor server logs for authentication errors
-- Use custom debug routes to check environment configuration:
-  - `/api/auth/debug/facebook` - Verify Facebook OAuth settings
 
 ## Documentation References
 - Auth.js: https://authjs.dev/
