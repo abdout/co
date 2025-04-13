@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import { notFound } from 'next/navigation'
-import { MDXRemote } from 'next-mdx-remote/rsc'
 import { sidebarData } from '@/components/docs/constant'
 
 // Helper function to convert a string to a slug
@@ -23,9 +22,15 @@ async function getDocContent(slugs: string[] = []) {
     // If no slugs provided, show the index page
     if (slugs.length === 0) {
       const indexPath = path.join(process.cwd(), 'content', 'docs', 'index.mdx')
+      console.log(`Checking for index file at: ${indexPath}`)
+      
       if (fs.existsSync(indexPath)) {
+        console.log('Index file found, reading content')
         return fs.readFileSync(indexPath, 'utf8')
       }
+      
+      // Log the failure to find the index file
+      console.log('Index file not found, returning fallback content')
       
       // Fallback content if index.mdx doesn't exist
       return `
@@ -33,44 +38,6 @@ async function getDocContent(slugs: string[] = []) {
 
 Welcome to the documentation. Please select a topic from the sidebar.
       `
-    }
-
-    // ******* Extended debugging for ins-resist path *******
-    const isTargetPath = slugs.join('/') === 'transformer/power-transformer/ins-resist'
-    if (isTargetPath) {
-      console.log('DEBUGGING TARGET PATH: transformer/power-transformer/ins-resist')
-      
-      // Check if the content directory exists
-      const contentDir = path.join(process.cwd(), 'content')
-      console.log(`Content directory exists: ${fs.existsSync(contentDir)}`)
-      
-      // Check if the docs directory exists
-      const docsDir = path.join(contentDir, 'docs')
-      console.log(`Docs directory exists: ${fs.existsSync(docsDir)}`)
-      
-      // Check if transformer dir exists
-      const transformerDir = path.join(docsDir, 'transformer')
-      console.log(`Transformer directory exists: ${fs.existsSync(transformerDir)}`)
-      
-      if (fs.existsSync(transformerDir)) {
-        // List files in transformer dir
-        console.log('Files in transformer directory:')
-        fs.readdirSync(transformerDir).forEach(file => {
-          console.log(`- ${file}`)
-        })
-        
-        // Check power-transformer dir
-        const powerTransformerDir = path.join(transformerDir, 'power-transformer')
-        console.log(`Power-transformer directory exists: ${fs.existsSync(powerTransformerDir)}`)
-        
-        if (fs.existsSync(powerTransformerDir)) {
-          // List files in power-transformer dir
-          console.log('Files in power-transformer directory:')
-          fs.readdirSync(powerTransformerDir).forEach(file => {
-            console.log(`- ${file}`)
-          })
-        }
-      }
     }
     
     // Try multiple possible paths
@@ -112,7 +79,7 @@ Welcome to the documentation. Please select a topic from the sidebar.
     possiblePaths.forEach(p => console.log(`- ${p}`))
     
     // Last resort: scan the entire docs directory for a file with a similar name
-    if (isTargetPath) {
+    if (slugs.join('/') === 'transformer/power-transformer/ins-resist') {
       console.log('Attempting to find similar files in docs directory...')
       const similarFiles = findSimilarFiles(path.join(process.cwd(), 'content', 'docs'), 'ins-resist')
       console.log('Possible similar files:')
@@ -230,38 +197,77 @@ export async function generateStaticParams() {
   return paths
 }
 
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypeSanitize from 'rehype-sanitize'
+
+// Process markdown content to HTML
+async function processMarkdown(content: string) {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeSanitize)
+    .use(rehypeStringify)
+    .process(content)
+  
+  return String(file)
+}
+
 export default async function DocPage({ params }: { params: { slug?: string[] } }) {
-  // Await the params to fix the error
-  const slugs = await readParams(params)
-  
-  // Log the requested path for debugging
-  console.log(`Requested path: /docs/${slugs.join('/')}`)
-  
-  const content = await getDocContent(slugs)
-  
-  if (!content) {
-    console.log('Content not found, returning 404')
+  try {
+    // Await the params to fix the error
+    const slugs = await readParams(params)
+    
+    // Log the requested path for debugging
+    console.log(`Requested path: /docs/${slugs.join('/')}`)
+    
+    const content = await getDocContent(slugs)
+    
+    if (!content) {
+      console.log('Content not found, returning 404')
+      return (
+        <div className="py-8 px-4 mx-auto max-w-screen-md text-center">
+          <h1 className="mb-4 text-3xl font-bold tracking-tight">Page Not Found</h1>
+          <p className="mb-8 font-light text-gray-500 sm:text-xl">
+            The documentation page you're looking for doesn't exist yet.
+          </p>
+          <p className="mb-4">
+            Looking for: <code className="bg-gray-100 p-1 rounded">/docs/{slugs.join('/')}</code>
+          </p>
+          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
+            <a href="/docs" className="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
+              Documentation Home
+            </a>
+          </div>
+        </div>
+      )
+    }
+    
+    // Process the markdown content to HTML
+    const htmlContent = await processMarkdown(content)
+    
+    // Render the processed HTML content
+    return (
+      <div className="prose prose-blue max-w-none px-4 py-8">
+        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+      </div>
+    )
+  } catch (error) {
+    console.error('Error rendering documentation page:', error)
     return (
       <div className="py-8 px-4 mx-auto max-w-screen-md text-center">
-        <h1 className="mb-4 text-3xl font-bold tracking-tight">Page Not Found</h1>
+        <h1 className="mb-4 text-3xl font-bold tracking-tight">Error Loading Documentation</h1>
         <p className="mb-8 font-light text-gray-500 sm:text-xl">
-          The documentation page you're looking for doesn't exist yet.
-        </p>
-        <p className="mb-4">
-          Looking for: <code className="bg-gray-100 p-1 rounded">/docs/{slugs.join('/')}</code>
+          There was an error loading this documentation page. Please try again later.
         </p>
         <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
-          <a href="/docs" className="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Documentation Home
+          <a href="/" className="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Return to Home
           </a>
         </div>
       </div>
     )
   }
-  
-  return (
-    <div className="prose prose-blue max-w-none px-4 py-8">
-      <MDXRemote source={content} />
-    </div>
-  )
 } 
