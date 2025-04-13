@@ -99,3 +99,26 @@ To extend this authentication module:
 - Ensure all environment variables are properly set
 - Check callback URLs in provider consoles match your application
 - For Facebook OAuth specifically, verify the app domain and callback URLs are configured correctly
+
+## Vercel Deployment Notes
+When deploying to Vercel, ensure:
+
+1. **Environment Variables**:
+   - Set `NEXTAUTH_URL` to your production URL (`https://yourdomain.com`)
+   - Configure all OAuth provider credentials in Vercel environment settings
+   - Add `NODE_ENV=production` to environment variables
+
+2. **Facebook OAuth Configuration**:
+   - Callback URL in Facebook Developer Console must exactly match: `https://yourdomain.com/api/auth/callback/facebook`
+   - App must be in "Live" mode, not "Development Mode"
+   - "Facebook Login" product must be added to your app with proper permissions
+
+3. **Build Configuration**:
+   - Use the provided `next.config.js` with proper Prisma configuration
+   - Make sure `vercel-build.js` is correctly set up to generate Prisma client
+   - Verify your `schema.prisma` has `binaryTargets = ["native", "rhel-openssl-3.0.x"]`
+
+4. **Error Handling**:
+   - For debugging authentication issues, check `/api/auth/debug/facebook` endpoint
+   - Review server logs in Vercel dashboard for detailed error information
+   - Ensure API routes have proper error handling to provide useful error messages
