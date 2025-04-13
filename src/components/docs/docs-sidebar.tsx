@@ -36,13 +36,13 @@ function toSlug(text: string): string {
 export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar 
-      className="[&_[data-sidebar=rail]]:hidden border-none pt-14" 
+      className="[&_[data-sidebar=rail]]:hidden border-none pt-14 " 
       {...props}
     >
-      <SidebarContent className="px-2 pt-4">
+      <SidebarContent className="px-2 pt-8">
         <SidebarGroup>
           <SidebarGroupContent>
-            <ScrollArea className="h-[calc(100vh-6rem)]">
+            <ScrollArea className="h-[calc(100vh-7rem)]">
               <SidebarMenu>
                 {sidebarData.map((itemData, index) => (
                   <ItemTree key={index} itemData={itemData} />
