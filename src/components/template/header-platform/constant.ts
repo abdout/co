@@ -176,7 +176,7 @@ export const marketingConfig: MarketingConfig = {
     },
     {
       title: "Wallet",
-      href: "/wallet",
+      href: "/wallet/timesheet",
     },
   ],
 }

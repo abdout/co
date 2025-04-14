@@ -1,0 +1,148 @@
+// import { buttonVariants } from '@/components/ui/button'
+// import { cn } from '@/lib/utils'
+// import Link from 'next/link'
+'use client';
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { MainNav } from './main-nav'
+import { marketingConfig } from './constant'
+import { ModeSwitcher } from './mode-switcher'
+import { CommandMenu } from '../header-shadcn/command-menu'
+import { UserButton } from '../../auth/user-button'
+import { cn } from '@/lib/utils'
+import { Icons } from './icons'
+import { buttonVariants } from '@/components/ui/button'
+import { siteConfig } from './constant'
+import { usePathname } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
+import { MainNavItem } from './type'
+
+// Helper to generate secondary navigation items based on section
+const getSecondaryNavItems = (section: 'project' | 'resource' | 'wallet' | null, projectId?: string): MainNavItem[] => {
+  if (section === 'project' && projectId) {
+    return [
+      { title: "Detail", href: `/project/${projectId}` },
+      { title: "ITP", href: `/project/${projectId}/itp` },
+      { title: "MOS", href: `/project/${projectId}/mos` },
+      { title: "Plan", href: `/project/${projectId}/plan` },
+      { title: "Report", href: `/project/${projectId}/report` },
+      { title: "Docs", href: `/project/${projectId}/doc` },
+      { title: "Quote", href: `/project/${projectId}/quote` },
+    ];
+  } else if (section === 'resource') {
+    return [
+      { title: "IT Asset", href: `/resource/it-asset` },
+      { title: "Inventory", href: `/resource/inventory` },
+      { title: "Purchase", href: `/resource/purchase` },
+      { title: "Services", href: `/resource/services` },
+    ];
+  } else if (section === 'wallet') {
+    return [
+      { title: "Timesheet", href: `/wallet/timesheet` },
+      { title: "Pettycash", href: `/wallet/pettycash` },
+      { title: "Invoice", href: `/wallet/invoice` },
+      { title: "Salary", href: `/wallet/salary` },
+    ];
+  }
+  
+  return [];
+};
+
+const PlatformHeader = () => {
+  const [activeSection, setActiveSection] = useState<'project' | 'resource' | 'wallet' | null>(null);
+  const [projectId, setProjectId] = useState<string | undefined>(undefined);
+  const pathname = usePathname();
+
+  // Handle section changes from MainNav
+  const handleSectionChange = (section: 'project' | 'resource' | 'wallet' | null, id?: string) => {
+    setActiveSection(section);
+    setProjectId(id);
+  };
+
+  // Handle back button click
+  const handleBackClick = () => {
+    setActiveSection(null);
+    setProjectId(undefined);
+  };
+
+  // Get the current navigation items based on active section
+  const navItems = activeSection 
+    ? getSecondaryNavItems(activeSection, projectId) 
+    : marketingConfig.mainNav;
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
+      <div className="container flex h-14 max-w-screen-2xl items-center">
+        {/* 1. Logo + Name Section (always visible) */}
+        <div className="flex items-center mr-6">
+          <Link href="/platform" className="flex items-center space-x-2">
+            <Icons.logo className="h-6 w-6" />
+            <span className="hidden font-bold lg:inline-block">
+              {siteConfig.name}
+            </span>
+          </Link>
+        </div>
+        
+        {/* 2. Navigation Links Section (swappable) */}
+        <div className="flex flex-1 items-center">
+          {/* Back arrow when in a section */}
+          {activeSection && (
+            <button 
+              onClick={handleBackClick}
+              className="mr-4 flex items-center text-sm text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span>Back</span>
+            </button>
+          )}
+          
+          {/* Navigation items */}
+          <div className="hidden md:flex">
+            <nav className="flex items-center gap-4 text-sm font-medium lg:gap-6">
+              {navItems.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.disabled ? "#" : item.href}
+                  className={cn(
+                    "transition-colors hover:text-foreground/80",
+                    pathname === item.href || pathname.startsWith(item.href)
+                      ? "text-foreground"
+                      : "text-foreground/60",
+                    item.disabled && "cursor-not-allowed opacity-80"
+                  )}
+                >
+                  {item.title}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          
+          {/* Mobile menu button */}
+          <button
+            className="flex items-center space-x-2 md:hidden"
+            onClick={() => {}}
+          >
+            <Icons.logo className="h-5 w-5" />
+            <span className="font-medium text-sm">Menu</span>
+          </button>
+        </div>
+        
+        {/* 3. Command + Avatar + Theme Mode Section (always visible) */}
+        <div className="flex items-center space-x-2">
+          <CommandMenu />
+          <div className={cn(
+            buttonVariants({
+              variant: "ghost",
+            }),
+            "h-8 w-8 px-0"
+          )}>
+            <UserButton />
+          </div>
+          <ModeSwitcher />
+        </div>
+      </div>
+    </header>
+  )
+}
+
+export default PlatformHeader

@@ -2,9 +2,11 @@ import React from "react";
 
 const Loading: React.FC = () => {
   return (
-    <div className="fixed inset-0 flex justify-center items-center">
-      <div className="w-8 h-8 md:w-12 md:h-12 rounded-full border-4 border-neutral-200 border-t-neutral-700 animate-spin" />
-    </div>
+    <div className="container px-8 py-28  min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin mb-3"></div>
+        </div>
+      </div>
   );
 };
 
