@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ChevronRight, File, Folder } from "lucide-react"
-import { sidebarData } from "./constant"
 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
@@ -16,27 +16,19 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
 } from "@/components/ui/sidebar"
-import Link from "next/link"
-
-// Helper function to convert a string to a slug
-function toSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-}
+import { cn } from "@/lib/utils"
+import { sidebarNav } from "@/components/docs/constant"
+import { SidebarNavItem } from "@/components/docs/type"
 
 export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar 
-      className="[&_[data-sidebar=rail]]:hidden border-none pt-14 " 
+      className="[&_[data-sidebar=rail]]:hidden border-none pt-14" 
       {...props}
     >
       <SidebarContent className="px-2 pt-8">
@@ -44,8 +36,8 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
           <SidebarGroupContent>
             <ScrollArea className="h-[calc(100vh-7rem)]">
               <SidebarMenu>
-                {sidebarData.map((itemData, index) => (
-                  <ItemTree key={index} itemData={itemData} />
+                {sidebarNav.map((category, index) => (
+                  <CategoryItem key={index} category={category} />
                 ))}
               </SidebarMenu>
             </ScrollArea>
@@ -56,107 +48,44 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
   )
 }
 
-// Main item tree component (top level items)
-function ItemTree({ itemData }: { itemData: { item: string; subitems: any[] } }) {
+// Category item component (top level)
+function CategoryItem({ category }: { category: SidebarNavItem }) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const itemSlug = toSlug(itemData.item)
+  const pathname = usePathname()
   
   return (
     <SidebarMenuItem>
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="group/collapsible [&[data-state=open]>div>svg:first-child]:rotate-90"
-      >
-        <div className="flex w-full">
-          <SidebarMenuButton onClick={() => setIsOpen(!isOpen)}>
-            <ChevronRight className="transition-transform" />
-            <Folder />
-            {itemData.item}
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton className="w-[89%] text-base">
+            <ChevronRight 
+              className={cn(
+                "h-6 w-6 shrink-0 transition-transform duration-200",
+                isOpen && "rotate-90 text-primary"
+              )}
+            />
+            <span className={cn("", isOpen && "text-primary")}>{category.title}</span>
           </SidebarMenuButton>
-        </div>
+        </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {itemData.subitems.map((subitem, index) => (
-              <SubItemTree 
-                key={index} 
-                subItemData={subitem} 
-                parentSlug={itemSlug} 
-              />
+            {category.items?.map((item, index) => (
+              <Link 
+                key={index}
+                href={item.href || "#"}
+                className={cn(
+                  "flex w-[97%] items-center ml-1",
+                  pathname === item.href && "text-primary"
+                )}
+              >
+                <SidebarMenuButton className="data-[active=true]:bg-transparent">
+                  {item.title}
+                </SidebarMenuButton>
+              </Link>
             ))}
           </SidebarMenuSub>
         </CollapsibleContent>
       </Collapsible>
     </SidebarMenuItem>
-  )
-}
-
-// Subitem tree component (second level items)
-function SubItemTree({ 
-  subItemData, 
-  parentSlug 
-}: { 
-  subItemData: { name: string; activities: string[] };
-  parentSlug: string;
-}) {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const subitemSlug = toSlug(subItemData.name)
-  
-  return (
-    <SidebarMenuItem>
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="group/collapsible [&[data-state=open]>div>svg:first-child]:rotate-90"
-      >
-        <div className="flex w-full">
-          <SidebarMenuButton onClick={() => setIsOpen(!isOpen)}>
-            <ChevronRight className="transition-transform" />
-            <Folder />
-            {subItemData.name}
-          </SidebarMenuButton>
-        </div>
-        <CollapsibleContent>
-          <SidebarMenuSub>
-            {subItemData.activities.map((activity, index) => (
-              <ActivityItem 
-                key={index} 
-                activity={activity} 
-                parentSlug={parentSlug}
-                subitemSlug={subitemSlug}
-              />
-            ))}
-          </SidebarMenuSub>
-        </CollapsibleContent>
-      </Collapsible>
-    </SidebarMenuItem>
-  )
-}
-
-// Activity item component (file level items)
-function ActivityItem({ 
-  activity,
-  parentSlug,
-  subitemSlug
-}: { 
-  activity: string;
-  parentSlug: string;
-  subitemSlug: string;
-}) {
-  const router = useRouter()
-  const activitySlug = toSlug(activity)
-  
-  const handleActivityClick = () => {
-    router.push(`/docs/${parentSlug}/${subitemSlug}/${activitySlug}`)
-  }
-  
-  return (
-    <SidebarMenuButton
-      onClick={handleActivityClick}
-      className="data-[active=true]:bg-transparent"
-    >
-      <File />
-      {activity}
-    </SidebarMenuButton>
   )
 }

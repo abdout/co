@@ -1,273 +1,147 @@
-import fs from 'fs'
-import path from 'path'
-import { notFound } from 'next/navigation'
-import { sidebarData } from '@/components/docs/constant'
+import { notFound } from "next/navigation"
+import { Metadata } from "next"
+import fs from "fs"
+import path from "path"
+import matter from "gray-matter"
+import { MDXContent } from 'mdx/types'
+import { components } from "@/components/mdx-components"
 
-// Helper function to convert a string to a slug
-function toSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
+import { DocsPager } from "@/components/pager"
+import { TableOfContents } from "@/components/toc"
+import { getTableOfContents } from "@/lib/toc"
+
+interface DocPageProps {
+  params: {
+    slug: string[]
+  }
 }
 
-// Function to safely read params
-async function readParams(params: any) {
-  return params?.slug || []
-}
-
-// Function to get content based on slug path
-async function getDocContent(slugs: string[] = []) {
+async function getDocFromParams(params: DocPageProps["params"]) {
   try {
-    // If no slugs provided, show the index page
-    if (slugs.length === 0) {
-      const indexPath = path.join(process.cwd(), 'content', 'docs', 'index.mdx')
-      console.log(`Checking for index file at: ${indexPath}`)
-      
-      if (fs.existsSync(indexPath)) {
-        console.log('Index file found, reading content')
-        return fs.readFileSync(indexPath, 'utf8')
-      }
-      
-      // Log the failure to find the index file
-      console.log('Index file not found, returning fallback content')
-      
-      // Fallback content if index.mdx doesn't exist
-      return `
-# Documentation
+    const slug = params?.slug?.join("/") || "index"
+    const filePath = path.join(process.cwd(), 'content/docs', `${slug}.mdx`)
+    const indexPath = path.join(process.cwd(), 'content/docs', slug, 'index.mdx')
+    
+    let targetPath = filePath
+    if (!fs.existsSync(filePath) && fs.existsSync(indexPath)) {
+      targetPath = indexPath
+    }
+    
+    if (!fs.existsSync(targetPath)) {
+      return null
+    }
 
-Welcome to the documentation. Please select a topic from the sidebar.
-      `
-    }
-    
-    // Try multiple possible paths
-    const possiblePaths = [
-      // Path 1: Exact path with .mdx extension
-      path.join(process.cwd(), 'content', 'docs', ...slugs) + '.mdx',
-      
-      // Path 2: Directory path with index.mdx
-      path.join(process.cwd(), 'content', 'docs', ...slugs, 'index.mdx'),
-      
-      // Path 3: Try with hyphens between slugs (common issue)
-      path.join(process.cwd(), 'content', 'docs', slugs.join('-')) + '.mdx',
-      
-      // Path 4: Try with underscores between slugs
-      path.join(process.cwd(), 'content', 'docs', slugs.join('_')) + '.mdx',
-      
-      // Path 5: Try with the first slug as directory and remaining as filename
-      ...(slugs.length > 1 
-        ? [path.join(process.cwd(), 'content', 'docs', slugs[0], slugs.slice(1).join('-') + '.mdx')]
-        : []),
-        
-      // Path 6: Try with different case (some filesystems are case sensitive)
-      path.join(process.cwd(), 'content', 'docs', ...slugs.map(s => s.toLowerCase())) + '.mdx',
-      
-      // Path 7: Try based on common slug format from sidebarData
-      ...getPathsFromSidebar(slugs)
-    ]
+    const fileContents = fs.readFileSync(targetPath, 'utf8')
+    const { data: frontMatter, content } = matter(fileContents)
 
-    // Check each possible path
-    for (const filePath of possiblePaths) {
-      if (fs.existsSync(filePath)) {
-        console.log(`Found file at: ${filePath}`)
-        return fs.readFileSync(filePath, 'utf8')
-      }
+    return {
+      title: frontMatter.title,
+      description: frontMatter.description,
+      slug: slug,
+      content: content
     }
-    
-    console.log(`No file found for slugs: ${slugs.join('/')}`)
-    console.log(`Tried paths:`)
-    possiblePaths.forEach(p => console.log(`- ${p}`))
-    
-    // Last resort: scan the entire docs directory for a file with a similar name
-    if (slugs.join('/') === 'transformer/power-transformer/ins-resist') {
-      console.log('Attempting to find similar files in docs directory...')
-      const similarFiles = findSimilarFiles(path.join(process.cwd(), 'content', 'docs'), 'ins-resist')
-      console.log('Possible similar files:')
-      similarFiles.forEach(file => console.log(`- ${file}`))
-      
-      // If we found exactly one similar file, use it
-      if (similarFiles.length === 1) {
-        console.log(`Using similar file: ${similarFiles[0]}`)
-        return fs.readFileSync(similarFiles[0], 'utf8')
-      }
-    }
-    
-    return null
   } catch (error) {
-    console.error('Error reading MDX file:', error)
+    console.error("Error getting doc:", error)
     return null
   }
 }
 
-// Function to get potential paths from sidebar data
-function getPathsFromSidebar(slugs: string[]): string[] {
-  if (slugs.length !== 3) return []
-  
-  const paths: string[] = []
-  
-  // Find matching item in sidebar
-  const item = sidebarData.find(item => 
-    toSlug(item.item) === slugs[0]
-  )
-  
-  if (!item) return paths
-  
-  // Find matching subitem
-  const subitem = item.subitems.find(subitem => 
-    toSlug(subitem.name) === slugs[1]
-  )
-  
-  if (!subitem) return paths
-  
-  // Find matching activity
-  const activityName = subitem.activities.find(activity => 
-    toSlug(activity) === slugs[2]
-  )
-  
-  if (!activityName) return paths
-  
-  // Create path based on the exact names in the sidebar
-  const basePath = path.join(
-    process.cwd(), 
-    'content', 
-    'docs'
-  )
-  
-  // Try various combinations of item/subitem/activity file patterns
-  paths.push(path.join(basePath, item.item, subitem.name, activityName + '.mdx'))
-  paths.push(path.join(basePath, toSlug(item.item), toSlug(subitem.name), toSlug(activityName) + '.mdx'))
-  paths.push(path.join(basePath, item.item.toLowerCase(), subitem.name.toLowerCase(), activityName.toLowerCase() + '.mdx'))
-  
-  return paths
-}
+export async function generateMetadata({
+  params,
+}: DocPageProps): Promise<Metadata> {
+  const doc = await getDocFromParams(params)
 
-// Function to recursively find files with similar names
-function findSimilarFiles(dir: string, targetName: string): string[] {
-  const results: string[] = []
-  
-  // Check if directory exists
-  if (!fs.existsSync(dir)) return results
-  
-  const files = fs.readdirSync(dir, { withFileTypes: true })
-  
-  for (const file of files) {
-    const fullPath = path.join(dir, file.name)
-    
-    if (file.isDirectory()) {
-      // Recurse into subdirectories
-      results.push(...findSimilarFiles(fullPath, targetName))
-    } else if (file.name.toLowerCase().includes(targetName.toLowerCase())) {
-      // Check if filename includes the target name
-      results.push(fullPath)
+  if (!doc) {
+    return {
+      title: "Not Found",
+      description: "The page you are looking for does not exist.",
     }
   }
-  
-  return results
+
+  return {
+    title: doc.title,
+    description: doc.description,
+    openGraph: {
+      title: doc.title,
+      description: doc.description,
+      type: "article",
+    },
+  }
 }
 
-// Generate static paths at build time
-export async function generateStaticParams() {
-  const paths: { slug: string[] }[] = []
-  
-  // Add index path
-  paths.push({ slug: [] })
-  
-  // Add paths for each item, subitem, and activity in the sidebar data
-  sidebarData.forEach(itemData => {
-    const itemSlug = toSlug(itemData.item)
-    
-    // Add path for the item
-    paths.push({ slug: [itemSlug] })
-    
-    itemData.subitems.forEach(subitem => {
-      const subitemSlug = toSlug(subitem.name)
-      
-      // Add path for the subitem
-      paths.push({ slug: [itemSlug, subitemSlug] })
-      
-      subitem.activities.forEach(activity => {
-        const activitySlug = toSlug(activity)
-        
-        // Add path for the activity
-        paths.push({ slug: [itemSlug, subitemSlug, activitySlug] })
-      })
-    })
-  })
-  
-  return paths
-}
-
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import rehypeStringify from 'rehype-stringify'
-import rehypeSanitize from 'rehype-sanitize'
-
-// Process markdown content to HTML
-async function processMarkdown(content: string) {
-  const file = await unified()
-    .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypeSanitize)
-    .use(rehypeStringify)
-    .process(content)
-  
-  return String(file)
-}
-
-export default async function DocPage({ params }: { params: { slug?: string[] } }) {
+export async function generateStaticParams(): Promise<DocPageProps["params"][]> {
   try {
-    // Await the params to fix the error
-    const slugs = await readParams(params)
+    const docsDirectory = path.join(process.cwd(), 'content/docs')
+    const files = getAllMdxFiles(docsDirectory)
     
-    // Log the requested path for debugging
-    console.log(`Requested path: /docs/${slugs.join('/')}`)
-    
-    const content = await getDocContent(slugs)
-    
-    if (!content) {
-      console.log('Content not found, returning 404')
-      return (
-        <div className="py-8 px-4 mx-auto max-w-screen-md text-center">
-          <h1 className="mb-4 text-3xl font-bold tracking-tight">Page Not Found</h1>
-          <p className="mb-8 font-light text-gray-500 sm:text-xl">
-            The documentation page you're looking for doesn't exist yet.
-          </p>
-          <p className="mb-4">
-            Looking for: <code className="bg-gray-100 p-1 rounded">/docs/{slugs.join('/')}</code>
-          </p>
-          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
-            <a href="/docs" className="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Documentation Home
-            </a>
+    return files.map(file => ({
+      slug: file
+        .replace(docsDirectory, '')
+        .replace(/\.mdx?$/, '')
+        .split(path.sep)
+        .filter(Boolean)
+    }))
+  } catch (error) {
+    console.error("Error generating static params:", error)
+    return []
+  }
+}
+
+function getAllMdxFiles(dir: string): string[] {
+  const files = fs.readdirSync(dir)
+  let mdxFiles: string[] = []
+
+  files.forEach(file => {
+    const filePath = path.join(dir, file)
+    const stat = fs.statSync(filePath)
+
+    if (stat.isDirectory()) {
+      mdxFiles = mdxFiles.concat(getAllMdxFiles(filePath))
+    } else if (file.endsWith('.mdx')) {
+      mdxFiles.push(filePath)
+    }
+  })
+
+  return mdxFiles
+}
+
+export default async function DocPage({ params }: DocPageProps) {
+  const doc = await getDocFromParams(params)
+
+  if (!doc) {
+    notFound()
+  }
+
+  const toc = await getTableOfContents(doc.content)
+
+  return (
+    <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+      <div className="mx-auto w-full min-w-0">
+        <div className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
+          <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+            {doc.title}
           </div>
         </div>
-      )
-    }
-    
-    // Process the markdown content to HTML
-    const htmlContent = await processMarkdown(content)
-    
-    // Render the processed HTML content
-    return (
-      <div className="prose prose-blue max-w-none px-4 py-8">
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-      </div>
-    )
-  } catch (error) {
-    console.error('Error rendering documentation page:', error)
-    return (
-      <div className="py-8 px-4 mx-auto max-w-screen-md text-center">
-        <h1 className="mb-4 text-3xl font-bold tracking-tight">Error Loading Documentation</h1>
-        <p className="mb-8 font-light text-gray-500 sm:text-xl">
-          There was an error loading this documentation page. Please try again later.
-        </p>
-        <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
-          <a href="/" className="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Return to Home
-          </a>
+        <div className="space-y-2">
+          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+            {doc.title}
+          </h1>
+          {doc.description && (
+            <p className="text-lg text-muted-foreground">{doc.description}</p>
+          )}
         </div>
+        <div className="pb-12 pt-8 prose dark:prose-invert">
+          {doc.content}
+        </div>
+        <DocsPager doc={doc} />
       </div>
-    )
-  }
+      {toc && toc.items && toc.items.length > 0 && (
+        <div className="hidden text-sm xl:block">
+          <div className="sticky top-16 -mt-10 pt-4">
+            <TableOfContents toc={toc} />
+          </div>
+        </div>
+      )}
+    </main>
+  )
 } 

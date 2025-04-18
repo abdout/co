@@ -1,423 +1,369 @@
-export const sidebarData = [
-  {
-    item: "Relay",
-    subitems: [
-      {
-        name: "General",
-        activities: [
-          "Sec. Injection",
-          "Pri. Injection",
-          "Settings Verif.",
-          "Communication",
-          "Contact Resist.",
+import {  SidebarNavItem } from "@/components/docs/type"
+
+export const sidebarNav: SidebarNavItem[] = [
+    {
+      title: "Relay",
+      items: [
+        {
+          title: "Overcurrent",
+          href: "/docs/relay/overcurrent",
+          items: [],
+        },
+        {
+          title: "Differential",
+          href: "/docs/relay/differential",
+          items: [],
+        },
+        {
+          title: "Distance",
+          href: "/docs/relay/distance",
+          items: [],
+        },
+        {
+          title: "Earth Fault",
+          href: "/docs/relay/earth-fault",
+          items: [],
+        },
+        {
+          title: "Directional OC",
+          href: "/docs/relay/directional-oc",
+          items: [],
+        },
+        {
+          title: "Underfrequency",
+          href: "/docs/relay/underfrequency",
+          items: [],
+        },
+        {
+          title: "Undervoltage",
+          href: "/docs/relay/undervoltage",
+          items: [],
+        },
+        {
+          title: "Motor Protection",
+          href: "/docs/relay/motor-protection",
+          items: [],
+        },
+        {
+          title: "Transformer Differential",
+          href: "/docs/relay/transformer-differential",
+          items: [],
+        },
+        {
+          title: "Generator Protection",
+          href: "/docs/relay/generator-protection",
+          items: [],
+        },
+        {
+          title: "Recloser",
+          href: "/docs/relay/recloser",
+          items: [],
+        },
+        {
+          title: "Synchronizing",
+          href: "/docs/relay/synchronizing",
+          items: [],
+        },
+        {
+          title: "Check",
+          href: "/docs/relay/check",
+          items: [],
+        },
         ],
       },
       {
-        name: "Overcurrent",
-        activities: [
-          "Pickup",
-          "Timing",
-          "Char. Curve",
-          "Ins. Resist.",
-          "Burden",
-        ],
-      },
-      {
-        name: "Differential",
-        activities: [
-          "Rat/Ph Angle",
-          "Slope Char.",
-          "Harm. Restr.",
-          "Ins. Resist.",
-          "Functional",
-        ],
-      },
-      {
-        name: "Distance",
-        activities: ["Impedance", "Zone Timing", "Directional", "Polarization"],
-      },
-      {
-        name: "Earth Fault",
-        activities: ["Pickup", "Timing", "Ins. Resist."],
-      },
-      {
-        name: "Directional OC",
-        activities: ["Discrimination", "Pickup", "Timing"],
-      },
-      {
-        name: "Underfreq.",
-        activities: ["Pickup", "Timing", "Change Rate"],
-      },
-      {
-        name: "Undervolt.",
-        activities: ["Pickup", "Timing"],
-      },
-      {
-        name: "Motor Prot.",
-        activities: [
-          "Starting Time",
-          "Stall Prot.",
-          "Thermal OL",
-          "Unbal./Ph Loss",
-        ],
-      },
-      {
-        name: "Trafo Diff.",
-        activities: ["CT Polarity", "Inrush Restraint", "Bias Charact."],
-      },
-      {
-        name: "Gen. Prot.",
-        activities: [
-          "Exc. Loss",
-          "Reverse Power",
-          "Stator EF",
-        ],
-      },
-      {
-        name: "Recloser",
-        activities: [
-          "Reclose Interval",
-          "No. of Reclose",
-          "Lockout",
-        ],
-      },
-      {
-        name: "Synchronizing",
-        activities: ["Volt. Matching", "Phase Angle", "Freq. Matching"],
-      },
-      {
-        name: "Check",
-        activities: ["Voltage Presence", "Synch. Check"],
+      title: "Component",
+      items: [
+        {
+          title: "Circuit Breaker",
+          href: "/docs/component/circuit-breaker",
+          items: [],
+        },
+        {
+          title: "Lockout Relay",
+          href: "/docs/component/lockout-relay",
+          items: [],
+        },
+        {
+          title: "Contactor",
+          href: "/docs/component/contactor",
+          items: [],
+        },
+        {
+          title: "MCB",
+          href: "/docs/component/mcb",
+          items: [],
+        },
+        {
+          title: "Disconnect Switch",
+          href: "/docs/component/disconnect-switch",
+          items: [],
+        },
+        {
+          title: "Current Transformer",
+          href: "/docs/component/current-transformer",
+          items: [],
+        },
+        {
+          title: "Voltage Transformer",
+          href: "/docs/component/voltage-transformer",
+          items: [],
+        },
+        {
+          title: "Metering Devices",
+          href: "/docs/component/metering-devices",
+          items: [],
+        },
+        {
+          title: "Surge Arrester",
+          href: "/docs/component/surge-arrester",
+          items: [],
       },
     ],
   },
   {
-    item: "Component",
-    subitems: [
-      {
-        name: "Circuit Breaker",
-        activities: [
-          "Contact Resist.",
-          "Timing Open-Close",
-          "Ins. Resist.",
-          "Coil Pickup",
-          "SF6 Gas Press.-Purity",
-          "Vacuum Integrity",
-          "Mech. Operation",
-        ],
-      },
-      {
-        name: "Lockout Relay",
-        activities: [
-          "Func. Trip-Reset",
-          "Contact Resist.",
-          "Coil Pickup",
-        ],
-      },
-      {
-        name: "Contactor",
-        activities: [
-          "Pickup-Dropout",
-          "Contact Resist.",
-          "Ins. Resist.",
-          "Mech. Endurance",
-        ],
-      },
-      {
-        name: "MCB",
-        activities: [
-          "Trip Time SC-OL",
-          "Ins. Resist.",
-          "Mech. Operation",
-        ],
-      },
-      {
-        name: "Disconnect Switch",
-        activities: [
-          "Contact Resist.",
-          "Ins. Resist.",
-          "Mech. Interlock",
-        ],
-      },
-      {
-        name: "Current Transformer",
-        activities: [
-          "Ratio",
-          "Polarity Verif.",
-          "Burden",
-          "Ins. Resist.",
-          "Sat. Curve",
-        ],
-      },
-      {
-        name: "Voltage Transformer",
-        activities: [
-          "Ratio",
-          "Polarity Verif.",
-          "Burden",
-          "Ins. Resist.",
-          "Sat. Curve",
-        ],
-      },
-      {
-        name: "Metering Devices",
-        activities: [
-          "Acc. Calibration",
-          "Func. Verif.",
-        ],
-      },
-      {
-        name: "Surge Arrester",
-        activities: [
-          "Ins. Resist.",
-          "Leak. Current",
-        ],
+      title: "Transformer",
+      items: [
+        {
+          title: "Power Transformer",
+          href: "/docs/transformer/power-transformer",
+          items: [],
+        },
+        {
+          title: "Bushing",
+          href: "/docs/transformer/bushing",
+          items: [],
+        },
+        {
+          title: "Tap Changer",
+          href: "/docs/transformer/tap-changer",
+          items: [],
+        },
+        {
+          title: "Cooling System",
+          href: "/docs/transformer/cooling-system",
+          items: [],
+        },
+        {
+          title: "Protection Devices",
+          href: "/docs/transformer/protection-devices",
+          items: [],
+        },
+        {
+          title: "Neutral Grounding",
+          href: "/docs/transformer/neutral-grounding",
+          items: [],
+        },
+        {
+          title: "Surge Arrester",
+          href: "/docs/transformer/surge-arrester",
+          items: [],
+        },
+        {
+          title: "Control Panel",
+          href: "/docs/transformer/control-panel",
+          items: [],
+        },
+        {
+          title: "Oil Management",
+          href: "/docs/transformer/oil-management",
+          items: [],
+        },
+        {
+          title: "General",
+          href: "/docs/transformer/general",
+          items: [],
       },
     ],
   },
   {
-    item: "Transformer",
-    subitems: [
-      {
-        name: "Power Transformer",
-        activities: [
-          "Ins. Resist.",
-          "Wind. Resist.",
-          "Turns Ratio",
-          "Mag. Current",
-          "Dielec. Absorp.",
-          "Diss. Gas Analysis",
-          "Sweep Freq. Resp.",
-        ],
-      },
-      {
-        name: "Bushing",
-        activities: [
-          "Tan Delta",
-          "Cap. Measurement",
-          "Ins. Resist.",
-        ],
-      },
-      {
-        name: "Tap Changer (OLTC/De-Energized)",
-        activities: [
-          "Contact Resist.",
-          "Timing Op.",
-          "Func. Sequence",
-          "Oil Quality",
-        ],
-      },
-      {
-        name: "Cooling System",
-        activities: [
-          "Pump-Fan Op.",
-          "Oil Flow Verif.",
-          "Temp. Control",
-        ],
-      },
-      {
-        name: "Protection Devices",
-        activities: [
-          "Buchholz Alarm",
-          "Press. Relief ",
-          "Wind. Temp. Alarm",
-        ],
-      },
-      {
-        name: "Neutral Grounding",
-        activities: [
-          "Ground Resist.",
-          "Continuity",
-        ],
-      },
-      {
-        name: "Surge Arrester",
-        activities: [
-          "Leak. Current",
-          "Ins. Resist.",
-        ],
-      },
-      {
-        name: "Control Panel",
-        activities: [
-          "Alarm Indic.",
-          "Trip Circuit",
-          "Volt. Regulation",
-        ],
-      },
-      {
-        name: "Oil Management",
-        activities: [
-          "Moist. Content",
-          "Dielec. Strength",
-          "Acidity",
-        ],
-      },
-      {
-        name: "General",
-        activities: [
-          "Visual Insp.",
-          "Tight. Check",
-          "Polarity Verif.",
-        ],
+      title: "Low Voltage",
+      items: [
+        {
+          title: "Distribution Panel",
+          href: "/docs/low-voltage/distribution-panel",
+          items: [],
+        },
+        {
+          title: "MCCB",
+          href: "/docs/low-voltage/mccb",
+          items: [],
+        },
+        {
+          title: "ACB",
+          href: "/docs/low-voltage/acb",
+          items: [],
+        },
+        {
+          title: "Capacitor Bank",
+          href: "/docs/low-voltage/capacitor-bank",
+          items: [],
+        },
+        {
+          title: "UPS",
+          href: "/docs/low-voltage/ups",
+          items: [],
+        },
+        {
+          title: "Earth Fault",
+          href: "/docs/low-voltage/earth-fault",
+          items: [],
+        },
+        {
+          title: "Distribution Board",
+          href: "/docs/low-voltage/distribution-board",
+          items: [],
+        },
+        {
+          title: "Motor Control Center",
+          href: "/docs/low-voltage/motor-control-center",
+          items: [],
+        },
+        {
+          title: "Surge Device",
+          href: "/docs/low-voltage/surge-device",
+          items: [],
+        },
+        {
+          title: "Metering",
+          href: "/docs/low-voltage/metering",
+          items: [],
+        },
+        {
+          title: "Earthing System",
+          href: "/docs/low-voltage/earthing-system",
+          items: [],
       },
     ],
   },
   {
-    item: "Low Voltage",
-    subitems: [
-      {
-        name: "Distribution Panel",
-        activities: [
-          "Ins. Resist.",
-          "Busbar Tightness",
-          "Volt. Stability",
-          "Phase Seq. Verif.",
-          "Func. Breaker-RCD Coord.",
-        ],
-      },
-      {
-        name: "MCCB",
-        activities: [
-          "Trip Time SC-OL",
-          "Ins. Resist.",
-          "Contact Resist.",
-          "Mech. Operation",
-        ],
-      },
-      {
-        name: "ACB",
-        activities: [
-          "Contact Resist.",
-          "Timing Open-Close",
-          "Ins. Resist.",
-          "Trip Unit Cal.",
-        ],
-      },
-      {
-        name: "Capacitor Bank",
-        activities: [
-          "Cap. Measurement",
-          "Harm. Dist. Analysis",
-          "Switch. Transient",
-          "Ins. Resist.",
-        ],
-      },
-      {
-        name: "UPS",
-        activities: [
-          "Battery Capacity",
-          "Trans. Time Grid-Batt.",
-          "Out. Volt. Stability",
-          "Harm. Analysis",
-        ],
-      },
-      {
-        name: "Earth Fault",
-        activities: [
-          "Earth Fault Pickup",
-          "Trip Timing",
-          "Ins. Resist.",
-        ],
-      },
-      {
-        name: "Distribution Board",
-        activities: [
-          "Circuit ID",
-          "Load Bal. Verif.",
-          "Func. MCB-RCD Op.",
-        ],
-      },
-      {
-        name: "Motor Control Center",
-        activities: [
-          "Starter Cont. Op.",
-          "OL Relay Cal.",
-          "Phase Loss Det.",
-        ],
-      },
-      {
-        name: "Surge Device",
-        activities: [
-          "Leak. Current",
-          "Ins. Resist.",
-          "Func. Surge Suppr.",
-        ],
-      },
-      {
-        name: "Metering",
-        activities: [
-          "Acc. Cal.",
-          "Func. V-I-PF Meas.",
-        ],
-      },
-      {
-        name: "Earthing System",
-        activities: [
-          "Ground Resist.",
-          "Cont. Equip. Bonding",
-        ],
+      title: "Low Current",
+      items: [
+        {
+          title: "SCADA",
+          href: "/docs/low-current/scada",
+          items: [],
+        },
+        {
+          title: "Building Management System",
+          href: "/docs/low-current/bms",
+          items: [],
+        },
+        {
+          title: "Public Address System",
+          href: "/docs/low-current/pa-system",
+          items: [],
+        },
+        {
+          title: "Fire Alarm System",
+          href: "/docs/low-current/fire-alarm",
+          items: [],
+        },
+        {
+          title: "Access Control",
+          href: "/docs/low-current/access-control",
+          items: [],
+        },
+        {
+          title: "CCTV System",
+          href: "/docs/low-current/cctv",
+          items: [],
+        },
+        {
+          title: "Intercom System",
+          href: "/docs/low-current/intercom",
+          items: [],
+        },
+        {
+          title: "Network Infrastructure",
+          href: "/docs/low-current/network",
+          items: [],
+        },
+        {
+          title: "RMU",
+          href: "/docs/low-current/rmu",
+          items: [],
+        },
+        {
+          title: "Fault Recorder",
+          href: "/docs/low-current/fault-recorder",
+          items: [],
+        },
+        {
+          title: "Battery Bank",
+          href: "/docs/low-current/battery-bank",
+          items: [],
+        },
+        {
+          title: "DC-AC Charger",
+          href: "/docs/low-current/dc-ac-charger",
+          items: [],
+        },
+        {
+          title: "Cable",
+          href: "/docs/low-current/cable",
+          items: [],
       },
     ],
   },
   {
-    item: "Other",
-    subitems: [
-      {
-        name: "SCADA",
-        activities: [
-          "P2P Comm.",
-          "Time Sync.",
-          "Failover Redund.",
-          "Alarm-Trip Integ.",
-        ],
-      },
-      {
-        name: "RMU (Ring Main Unit)",
-        activities: [
-          "Ins. Resist.",
-          "Timing Open-Close",
-          "Contact Resist.",
-          "Gas Pressure (for SF6 RMUs)",
-          "Func. Interlock",
-        ],
-      },
-      {
-        name: "Fault Recorder",
-        activities: [
-          "Time Sync",
-          "Event Seq.",
-          "Data Retr.",
-          "Storage Cap.",
-        ],
-      },
-      {
-        name: "Battery Bank",
-        activities: [
-          "Cap. Discharge",
-          "Volt. Stability",
-          "Float-Ch. Eff.",
-          "Gnd. Fault Det.",
-        ],
-      },
-      {
-        name: "DC-AC Charger",
-        activities: [
-          "Eff. Float-Boost",
-          "Out. Volt. Stab.",
-          "Harm. Dist.",
-          "OL Prot.",
-        ],
-      },
-      {
-        name: "Cable",
-        activities: [
-          "Ins. Resist.",
-          "Continuity",
-          "Part. Discharge",
-          "Therm. Imaging",
-        ],
+      title: "Software",
+      items: [
+        {
+          title: "OMICRON Test Universe",
+          href: "/docs/software/omicron-test-universe",
+          items: [],
+        },
+        {
+          title: "OMICRON Control Center",
+          href: "/docs/software/omicron-control-center",
+          items: [],
+        },
+        {
+          title: "Protection Testing Library",
+          href: "/docs/software/protection-testing-library",
+          items: [],
+        },
+        {
+          title: "RelaySimTest",
+          href: "/docs/software/relay-sim-test",
+          items: [],
+        },
+        {
+          title: "QuickCMC",
+          href: "/docs/software/quick-cmc",
+          items: [],
+        },
+        {
+          title: "DIGSI 5",
+          href: "/docs/software/digsi-5",
+          items: [],
+        },
+        {
+          title: "AcSELerator",
+          href: "/docs/software/acse-lerator",
+          items: [],
+        },
+        {
+          title: "PCM600",
+          href: "/docs/software/pcm600",
+          items: [],
+        },
+        {
+          title: "SMARTsoft",
+          href: "/docs/software/smart-soft",
+          items: [],
+        },
+        {
+          title: "PowerFactory",
+          href: "/docs/software/power-factory",
+          items: [],
+        },
+        {
+          title: "ETAP",
+          href: "/docs/software/etap",
+          items: [],
       },
     ],
   },
-];
+  ]
