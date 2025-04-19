@@ -381,19 +381,15 @@ export default async function DocPage({ params }: DocPageProps) {
     // Render the content
     return (
       <main className="relative py-6 lg:gap-10 lg:py-10">
-        <div className="mx-auto w-full min-w-0">
+        <div className="mx-auto w-full min-w-0 pr-0 lg:pr-64">
           <DocsPageHeader heading={doc.title} text={doc.description} />
           
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="prose prose-slate dark:prose-invert max-w-none lg:max-w-3xl mt-8"
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
-            />
-            
-            <div className="hidden lg:block">
-              <div className="sticky top-16">
-                <TableOfContents toc={toc} />
-              </div>
-            </div>
+          <div className="prose prose-slate dark:prose-invert max-w-none mt-8"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
+          
+          <div className="hidden lg:block">
+            <TableOfContents toc={toc} />
           </div>
         </div>
       </main>

@@ -1,27 +1,39 @@
+---
+title: Circuit Breaker Contact Resistance Testing
+description: Procedure for measuring and evaluating the contact resistance of circuit breaker main contacts
+category: Component
+subCategory: Circuit Breaker
+activityName: Contact Resistance
+---
+
 # Contact Resistance Testing
 
 ## Overview
 
 Contact resistance testing (also known as micro-ohm testing) is a critical maintenance procedure for circuit breakers to verify the integrity of the main contacts. High contact resistance can lead to excessive heating, reduced current carrying capacity, and potential equipment failure. This test measures the resistance across closed contacts using a specialized micro-ohmmeter.
 
-## Required Equipment
+The primary purposes of contact resistance testing are:
+- Identifying deteriorated or damaged contacts before failure
+- Detecting loose connections between main contacts
+- Verifying proper contact alignment and pressure
+- Establishing baseline values for future comparison
+- Determining maintenance needs or replacement requirements
 
-- Micro-ohmmeter/Ductor Tester (100A or higher capacity recommended)
-- Test Leads with Heavy-Duty Clamps
-- Personal Protective Equipment (PPE)
-- Circuit Breaker Manufacturer's Technical Documentation
-- Test Record Sheets
-- Temperature Measurement Device (optional)
+Contact resistance is affected by factors such as contact surface condition, contact pressure, alignment, and the presence of contaminants. Testing should be performed during commissioning, after maintenance, and as part of routine diagnostic testing.
 
-## Safety Precautions
+## Precautions
 
 > **WARNING**: Always isolate the circuit breaker completely from any power source before performing contact resistance tests. Verify isolation with appropriate testing devices.
 
-1. Wear appropriate PPE including insulated gloves and safety glasses
-2. Ensure the circuit breaker is visibly open and racked out/isolated
-3. Apply appropriate lockout/tagout procedures
-4. Discharge any stored energy in the circuit breaker mechanism
-5. Verify zero voltage on all terminals before connection
+- **Ensure complete isolation**: The circuit breaker must be fully disconnected from all potential power sources and verified dead
+- **Lockout/Tagout**: Apply proper lockout/tagout procedures to prevent inadvertent energization
+- **Discharge stored energy**: Release any stored mechanical energy in operating mechanisms and springs
+- **High test currents**: Be aware that test equipment may produce currents up to 100A or higher
+- **Equipment protection**: Avoid connecting to control circuits or auxiliary devices that could be damaged by test currents
+- **Heat generation**: Prolonged testing can generate heat in connections - allow cooling between tests
+- **Trip circuit isolation**: Ensure trip circuits are isolated to prevent unwanted operation
+- **Follow manufacturer guidelines**: Adhere to specific test procedures for the breaker model being tested
+- **Personal protective equipment**: Wear appropriate PPE including insulated gloves and safety glasses
 
 ## Test Procedure
 
@@ -35,6 +47,7 @@ Contact resistance testing (also known as micro-ohm testing) is a critical maint
 2. Record ambient temperature (resistance readings should be temperature corrected)
 3. Ensure all test leads and connection points are clean and free of oxidation
 4. Verify test equipment calibration is current
+5. Visually inspect circuit breaker contacts if accessible
 
 ### 2. Connection
 
@@ -44,6 +57,7 @@ Contact resistance testing (also known as micro-ohm testing) is a critical maint
    - Follow a consistent pattern for multi-pole breakers (test each pole separately)
 
 2. Ensure connections are tight and secure with proper contact area
+3. Use the four-wire (Kelvin) connection method for accurate measurements
 
 ### 3. Testing
 
@@ -52,54 +66,199 @@ Contact resistance testing (also known as micro-ohm testing) is a critical maint
 3. Initiate the test and record the resistance value for each pole
 4. Release the test current
 5. Repeat measurements at least twice to ensure consistency
+6. Calculate the average value for each pole
 
-### 4. Interpretation
+### 4. Data Analysis
 
-| Circuit Breaker Type | Typical Acceptable Values |
-| -------------------- | ------------------------- |
-| Low Voltage (≤1kV) | 50-200 μΩ |
-| Medium Voltage (>1kV to 36kV) | 40-150 μΩ |
-| High Voltage (>36kV) | 30-100 μΩ |
-
-> **NOTE**: Always refer to manufacturer's specifications as acceptable values vary by breaker type, rating, and age.
+1. Compare results with manufacturer's specifications
+2. Compare measurements between phases (should be balanced)
+3. Compare with historical values if available
+4. Calculate percentage deviation from baseline values
 
 ## Acceptance Criteria
 
-1. The measured resistance should be below the maximum value specified by the manufacturer
-2. Resistance values should be consistent across all phases (within ±10%)
-3. Results should be consistent with historical test records for the same breaker
+### General Acceptance Values
 
-## Troubleshooting
+| Circuit Breaker Type | Typical Acceptable Values | Maximum Deviation Between Poles |
+| -------------------- | ------------------------- | ------------------------------- |
+| Low Voltage (≤1kV) | 50-200 μΩ | ±10% |
+| Medium Voltage (>1kV to 36kV) | 40-150 μΩ | ±10% |
+| High Voltage (>36kV) | 30-100 μΩ | ±10% |
+
+### Specific Criteria
+
+1. The measured resistance must be below the maximum value specified by the manufacturer
+2. Resistance values should be consistent across all phases (within the specified percentage)
+3. Results should not exceed 120% of the baseline/commissioning value
+4. No single phase should deviate more than 15% from the average of all three phases
+5. Measurement stability: readings should be stable and repeatable
+
+> **NOTE**: Always refer to manufacturer's specifications as acceptable values vary by breaker type, rating, and age.
+
+## Circuit Diagram
+
+```
+Four-Wire Connection Method (Kelvin Connection)
+
+                  Circuit Breaker
+                 ┌──────────────┐
+                 │              │
+Current Source   │    CLOSED    │   Current Return
+     (+)         │   CONTACTS   │        (-)
+      │          │              │         │
+      ▼          │    ┌─────┐   │         ▼
+C1────┼──────────┼────┤     │   │         │
+      │          │    │     │   │         │
+      │          │    │     │   │         │
+P1────┼──────────┼────┤     │   │         │
+      ▲          │    └─────┘   │         ▲
+      │          │              │         │
+Voltage Sense    │              │      Voltage Sense
+     (+)         │              │         (-)
+                 └──────────────┘
+
+            MICRO-OHMMETER
+
+┌───────────────────────────┐
+│                           │
+│    ┌─────────────────┐    │
+│    │                 │    │
+│    │     DISPLAY     │    │
+│    │                 │    │
+│    └─────────────────┘    │
+│                           │
+│  C1    P1    P2    C2     │
+│  │     │     │     │      │
+└──┼─────┼─────┼─────┼──────┘
+   │     │     │     │
+   │     │     │     │
+   │     │     │     │
+   │     │     │     │
+   C1    P1    P2    C2
+   TO CIRCUIT BREAKER TERMINALS
+```
+
+## Equipment Used
+
+1. **Micro-ohmmeter/Contact Resistance Meter**:
+   - DLRO Digital Low Resistance Ohmmeter (100A)
+   - Megger DLRO10HD or DLRO100
+   - Vanguard MTO-210 or MMCB-200
+   - Omicron CPC 100 with CP CU1
+   - ISA CRO-400P
+
+2. **Circuit Breaker**:
+   - Low Voltage: Molded Case Circuit Breakers (MCCB), Air Circuit Breakers (ACB)
+   - Medium Voltage: Vacuum Circuit Breakers (VCB), SF6 Circuit Breakers
+   - High Voltage: SF6 Circuit Breakers, Oil Circuit Breakers (OCB)
+
+3. **Measurement Accessories**:
+   - Temperature measurement device
+   - Resistance standard for verification
+   - Circuit breaker technical documentation
+
+## Tools Needed
+
+1. **Connection Tools**:
+   - Heavy-duty test leads with Kelvin clamps
+   - Appropriate terminal adapters for specific breaker types
+   - Contact cleaning materials (contact cleaner, fine abrasive paper)
+   - Terminal cleaning brushes
+
+2. **Safety Equipment**:
+   - Insulated voltage detector/meter
+   - Lockout/tagout devices
+   - Class 0 insulating gloves
+   - Safety glasses or face shield
+   - Insulated tools
+
+3. **Documentation Tools**:
+   - Test form templates
+   - Digital camera for recording conditions
+   - Laptop with testing software (if using digital test equipment)
+   - Manufacturer's documentation for reference values
+
+## Appendix
+
+### Factors Affecting Contact Resistance
+
+| Factor | Effect | Mitigation |
+|--------|--------|------------|
+| Surface contamination | Increases resistance | Clean contacts before testing |
+| Contact pressure | Reduced pressure increases resistance | Check operating mechanism, adjust if necessary |
+| Contact erosion | Increases resistance over time | Regular inspection and maintenance |
+| Oxidation | Increases resistance | Clean contacts, verify environment |
+| Misalignment | Uneven current distribution | Mechanical adjustment, manufacturer service |
+| Connection quality | Poor connections affect measurement | Ensure proper test lead connections |
+| Temperature | Affects reading accuracy | Apply temperature correction factors |
+
+### Troubleshooting Guide
 
 If contact resistance measurements are high or inconsistent:
 
-1. Check for loose connections at the test points
-2. Clean the breaker terminals and retest
-3. Inspect for visible signs of contact erosion, burning, or pitting
-4. Check contact alignment and pressure
-5. For SF6 breakers, verify proper gas pressure before concluding contact issues
+1. **Test Connection Issues**:
+   - Verify proper four-wire connection
+   - Check for loose test lead connections
+   - Clean connection points and retest
 
-## Documentation
+2. **Circuit Breaker Issues**:
+   - Inspect for visible signs of contact erosion, burning, or pitting
+   - Check contact alignment and pressure
+   - Verify proper lubrication of moving parts
+   - For SF6 breakers, verify proper gas pressure
+   - For vacuum breakers, check vacuum integrity
 
-Record the following information:
+3. **Test Equipment Issues**:
+   - Verify calibration status
+   - Check battery condition
+   - Try different test current levels if available
+   - Verify with a known resistance standard
+
+### Sample Documentation Form
 
 ```markdown
-- Circuit Breaker ID: _______________
-- Manufacturer/Model: _______________
-- Rated Current: _______________
-- Test Date: _______________
-- Ambient Temperature: _______________
-- Test Current Applied: _______________
-- Technician: _______________
+# Circuit Breaker Contact Resistance Test Report
 
-| Phase/Pole | Measurement 1 (μΩ) | Measurement 2 (μΩ) | Average (μΩ) | Pass/Fail |
-| ---------- | ----------------- | ----------------- | ------------ | --------- |
-| Phase A/R  | | | | |
-| Phase B/S  | | | | |
-| Phase C/T  | | | | |
+## Equipment Information
+- Circuit Breaker ID: _______________
+- Location: _______________
+- Manufacturer: _______________
+- Type/Model: _______________
+- Rated Voltage: _______________ kV
+- Rated Current: _______________ A
+- Manufacture Date: _______________
+- Installation Date: _______________
+
+## Test Information
+- Test Date: _______________
+- Test Equipment: _______________
+- Model/Serial Number: _______________
+- Calibration Due Date: _______________
+- Ambient Temperature: _______________ °C
+- Test Current Applied: _______________ A
+- Weather Conditions: _______________
+
+## Test Results
+
+| Phase/Pole | Measurement 1 (μΩ) | Measurement 2 (μΩ) | Average (μΩ) | Previous Value (μΩ) | Change (%) | Pass/Fail |
+|------------|-------------------|-------------------|--------------|---------------------|------------|-----------|
+| Phase A/R  |                   |                   |              |                     |            |           |
+| Phase B/S  |                   |                   |              |                     |            |           |
+| Phase C/T  |                   |                   |              |                     |            |           |
+
+## Observations
+_______________________________________________________________
+_______________________________________________________________
+
+## Recommendations
+_______________________________________________________________
+_______________________________________________________________
+
+Tested by: _______________ Signature: _______________
+Reviewed by: _______________ Signature: _______________
 ```
 
-## Related Activities
+### Related Activities
 
 - [Timing Open-Close Test](/docs/component/circuit-breaker/timing-open-close)
 - [Insulation Resistance Testing](/docs/component/circuit-breaker/ins-resist)

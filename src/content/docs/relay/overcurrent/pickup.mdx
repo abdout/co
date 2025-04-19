@@ -1,31 +1,36 @@
+---
+title: Overcurrent Relay Pickup Testing
+description: Test procedure for verifying the pickup threshold of overcurrent protection relays
+---
+
 # Overcurrent Relay Pickup Testing
 
 ## Overview
 
 Pickup testing is a critical procedure to verify the exact current value at which an overcurrent relay begins to operate. This test confirms that the relay will correctly detect fault currents and initiate protective actions, ensuring system reliability and equipment protection.
 
-## Required Equipment
+The pickup value is the minimum current at which the relay starts to operate. It is usually expressed as a multiple of the nominal current or as a percentage of the relay's setting range. Accurate pickup settings are essential for:
 
-- Relay Test Set (with current injection capability)
-- Test Leads and Connection Cables
-- Multimeter
-- Stopwatch (if not integrated in test set)
-- Relay Manufacturer's Manual and Setting Sheets
-- Calculator
-- Personal Protective Equipment (PPE)
-- Test Record Forms
+- Ensuring coordination with other protective devices
+- Preventing nuisance tripping during normal load conditions
+- Providing adequate protection during fault conditions
+- Maintaining compliance with protection system design specifications
 
-## Safety Precautions
+## Precautions
 
 > **WARNING**: Testing protection relays that are in service can cause inadvertent tripping and service interruption. Follow proper procedures to prevent unwanted operations.
 
-1. Obtain necessary work permits and authorizations
-2. If testing an in-service relay:
-   - Block any trip outputs to circuit breakers
-   - Notify system operators of testing activities
-   - Disable auto-reclosing systems
-3. Use appropriate PPE including insulated gloves and eye protection
-4. Verify proper isolation of testing circuits from live power circuits
+- Obtain necessary work permits and authorizations before starting any testing
+- If testing an in-service relay:
+  - Block any trip outputs to circuit breakers
+  - Notify system operators of testing activities
+  - Disable auto-reclosing systems
+  - Consider the impact on related protection schemes
+- Use appropriate PPE including insulated gloves and eye protection
+- Verify proper isolation of testing circuits from live power circuits
+- Ensure test equipment is properly calibrated and rated for the application
+- Do not exceed maximum current ratings of the relay under test
+- Allow sufficient cooling time between repeated tests
 
 ## Test Procedure
 
@@ -73,14 +78,17 @@ Pickup testing is a critical procedure to verify the exact current value at whic
 4. Repeat the test 3 times
 5. Average the readings
 
-### 4. Tolerance Verification
+### 4. Data Analysis
 
-Calculate the pickup accuracy:
+Calculate the pickup accuracy using the following formula:
+
 ```
 Accuracy (%) = ((Measured Pickup - Expected Pickup) / Expected Pickup) × 100%
 ```
 
 ## Acceptance Criteria
+
+For overcurrent relay pickup testing, the measured pickup values should fall within the following tolerances:
 
 | Relay Type | Acceptable Pickup Tolerance |
 | ---------- | --------------------------- |
@@ -88,7 +96,69 @@ Accuracy (%) = ((Measured Pickup - Expected Pickup) / Expected Pickup) × 100%
 | Static/Digital | ±7% |
 | Numerical/Microprocessor | ±5% |
 
-## Troubleshooting
+If the measured values fall outside these tolerances:
+- Recheck your test connections and settings
+- Verify the relay is functioning properly
+- Consider recalibrating the relay if necessary
+- Document any deviations and consult the protection engineer
+
+## Circuit Diagram
+
+```
++----------------+     +---------------+     +----------------+
+| Current Source |---->| Test Switches |---->| Relay Current  |
+| (Test Set)     |     | (Test Block)  |     | Input Terminals|
++----------------+     +---------------+     +----------------+
+                                                    |
+                                                    v
++----------------+     +---------------+     +----------------+
+| Timer Start    |<----| Test Switches |<----| Relay Output   |
+| (Test Set)     |     | (Test Block)  |     | Contacts       |
++----------------+     +---------------+     +----------------+
+```
+
+For three-phase testing, repeat the connection for each phase, ensuring proper phase rotation and reference.
+
+## Equipment Used
+
+1. **Relay Test Set**: Modern microprocessor-based test equipment such as:
+   - Omicron CMC356
+   - Doble F6150
+   - Megger SMRT410
+   - ISA DRTS6
+
+2. **Relay Under Test**: Overcurrent protection relay (examples):
+   - Electromechanical: GE IAC, Westinghouse CO
+   - Digital: ABB REF615, Siemens 7SJ62, SEL-751
+   - Microprocessor-based: GE Multilin 750/760, Schneider Electric P14D
+
+3. **Test Accessories**:
+   - Relay test blocks (ABB FT-1, GE PK-2)
+   - Test plugs compatible with installed test blocks
+   - Shorting blocks for CT circuits
+
+## Tools Needed
+
+1. **Hand Tools**:
+   - Insulated screwdrivers set (flat and Phillips head)
+   - Insulated pliers and wire cutters
+   - Adjustable wrenches
+   - Multimeter (Fluke 87V or equivalent)
+
+2. **Safety Equipment**:
+   - Insulated gloves (Class 0, up to 1000V)
+   - Safety glasses or face shield
+   - Arc flash protective clothing as required
+
+3. **Documentation Tools**:
+   - Laptop with test software
+   - Test forms and procedures
+   - Digital camera
+   - Pen and notebook
+
+## Appendix
+
+### Troubleshooting Guide
 
 If pickup test results are outside acceptable tolerances:
 
@@ -101,9 +171,7 @@ If pickup test results are outside acceptable tolerances:
    - Binding of the disc or armature
    - Damaged bearings
 
-## Documentation
-
-Record the following information:
+### Documentation Template
 
 ```markdown
 - Relay ID: _______________
@@ -121,7 +189,7 @@ Record the following information:
 | Ground   | | | | | | | | |
 ```
 
-## Related Activities
+### Related Activities
 
 - [Timing Test](/docs/relay/overcurrent/timing)
 - [Characteristic Curve Verification](/docs/relay/overcurrent/char-curve)
