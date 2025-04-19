@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next'
 import createMDX from '@next/mdx'
+import remarkGfm from 'remark-gfm'
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
@@ -44,6 +45,10 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   
+  experimental: {
+    mdxRs: true,
+  },
+  
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals = [...(config.externals as string[] || []), 'prisma', '@prisma/client'];
@@ -68,8 +73,9 @@ const nextConfig: NextConfig = {
 // Create MDX configuration
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
+  extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [],
   },
 });

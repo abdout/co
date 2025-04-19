@@ -1,56 +1,70 @@
-import { slug } from "github-slugger"
-
-interface Item {
-  title: string
-  url: string
-  items?: Item[]
-}
-
-interface TableOfContents {
-  items?: Item[]
-}
+import { TableOfContents } from "@/types/toc"
 
 export async function getTableOfContents(content: string): Promise<TableOfContents> {
-  const regXHeader = /\n(?<flag>#{1,6})\s+(?<content>.+)/g
-  const headings = Array.from(content.matchAll(regXHeader))
-  const items = headings.map(({ groups }) => {
-    const flag = groups?.flag
-    const content = groups?.content
-    
-    if (!flag || !content) return null
+  const headingLines = content.split("\n").filter((line) => {
+    return line.match(/^#{1,6}\s+/)
+  })
 
-    const level = flag.length
+  const headings = headingLines.map((raw) => {
+    const match = raw.match(/^(#{1,6})\s+(.*)$/)
+    
+    if (!match) {
+      return null
+    }
+
+    const level = match[1].length
+    const title = match[2].trim()
+    
+    // Create a slug from the title
+    const slug = title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
 
     return {
       level,
-      title: content,
-      url: `#${slug(content)}`,
+      title,
+      url: `#${slug}`,
     }
   }).filter(Boolean)
 
-  let result: TableOfContents = {
-    items: [],
-  }
+  // Convert flat headings to nested structure
+  const items: TableOfContents["items"] = []
+  const stack: any[] = []
 
-  // Organize items into nested structure
-  for (const item of items) {
-    if (!item) continue
+  headings.forEach((heading) => {
+    if (!heading) return
     
-    if (item.level === 1) {
-      result.items?.push({
-        title: item.title,
-        url: item.url,
-        items: [],
-      })
-    } else if (item.level === 2) {
-      if (result.items?.length) {
-        result.items[result.items.length - 1].items?.push({
-          title: item.title,
-          url: item.url,
-        })
-      }
+    const item = {
+      title: heading.title,
+      url: heading.url,
+      items: [],
     }
-  }
 
-  return result
+    if (stack.length === 0 || heading.level <= 2) {
+      // Level 1 or 2 headings go straight to the top level
+      items.push(item)
+      stack.length = 0
+      stack.push(item)
+      return
+    }
+
+    // Find the parent heading
+    let parent = stack[stack.length - 1]
+    while (stack.length > 1 && parent && parent.level >= heading.level) {
+      stack.pop()
+      parent = stack[stack.length - 1]
+    }
+
+    // Add this heading as a child of the parent
+    if (parent && parent.items) {
+      parent.items.push(item)
+    } else {
+      items.push(item)
+    }
+    
+    stack.push(item)
+  })
+
+  return { items }
 } 

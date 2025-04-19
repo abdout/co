@@ -1,84 +1,176 @@
-# Documentation Components
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-This directory contains the components and utilities for the MDX documentation system.
+# Documentation System
 
-## Key Components
+## Overview
+A modern documentation system built with Next.js 14+, featuring native MDX support, dynamic routing, and a clean, maintainable structure. This system is designed to provide comprehensive documentation for electrical testing procedures and software tools.
 
-- **docs-sidebar.tsx**: The sidebar navigation component that displays the hierarchical structure of documentation
-- **docs-breadcrumb.tsx**: The breadcrumb component showing the current location in the documentation
-- **constant.ts**: Data structure defining the sidebar hierarchy (items, subitems, activities)
-- **generate-docs.js**: Script to generate MDX content files based on the sidebar data structure
+## Directory Structure
+```
+src/
+├── app/
+│   └── docs/
+│       ├── [[...slug]]/
+│       │   └── page.tsx      # Dynamic documentation page
+│       └── layout.tsx        # Documentation layout
+├── components/
+│   └── docs/                 # Documentation specific components
+│       ├── constant.ts       # Documentation constants and navigation
+│       ├── docs-sidebar.tsx  # Sidebar navigation component
+│       ├── docs-header.tsx   # Documentation header component
+│       ├── docs-layout.tsx   # Documentation layout wrapper
+│       ├── docs-breadcrumb.tsx # Breadcrumb navigation
+│       └── type.ts          # Documentation type definitions
+├── content/                  # Documentation content
+│   └── docs/                # Documentation MDX files
+│       ├── transformer/     # Transformer documentation
+│       ├── relay/          # Relay documentation
+│       └── component/      # Component documentation
+├── mdx-components.tsx      # Root MDX components configuration
+└── lib/
+    └── toc.ts             # Table of contents generation
+```
 
-## Recent Updates
+## Setup
 
-The documentation system has been updated with the following improvements:
+### 1. Install Dependencies
+```bash
+pnpm add -D @tailwindcss/typography @next/mdx @mdx-js/loader @mdx-js/react
+```
 
-- **Next.js App Router integration**: Enhanced MDX rendering using the Next.js App Router and `next-mdx-remote/rsc`
-- **Robust path resolution**: Expanded path matching to handle various file naming conventions and directory structures
-- **Smart debugging**: Special debugging for problematic paths with detailed logging
-- **Customized 404 handling**: User-friendly "not found" pages with clear path information
-- **Recursive file search**: Fallback mechanism to find similarly named files when exact matches fail
-- **ContentLayer removed**: Simplified architecture by removing ContentLayer dependency
+### 2. Configure Tailwind
+Update `tailwind.config.ts`:
+```js
+module.exports = {
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [require('@tailwindcss/typography')],
+}
+```
 
-## Usage
+### 3. Configure Next.js
+Make sure your `next.config.ts` includes:
+```ts
+import type { NextConfig } from 'next'
+import createMDX from '@next/mdx'
 
-The documentation system is based on a hierarchical data structure defined in `constant.ts`. This structure is used to:
+/** @type {import('next').NextConfig} */
+const nextConfig: NextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  experimental: {
+    mdxRs: true,
+  },
+  // ... other configuration
+};
 
-1. Generate the sidebar navigation
-2. Create breadcrumb navigation 
-3. Generate actual MDX files via the `generate-docs.js` script
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
 
-### Updating Documentation
+export default withMDX(nextConfig);
+```
 
-To add or modify documentation categories:
+### 4. Create MDX Components
+Define your MDX components in the root `src/mdx-components.tsx` file (required for Next.js native MDX support):
 
-1. Update the `sidebarData` structure in `constant.ts`
-2. Run the generation script:
-   ```
-   pnpm generate:docs
-   ```
-3. Edit the generated MDX files in the `content/docs` directory to add detailed content
+```tsx
+import type { MDXComponents } from 'mdx/types'
 
-### MDX File Structure
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    h1: ({ children }) => (
+      <h1 className="mt-10 scroll-m-20 text-4xl font-bold tracking-tight">{children}</h1>
+    ),
+    // Add other component overrides
+    ...components,
+  }
+}
+```
 
-Documentation MDX files require the following frontmatter:
+### 5. Document Structure
+Each MDX document should include:
 
-```yaml
+```mdx
 ---
 title: Document Title
-description: Brief description of the document
-category: Top Level Category
-subCategory: Second Level Category
-activityName: Activity Name
+description: Document description
 ---
+
+# Title
+
+Content with styled elements...
 ```
 
-These fields are used for both navigation and rendering metadata.
-
-## File Organization
-
-```
-src/components/docs/         # Documentation components
-├── docs-sidebar.tsx         # Sidebar navigation component
-├── docs-breadcrumb.tsx      # Breadcrumb navigation component
-├── constant.ts              # Data structure for docs hierarchy
-├── generate-docs.js         # MDX file generator script
-└── README.md                # This file
-
-content/docs/                # Documentation content files
-├── [category]/              # Top-level category directories
-│   ├── [subcategory]/       # Second-level subcategory directories
-│   │   └── [activity].mdx   # Activity documentation files
-└── index.mdx                # Documentation home page
+### 6. Development
+```bash
+pnpm dev
 ```
 
-## Troubleshooting
+### 7. Build
+```bash
+pnpm build
+```
 
-If a documentation page isn't rendering:
+## Important Note
+This documentation system uses Next.js's native MDX support. It does NOT require or use `next-mdx-remote` package. The MDX files are directly processed by Next.js using `@next/mdx`. If you encounter any errors related to `next-mdx-remote`, please remove that package from dependencies.
 
-1. Check the server logs for detailed path resolution information
-2. Verify the file exists in the correct location within `content/docs/`
-3. Ensure the MDX file has complete and correct frontmatter
-4. Confirm the path matches the structure in `constant.ts` sidebar data
+## Styling Guidelines
 
-For the complete documentation system architecture, see the main project README.
+### Typography
+- Use Tailwind Typography plugin for consistent text styling
+- Add `prose prose-slate dark:prose-invert` classes to the MDX wrapper
+- All MDX content is styled through the components defined in `mdx-components.tsx`
+
+### Table of Contents
+- Automatically generated from page headings
+- Displays in the right sidebar on large screens
+- Highlights the currently active section while scrolling
+- Uses headings IDs for anchor links
+
+Implementation files:
+```
+src/
+├── lib/
+│   └── toc.ts              # Extracts headings from content
+├── types/
+│   └── toc.ts              # TOC type definitions
+└── components/
+    └── docs/
+        └── table-of-contents.tsx  # TOC component with scroll tracking
+```
+
+### Code Blocks
+- Style code blocks using the pre and code components in mdx-components.tsx
+- Support for syntax highlighting through rehype-pretty-code plugin (optional)
+- Add copy button functionality (optional)
+
+## Usage Examples
+
+### Standard Page
+```mdx
+---
+title: Overcurrent Relay Testing
+description: Learn how to test and commission overcurrent protection relays.
+---
+
+# Overcurrent Relay Testing
+
+Introduction paragraph about overcurrent relays.
+
+## Pickup Test
+Instructions for conducting pickup tests.
+
+## Timing Test
+Instructions for conducting timing tests.
+
+### Code Sample
+```bash
+# Command to run test
+relay-test --type=overcurrent --mode=timing
+```

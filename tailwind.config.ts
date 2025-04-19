@@ -75,6 +75,52 @@ export default {
   				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))'
   			}
   		},
+  		typography: {
+  			DEFAULT: {
+  				css: {
+  					maxWidth: 'none',
+  					color: 'hsl(var(--foreground))',
+  					hr: {
+  						borderColor: 'hsl(var(--border))',
+  						marginTop: '3em',
+  						marginBottom: '3em'
+  					},
+  					'h1, h2, h3, h4': {
+  						color: 'hsl(var(--foreground))',
+  						'scroll-margin-top': '100px'
+  					},
+  					a: {
+  						color: 'hsl(var(--primary))',
+  						textDecoration: 'underline',
+  						'&:hover': {
+  							color: 'hsl(var(--primary))',
+  							textDecoration: 'none'
+  						}
+  					},
+  					pre: {
+  						backgroundColor: 'hsl(var(--muted))',
+  						color: 'hsl(var(--muted-foreground))',
+  						padding: '1rem',
+  						borderRadius: '0.5rem',
+  						marginTop: '1.5rem',
+  						marginBottom: '1.5rem'
+  					},
+  					code: {
+  						color: 'hsl(var(--foreground))',
+  						backgroundColor: 'hsl(var(--muted))',
+  						padding: '0.2rem 0.4rem',
+  						borderRadius: '0.25rem',
+  						fontWeight: '500'
+  					},
+  					'code::before': {
+  						content: '""'
+  					},
+  					'code::after': {
+  						content: '""'
+  					}
+  				}
+  			}
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -113,5 +159,8 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography")
+  ],
 } satisfies Config;

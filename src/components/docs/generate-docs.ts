@@ -434,8 +434,8 @@ function toSlug(text: string): string {
     .replace(/\s+/g, '-')
 }
 
-// Create the content/docs directory if it doesn't exist
-const docsDir = path.join(process.cwd(), 'content', 'docs')
+// Create the src/content/docs directory if it doesn't exist
+const docsDir = path.join(process.cwd(), 'src', 'content', 'docs')
 if (!fs.existsSync(docsDir)) {
   fs.mkdirSync(docsDir, { recursive: true })
 }

@@ -1,0 +1,59 @@
+---
+title: Style Test for MDX
+description: A test file to demonstrate styling of various MDX elements
+---
+
+# MDX Style Test
+
+This page demonstrates how styling is applied to various MDX elements.
+
+## Heading 2
+### Heading 3
+#### Heading 4
+
+**Bold text** and *italic text* and `inline code`
+
+> This is a blockquote. The styling should be applied through mdx-components.tsx.
+
+### Lists
+
+**Unordered list:**
+- Item one
+- Item two
+- Item three with **bold text**
+
+**Ordered list:**
+1. First item
+2. Second item
+3. Third item with *italic text*
+
+### Code Block
+
+```jsx
+// This should be styled as code
+function Button() {
+  return <button className="styled-button">Click me</button>;
+}
+```
+
+### Links
+
+[This is an internal link](/docs)
+
+[This is an external link](https://example.com)
+
+### Table
+
+| Header 1 | Header 2 | Header 3 |
+| -------- | -------- | -------- |
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+
+---
+
+This horizontal rule should be styled too.
+
+## Component styling
+
+All of these elements should be styled using the definitions in `mdx-components.tsx`
+through the application of Tailwind's Typography plugin via the `prose` classes. 
