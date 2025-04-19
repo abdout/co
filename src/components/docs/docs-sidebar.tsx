@@ -31,10 +31,10 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
       className="[&_[data-sidebar=rail]]:hidden border-none pt-14" 
       {...props}
     >
-      <SidebarContent className="px-2 pt-8">
+      <SidebarContent className="px-4 pt-8">
         <SidebarGroup>
           <SidebarGroupContent>
-            <ScrollArea className="h-[calc(100vh-7rem)] ">
+            <ScrollArea className="h-[calc(100vh-7rem)]">
               <SidebarMenu>
                 {sidebarNav.map((category, index) => (
                   <CategoryItem key={index} category={category} />

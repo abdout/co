@@ -15,7 +15,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
         <DocsHeader />
         <div className="flex flex-1 relative">
           <DocsSidebar />
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto px-4 ">
             {children}
           </main>
         </div>
