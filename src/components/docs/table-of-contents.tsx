@@ -105,9 +105,9 @@ export function TableOfContents({ toc }: { toc: TocType }) {
       <ActiveAnchorContext.Provider value={useAnchorObserver(headings)}>
         <div className="relative pl-4">
           <div className="absolute left-[21px] top-8 bottom-0 w-[0.5px] bg-gray-200"></div>
-          <div className="flex gap-2 items-center text-muted-foreground ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-text size-4"><path d="M17 6.1H3"></path><path d="M21 12.1H3"></path><path d="M15.1 18H3"></path></svg>
-            <p className="text-sm text-muted-foreground pl-0 m-0">On This Page</p>
+          <div className="flex gap-2 items-center text-muted-foreground pb-2 ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-text size-4"><path d="M17 6.1H3"></path><path d="M21 12.1H3"></path><path d="M15.1 18H3"></path></svg>
+            <p className="text-sm text-muted-foreground pl-0 m-0 ">On This Page</p>
           </div>
           
           <nav className="relative">

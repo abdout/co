@@ -8,7 +8,7 @@ export default function DocsPageLayout({
 }) {
   return (
     <DocsLayout>
-      <div className="mx-auto max-w-3xl prose prose-slate prose-headings:font-semibold prose-headings:tracking-tight prose-lead:text-slate-500 prose-a:underline hover:prose-a:text-slate-900 prose-img:rounded-lg">
+      <div className="mx-auto max-w-3xl">
         {children}
       </div>
     </DocsLayout>

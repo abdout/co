@@ -1,10 +1,28 @@
 import type { MDXComponents } from 'mdx/types'
-import Image from 'next/image'
 import Link from 'next/link'
+import Image from 'next/image'
 import { RelayEquipmentDisplay } from './components/docs/RelayEquipmentDisplay'
-import EquipmentImages from './components/docs/EquipmentImages'
 
-// Reuse the styling from your docs/mdx-components.tsx file
+// Create a simple EquipmentImages component since the original file doesn't exist
+function EquipmentImages() {
+  return (
+    <div className="equipment-images-container">
+      <div className="w-full overflow-x-auto whitespace-nowrap py-2" style={{ display: 'block' }}>
+        {['freja300.png', 'sverker750.png', 'cmc356.png', 'dlro600.png'].map((img, i) => (
+          <span key={i} className="inline-block w-14 mx-1 text-center align-top">
+            <img 
+              src={`/kit/${img}`} 
+              alt={img.replace('.png', '')} 
+              className="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" 
+            />
+            <span className="text-xs block truncate">{img.replace('.png', '')}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Add our custom components
@@ -13,7 +31,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     
     // Override the default components with our custom ones
     h1: ({ children }) => (
-      <h1 className="mt-10 scroll-m-20 text-4xl font-bold tracking-tight">{children}</h1>
+      <h1 className="mt-10 scroll-m-20 text-4xl font-extrabold tracking-tight">{children}</h1>
     ),
     h2: ({ children }) => (
       <h2 className="mt-8 scroll-m-20 text-3xl font-semibold tracking-tight">{children}</h2>
@@ -98,4 +116,4 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Merge custom components with existing ones
     ...components,
   }
-} 
+}

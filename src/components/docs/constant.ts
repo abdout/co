@@ -25,8 +25,8 @@ export const sidebarNav: SidebarNavItem[] = [
           items: [],
         },
         {
-          title: "Directional OC",
-          href: "/docs/relay/directional-oc",
+          title: "Directional",
+          href: "/docs/relay/directional",
           items: [],
         },
         {
@@ -44,11 +44,7 @@ export const sidebarNav: SidebarNavItem[] = [
           href: "/docs/relay/motor-protection",
           items: [],
         },
-        {
-          title: "Transformer Differential",
-          href: "/docs/relay/transformer-differential",
-          items: [],
-        },
+        
         {
           title: "Generator Protection",
           href: "/docs/relay/generator-protection",
