@@ -1,17 +1,17 @@
 'use client';
 import React, { useState } from 'react';
-import { Icon } from "@iconify/react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+// import { Icon } from "@iconify/react";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+// } from "@/components/ui/dialog";
 import QuickLinks from "@/components/platform/QuickLinks";
 // import { useRouter } from 'next/navigation';
 
 export default function Page() {
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  // const [isDialogOpen, setIsDialogOpen] = useState(true);
 
   // const router = useRouter();
   // useEffect(() => {
@@ -25,7 +25,7 @@ export default function Page() {
       
       <QuickLinks />
       
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[80%] md:max-w-[60%] pr-20" onInteractOutside={() => setIsDialogOpen(false)}>
           <DialogHeader>
             <DialogTitle className='font-heading font-bold text-start text-3xl leading-normal sm:text-2xl md:text-3xl'>Welcome</DialogTitle>
@@ -48,7 +48,7 @@ export default function Page() {
             </div>
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
