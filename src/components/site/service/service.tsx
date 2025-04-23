@@ -13,10 +13,11 @@ import {
 } from "lucide-react";
 import { servicesItems } from "./constant";
 import { Timeline } from "@/components/template/timeline/timeline";
+import { TableOfContents } from "./table-of-contents";
 
 export function ServiceDetailPage() {
-  const searchParams = useSearchParams();
-  const serviceIdParam = searchParams.get("id");
+  const searchParams = useSearchParams() || null;
+  const serviceIdParam = searchParams?.get("id");
   const [activeService, setActiveService] = useState(serviceIdParam || servicesItems[0].id);
   const [activeSection, setActiveSection] = useState("overview");
   
@@ -63,7 +64,7 @@ export function ServiceDetailPage() {
     };
   }, []);
 
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
@@ -124,79 +125,17 @@ export function ServiceDetailPage() {
         {/* Main Content with Right Side Navigation */}
         <div className="relative mb-20 mt-12">
           {/* Right Side Navigation */}
-          <div className="hidden fixed lg:block lg:absolute lg:right-4 lg:w-40 xl:w-64 z-10">
-            <div className=" ">
-              
-              <nav className="space-y-4">
-                <button 
-                  onClick={() => scrollToSection(overviewRef)}
-                  className={`w-full text-left px-4 py-2 border-l-2 transition ${
-                    activeSection === "overview" 
-                      ? "text-white border-white" 
-                      : "text-neutral-300 border-transparent hover:border-white/50 hover:text-white/80"
-                  }`}
-                >
-                  Overview
-                </button>
-                <button 
-                  onClick={() => scrollToSection(featuresRef)}
-                  className={`w-full text-left px-4 py-2 border-l-2 transition ${
-                    activeSection === "features" 
-                      ? "text-white border-white" 
-                      : "text-neutral-300 border-transparent hover:border-white/50 hover:text-white/80"
-                  }`}
-                >
-                  Features
-                </button>
-                <button 
-                  onClick={() => scrollToSection(processRef)}
-                  className={`w-full text-left px-4 py-2 border-l-2 transition ${
-                    activeSection === "process" 
-                      ? "text-white border-white" 
-                      : "text-neutral-300 border-transparent hover:border-white/50 hover:text-white/80"
-                  }`}
-                >
-                  Process
-                </button>
-                <button 
-                  onClick={() => scrollToSection(advantagesRef)}
-                  className={`w-full text-left px-4 py-2 border-l-2 transition ${
-                    activeSection === "advantages" 
-                      ? "text-white border-white" 
-                      : "text-neutral-300 border-transparent hover:border-white/50 hover:text-white/80"
-                  }`}
-                >
-                  Advantages
-                </button>
-              </nav>
-              
-              {/* Service Specifications */}
-              {/* <div className="border-t border-white/10 my-6 pt-6">
-                <h3 className="text-lg font-semibold mb-4 text-white">Service Specifications</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Response Time</span>
-                    <span className="font-medium text-white">24-48 hours</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Service Area</span>
-                    <span className="font-medium text-white">Nationwide</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Warranty</span>
-                    <span className="font-medium text-white">1 Year</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Certification</span>
-                    <span className="font-medium text-white">ISO 9001</span>
-                  </div>
-                </div>
-              </div> */}
-            </div>
-          </div>
+          <TableOfContents
+            activeSection={activeSection}
+            overviewRef={overviewRef}
+            featuresRef={featuresRef}
+            processRef={processRef}
+            advantagesRef={advantagesRef}
+            scrollToSection={scrollToSection}
+          />
 
           {/* Content Sections (Vertical Layout) */}
-          <div className="pr-0 lg:pr-80 xl:pr-80 px-8">
+          <div className="pr-0 lg:pr-64 xl:pr-72 px-8">
             {/* Overview Section */}
             <div ref={overviewRef} id="overview" className="mb-20">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -391,7 +330,7 @@ export function ServiceDetailPage() {
         </div>
         
         {/* Call to Action */}
-        <div className="bg-white/5 p-10 text-center mb-12">
+        <div className="bg-white/5 p-10 text-center mb-12 cta-section">
           <h2 className="text-3xl font-bold mb-4 text-white">Ready to Get Started?</h2>
           <p className="text-lg text-neutral-300 max-w-2xl mx-auto mb-8">
             Contact our team today to discuss your {selectedService.title.firstLine.toLowerCase()} {selectedService.title.secondLine.toLowerCase()} needs and discover how we can help optimize your electrical systems.
