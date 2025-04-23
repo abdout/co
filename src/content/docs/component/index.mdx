@@ -1,15 +1,225 @@
-# Component
+---
+title: Component
+description: Component testing and commissioning
+---
 
-This section covers information about Component.
+## Overview
 
-## Sections
+This section covers comprehensive information about electrical component testing and commissioning. Components are the individual devices that make up electrical power systems, including circuit breakers, current transformers, voltage transformers, disconnectors, and other protection and control elements. Proper testing of these components ensures the reliability, safety, and performance of the overall electrical system.
 
-- [Circuit Breaker](/docs/component/circuit-breaker)
-- [Lockout Relay](/docs/component/lockout-relay)
-- [Contactor](/docs/component/contactor)
-- [MCB](/docs/component/mcb)
-- [Disconnect Switch](/docs/component/disconnect-switch)
-- [Current Transformer](/docs/component/current-transformer)
-- [Voltage Transformer](/docs/component/voltage-transformer)
-- [Metering Devices](/docs/component/metering-devices)
-- [Surge Arrester](/docs/component/surge-arrester)
+## Precautions
+
+- De-energize and lockout/tagout components before testing
+- Follow manufacturer's recommendations for handling and testing
+- Use appropriate PPE including insulated gloves, safety glasses, and arc-flash protection
+- Ensure test equipment is properly rated for the application
+- Verify proper isolation from energized parts before beginning work
+- Use caution when working with charged components (capacitors, etc.)
+- Ensure proper grounding of equipment and test instruments
+- Follow relevant standards (IEEE, IEC, ANSI) for testing procedures
+- Document all test results and compare with specifications
+
+## Circuit Breaker Testing
+
+### Test Procedure
+This test verifies the proper mechanical and electrical operation of circuit breakers, including contact resistance, insulation integrity, and trip timing.
+
+1. **Preparation:**
+   - Review breaker specifications and previous test records
+   - De-energize breaker and rack out/isolate from service
+   - Disconnect all external connections if necessary
+   - Visually inspect for any physical damage or oil leaks
+   - Document breaker details (manufacturer, type, rating, etc.)
+
+2. **Connection Setup:**
+   - Connect timing analyzer to breaker contacts
+   - Connect micro-ohmmeter for contact resistance test
+   - Connect insulation tester for insulation resistance test
+   - For trip timing tests, connect to trip and close coils
+
+3. **Testing:**
+   - Measure contact resistance for each pole
+   - Perform insulation resistance tests between phases and to ground
+   - Measure trip and close coil resistance
+   - Perform timing tests for open, close, and open-close operations
+   - Test mechanical operations (manual and electrical)
+   - Verify auxiliary contact operation
+
+### Circuit Diagram
+```
++-----------------+      +----------------+
+| Timing Analyzer |----->| Circuit Breaker|
+| Channel 1       |      | Contact A      |
++-----------------+      +----------------+
+                                |
++-----------------+      +----------------+
+| Timing Analyzer |----->| Circuit Breaker|
+| Channel 2       |      | Contact B      |
++-----------------+      +----------------+
+                                |
++-----------------+      +----------------+
+| Timing Analyzer |----->| Circuit Breaker|
+| Channel 3       |      | Contact C      |
++-----------------+      +----------------+
+                                |
++-----------------+      +----------------+
+| Trigger Output  |----->| Trip Coil      |
++-----------------+      +----------------+
+```
+
+### Acceptance Criteria
+| Test | Acceptable Range | Notes |
+| ---- | ---------------- | ----- |
+| Contact Resistance | <100 μΩ (varies by rating) | Compare with manufacturer's specifications |
+| Insulation Resistance | >1000 MΩ at 1000V | Higher for HV breakers |
+| Trip Coil Resistance | Within ±10% of nameplate | Check manufacturer's data |
+| Trip Time | 33-50 ms (typical) | Depends on breaker type |
+| Close Time | 60-80 ms (typical) | Depends on breaker type |
+| Simultaneity | <5 ms between phases | For three-phase breakers |
+
+### Tools Used
+- Circuit breaker analyzer (Megger TM1600, Omicron CIBANO 500)
+- Micro-ohmmeter for contact resistance
+- Insulation resistance tester
+- Current injection test set
+- Insulated gloves
+- Safety glasses
+- Lockout/tagout devices
+
+### Appendix
+- **Common Issues:**
+  - Slow operating times indicating mechanical binding
+  - High contact resistance indicating burned or pitted contacts
+  - Low insulation resistance indicating contamination or moisture
+  - Coil resistance out of specification indicating damaged coil
+- **Maintenance Recommendations:**
+  - Lubricate moving parts according to manufacturer's specifications
+  - Clean contacts if resistance is high
+  - Check control circuit for proper voltage
+
+## Current Transformer Testing
+
+### Test Procedure
+This test verifies the proper operation of current transformers (CTs), including ratio, polarity, insulation integrity, and burden.
+
+1. **Preparation:**
+   - Review CT specifications and nameplate data
+   - De-energize the circuit and isolate CT from service
+   - Short-circuit CT secondary before disconnecting any wires
+   - Disconnect secondary connections, maintaining short circuit
+   - Document CT details (ratio, class, burden, etc.)
+
+2. **Connection Setup:**
+   - For ratio test: Connect ratio tester to primary and secondary
+   - For polarity test: Connect polarity tester or use specialized test set
+   - For insulation test: Connect insulation tester between windings and ground
+   - For excitation test: Connect voltage source to secondary with primary open
+
+3. **Testing:**
+   - Measure turns ratio at multiple test points
+   - Verify polarity markings (H1-X1)
+   - Measure insulation resistance
+   - Perform excitation test (knee point determination)
+   - Measure secondary winding resistance
+   - Perform burden test (if required)
+
+### Circuit Diagram
+```
++----------------+      +----------------+
+| Current Source |----->| CT Primary     |
++----------------+      +----------------+
+                                |
++----------------+      +----------------+
+| Current Meter  |<-----| CT Secondary   |
++----------------+      +----------------+
+```
+
+### Acceptance Criteria
+| Test | Acceptable Range | Notes |
+| ---- | ---------------- | ----- |
+| Ratio Error | Within ±0.5% of nameplate | Tighter for metering CTs |
+| Polarity | Must match nameplate marks | Typically H1-X1 |
+| Insulation Resistance | >100 MΩ at test voltage | Depends on voltage class |
+| Excitation Curve | Should match typical curve | Knee point verification |
+| Secondary Resistance | Within ±10% of specified | Temperature corrected |
+
+### Tools Used
+- CT analyzer (Megger MRCT, Omicron CT Analyzer)
+- Ratio tester
+- Insulation resistance tester
+- Micro-ohmmeter for winding resistance
+- Insulated gloves
+- Safety glasses
+- CT shorting blocks
+
+### Appendix
+- **Safety Warning:**
+  - Never open-circuit a CT secondary under load
+  - Always use a shorting block when handling CT circuits
+  - Dangerous voltages can be present on open CT secondaries
+- **Performance Characteristics:**
+  - Accuracy Class (e.g., 0.3, 0.6, 1.2) indicates maximum error
+  - Burden Rating (e.g., B-0.1, B-0.2) indicates maximum secondary load
+  - Saturation characteristics determine performance during faults
+
+## Voltage Transformer Testing
+
+### Test Procedure
+This test verifies the proper operation of voltage transformers (VTs) or potential transformers (PTs), including ratio, polarity, and insulation integrity.
+
+1. **Preparation:**
+   - Review VT specifications and nameplate data
+   - De-energize the circuit and isolate VT from service
+   - Disconnect secondary connections
+   - Document VT details (ratio, class, burden, etc.)
+
+2. **Connection Setup:**
+   - For ratio test: Connect ratio tester to primary and secondary
+   - For polarity test: Connect polarity tester
+   - For insulation test: Connect insulation tester between windings and ground
+   - For burden test: Connect burden test equipment to secondary
+
+3. **Testing:**
+   - Measure turns ratio
+   - Verify polarity markings
+   - Measure insulation resistance
+   - Measure secondary winding resistance
+   - Perform burden test (if required)
+
+### Circuit Diagram
+```
++----------------+      +----------------+
+| Voltage Source |----->| VT Primary     |
++----------------+      +----------------+
+                                |
++----------------+      +----------------+
+| Voltage Meter  |<-----| VT Secondary   |
++----------------+      +----------------+
+```
+
+### Acceptance Criteria
+| Test | Acceptable Range | Notes |
+| ---- | ---------------- | ----- |
+| Ratio Error | Within ±0.5% of nameplate | Tighter for metering VTs |
+| Polarity | Must match nameplate marks | |
+| Insulation Resistance | >100 MΩ at test voltage | Depends on voltage class |
+| Secondary Resistance | Within ±10% of specified | Temperature corrected |
+
+### Tools Used
+- VT analyzer or transformer turns ratio tester
+- Insulation resistance tester
+- Multi-function test equipment
+- Insulated gloves
+- Safety glasses
+- Grounding cables
+
+### Appendix
+- **Types of Voltage Transformers:**
+  - Magnetic VT: Traditional electromagnetic design
+  - Capacitive Voltage Transformer (CVT): Used at higher voltages
+  - Active VT: Uses electronic amplifiers
+- **Accuracy Considerations:**
+  - Burden affects accuracy (lighter burden = better accuracy)
+  - Frequency response varies by design
+  - Temperature effects should be considered
+

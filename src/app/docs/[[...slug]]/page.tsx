@@ -87,6 +87,55 @@ function mdxToHtml(content: string): string {
       .replace(/\s+/g, "-");
   }
 
+  // Add stand-in HTML for custom components
+  content = content.replace(/<EquipmentImages\s*\/>/g, 
+    `<div class="equipment-images-container">
+      <div class="w-full overflow-x-auto whitespace-nowrap py-2" style="display: block">
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/freja300.png" alt="Freja 300" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">Freja 300</span>
+        </span>
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/sverker750.png" alt="Sverker 750" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">Sverker 750</span>
+        </span>
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/cmc356.png" alt="CMC 356" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">CMC 356</span>
+        </span>
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/dlro600.png" alt="DLRO 600" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">DLRO 600</span>
+        </span>
+      </div>
+    </div>`
+  );
+
+  // Also handle RelayEquipmentDisplay
+  content = content.replace(/<RelayEquipmentDisplay\s*\/>/g, 
+    `<div class="relay-equipment-display">
+      <h2>Equipment Selection</h2>
+      <div class="w-full overflow-x-auto whitespace-nowrap py-2" style="display: block">
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/freja300.png" alt="freja300" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">freja300</span>
+        </span>
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/sverker750.png" alt="sverker750" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">sverker750</span>
+        </span>
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/cmc356.png" alt="cmc356" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">cmc356</span>
+        </span>
+        <span class="inline-block w-14 mx-1 text-center align-top">
+          <img src="/kit/dlro600.png" alt="dlro600" class="w-12 h-12 object-contain border rounded p-1 mx-auto hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
+          <span class="text-xs block truncate">dlro600</span>
+        </span>
+      </div>
+    </div>`
+  );
+
   // This is a very basic conversion to apply styling directly
   let lines = content.split('\n');
   let html = '';
@@ -331,25 +380,36 @@ export async function generateMetadata({
 // Main page component
 export default async function DocPage({ params }: DocPageProps) {
   try {
-    // If no slug, show the docs home page
+    // If no slug, load the index.mdx from the docs directory
     if (!params.slug || params.slug.length === 0) {
+      const doc = await getDocBySlug("");
+      
+      if (!doc) {
+        return (
+          <main className="relative py-6 lg:gap-10 lg:py-10">
+            <div className="mx-auto w-full min-w-0">
+              <h1 className="text-2xl font-bold mb-6 text-red-600">Error: Documentation index not found</h1>
+              <p>The main documentation index file could not be loaded.</p>
+            </div>
+          </main>
+        );
+      }
+      
+      // Generate table of contents for the index page
+      const toc = await getTableOfContents(doc.content);
+      
+      // Render the index content
       return (
         <main className="relative py-6 lg:gap-10 lg:py-10">
-          <div className="mx-auto w-full min-w-0">
-            <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">Documentation</h1>
-            <div className="mt-8 grid gap-6">
-              {sidebarNav.map((category, i) => (
-                <div key={i} className="border rounded-lg p-4">
-                  <h2 className="text-2xl font-semibold">{category.title}</h2>
-                  <div className="mt-4 grid gap-2">
-                    {category.items?.map((item, j) => (
-                      <Link key={j} href={item.href || "#"} className="text-blue-500 hover:underline">
-                        {item.title}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
+          <div className="mx-auto w-full min-w-0 pr-0 lg:pr-64">
+            <DocsPageHeader heading={doc.title} text={doc.description} />
+            
+            <div className="prose prose-slate dark:prose-invert max-w-none mt-8"
+              dangerouslySetInnerHTML={{ __html: mdxToHtml(doc.content) }}
+            />
+            
+            <div className="hidden lg:block">
+              <TableOfContents toc={toc} />
             </div>
           </div>
         </main>
@@ -375,9 +435,6 @@ export default async function DocPage({ params }: DocPageProps) {
     // Generate table of contents
     const toc = await getTableOfContents(doc.content);
 
-    // Convert MDX to HTML with styling
-    const htmlContent = mdxToHtml(doc.content);
-
     // Render the content
     return (
       <main className="relative py-6 lg:gap-10 lg:py-10">
@@ -385,7 +442,7 @@ export default async function DocPage({ params }: DocPageProps) {
           <DocsPageHeader heading={doc.title} text={doc.description} />
           
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
+            dangerouslySetInnerHTML={{ __html: mdxToHtml(doc.content) }}
           />
           
           <div className="hidden lg:block">

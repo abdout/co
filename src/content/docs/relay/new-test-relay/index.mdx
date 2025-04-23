@@ -1,0 +1,235 @@
+---
+title: New Test Relay
+description: New Test Relay testing and commissioning procedures
+---
+## Equipment Selection
+
+<EquipmentImages />
+
+## Model Selection
+
+<div className="flex flex-wrap gap-2 my-4">
+  <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold cursor-pointer bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-800/50">
+    ABB REF615
+  </span>
+  <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold cursor-pointer bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-800/50">
+    Siemens 7SJ82
+  </span>
+  <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold cursor-pointer bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/30 dark:hover:bg-amber-800/50">
+    SEL-751
+  </span>
+  <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold cursor-pointer bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/30 dark:hover:bg-purple-800/50">
+    GE Multilin 750
+  </span>
+  <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold cursor-pointer bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50">
+    Schneider P14D
+  </span>
+  <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold cursor-pointer bg-gray-100 hover:bg-gray-200 dark:bg-gray-800/50 dark:hover:bg-gray-700/50">
+    Micom P122
+  </span>
+</div>
+
+## Overview
+
+The New Test Relay is a modern digital protection relay used in medium to high voltage power systems for protection against various fault conditions. This documentation provides comprehensive testing and commissioning procedures to ensure proper operation and compliance with power system protection requirements.
+
+Key features of the New Test Relay include:
+- Overcurrent protection (phase and ground)
+- Directional protection
+- Voltage protection
+- Frequency protection
+- Fault recording and event logging
+- Communication capabilities (IEC 61850, Modbus, DNP3)
+
+## Precautions
+
+- Always isolate the relay from the live circuit before performing any tests
+- Use appropriate PPE including insulated gloves and eye protection
+- Verify that all test connections are correct before applying test voltages or currents
+- Ensure that the relay trip circuits are isolated or monitored to prevent unwanted operations
+- Follow proper lockout/tagout procedures when working on energized equipment
+- Consult the manufacturer's manual for specific safety requirements
+- Document all test results and relay settings for future reference
+
+## Pickup Test
+
+### Test Procedure
+
+This test verifies that the relay operates at the correct current threshold settings for overcurrent elements.
+
+#### Preparation
+- Obtain relay settings from the protection design documentation
+- Calculate expected pickup values:
+  - Primary pickup current = Tap setting × CT ratio
+  - Secondary pickup current = Tap setting
+- Configure test equipment with appropriate parameters
+- Isolate the relay from the power system (use test blocks where available)
+
+#### Connection Setup
+- Connect the test set current outputs to the relay current inputs
+- Connect timing inputs to relay trip contacts
+- Verify all connections before applying test currents
+- Confirm auxiliary power supply to the relay
+
+#### Testing Steps
+1. Configure the test set for ramping current:
+   - Start: 90% of expected pickup value
+   - End: 110% of expected pickup value
+   - Ramp rate: 2% per second
+2. Start the current ramp and observe the relay operation
+3. Record the exact current at which the relay picks up
+4. Repeat the test three times for each phase
+5. Calculate the average pickup value and deviation from setting
+
+### Circuit Diagram
+
+```
++----------------+      +---------------+      +----------------+
+| Test Set       |----->| Test Block    |----->| Relay Current  |
+| Current Output |      |               |      | Input          |
++----------------+      +---------------+      +----------------+
+                                                      |
+                                                      v
++----------------+      +---------------+      +----------------+
+| Test Set       |<-----| Test Block    |<-----| Relay Output   |
+| Timer Input    |      |               |      | Contact        |
++----------------+      +---------------+      +----------------+
+```
+
+### Acceptance Criteria
+
+| Relay Type | Acceptable Deviation | Reference |
+|------------|----------------------|-----------|
+| Electromechanical | ±10% | IEEE C37.90 |
+| Digital/Numerical | ±5% | Manufacturer Spec |
+| New Test Relay | ±3% | Product Manual |
+
+The measured pickup value should be within the specified tolerance of the setting value. Any deviation outside this range requires investigation and possible recalibration.
+
+### Tools Used
+
+- **Test Equipment:** 
+  - Relay test set (Freja 300, CMC 356, or equivalent)
+  - Test leads and connectors
+  - Timer or oscilloscope (if not built into test set)
+
+- **Safety Equipment:**
+  - Insulated gloves (rated for system voltage)
+  - Safety glasses
+  - Insulated tools
+
+- **Documentation:**
+  - Relay instruction manual
+  - Recommended test procedures
+  - Test report templates
+
+## Timing Test
+
+### Test Procedure
+
+This test verifies the operating time of the relay at different multiples of pickup current.
+
+#### Preparation
+- Review the relay time-current characteristic curves
+- Calculate test currents at specific multiples of pickup (2x, 5x, 10x)
+- Prepare the test equipment with appropriate parameters
+- Configure relay settings according to the protection scheme
+
+#### Connection Setup
+- Use the same connections as for the pickup test
+- Verify that timer connections are correctly configured
+- Ensure trip detection is properly set up
+
+#### Testing Steps
+1. Apply 2× pickup current and measure the operating time
+2. Apply 5× pickup current and measure the operating time
+3. Apply 10× pickup current and measure the operating time
+4. Compare measured times with calculated expected times
+5. Plot results against the time-current characteristic curve
+
+### Circuit Diagram
+
+```
++----------------+      +---------------+      +----------------+
+| Test Set       |----->| Test Block    |----->| Relay Current  |
+| Current Output |      |               |      | Input          |
++----------------+      +---------------+      +----------------+
+                                                      |
+                                                      v
++----------------+      +---------------+      +----------------+
+| Test Set       |<-----| Test Block    |<-----| Relay Output   |
+| Timer Input    |      |               |      | Contact        |
++----------------+      +---------------+      +----------------+
+```
+
+### Acceptance Criteria
+
+| Current Multiple | Curve Type | Acceptable Tolerance | Expected Range |
+|------------------|------------|----------------------|----------------|
+| 2× pickup | Standard Inverse | ±7% or ±15ms | Based on TCC formula |
+| 5× pickup | Standard Inverse | ±7% or ±15ms | Based on TCC formula |
+| 10× pickup | Standard Inverse | ±7% or ±15ms | Based on TCC formula |
+
+Timing should match the selected curve within tolerance specified by the manufacturer. For IEC curves, tolerance is typically ±7% or ±15ms, whichever is greater.
+
+### Tools Used
+
+- **Test Equipment:**
+  - Relay test set with timing capability
+  - Test cables and connectors
+
+- **Software:**
+  - Test set control software
+  - Curve plotting software (optional)
+
+- **Documentation:**
+  - Relay characteristic curves
+  - Timing calculation spreadsheet
+  - Test report template
+
+## Characteristic Curve Test
+
+### Test Procedure
+
+This test verifies that the relay's time-current characteristic curve matches the selected curve type across multiple points.
+
+#### Preparation
+- Determine the relay curve type (e.g., IEC Standard Inverse, Very Inverse, Extremely Inverse)
+- Calculate expected operating times at various current multiples
+- Set up the test equipment for multiple test points
+
+#### Connection Setup
+- Use the same connections as for the timing test
+- Configure the test equipment to record precise timing measurements
+
+#### Testing Steps
+1. Apply current at multiples of pickup (1.5, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20)
+2. Record the operating time at each multiple
+3. Plot measured points against the theoretical curve
+4. Calculate the deviation at each test point
+5. Verify that all points fall within the acceptable tolerance
+
+### Circuit Diagram
+
+Same as the timing test circuit.
+
+### Acceptance Criteria
+
+The measured time at each test point should fall within ±7% of the theoretical time or ±15ms, whichever is greater. The overall shape of the plot should match the theoretical curve.
+
+### Tools Used
+
+- **Test Equipment:**
+  - Microprocessor-based relay test set
+  - High-precision timing unit
+
+- **Software:**
+  - Test sequencing software
+  - Graphing software for curve plotting
+
+- **Documentation:**
+  - Mathematical formulas for curve calculation
+  - Manufacturer's curve specifications
+  - Plotting templates
+
+

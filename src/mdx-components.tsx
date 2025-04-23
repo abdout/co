@@ -1,10 +1,16 @@
 import type { MDXComponents } from 'mdx/types'
 import Image from 'next/image'
 import Link from 'next/link'
+import { RelayEquipmentDisplay } from './components/docs/RelayEquipmentDisplay'
+import EquipmentImages from './components/docs/EquipmentImages'
 
 // Reuse the styling from your docs/mdx-components.tsx file
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
+    // Add our custom components
+    RelayEquipmentDisplay,
+    EquipmentImages,
+    
     // Override the default components with our custom ones
     h1: ({ children }) => (
       <h1 className="mt-10 scroll-m-20 text-4xl font-bold tracking-tight">{children}</h1>

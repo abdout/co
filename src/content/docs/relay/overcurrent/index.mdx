@@ -1,23 +1,219 @@
 ---
 title: Overcurrent
-description: Documentation for overcurrent protection relay testing and commissioning.
+description: Overcurrent Relay testing and commissioning
 ---
 
-# Overcurrent
+## Overview
 
-This section covers information about Overcurrent under Relay.
-This page contains technical documentation for Overcurrent protection relays.
+This section covers comprehensive information about overcurrent relay testing and commissioning. Overcurrent protection is used to detect and isolate faults in electrical power systems by monitoring current levels. These relays operate when current exceeds a preset threshold value, providing protection against overloads, short circuits, and ground faults.
 
-## Activities
+## Precautions
 
-- [Pickup](/docs/relay/overcurrent/pickup)
-- [Timing](/docs/relay/overcurrent/timing)
-- [Char. Curve](/docs/relay/overcurrent/char-curve)
-- [Ins. Resist.](/docs/relay/overcurrent/ins-resist)
-- [Burden](/docs/relay/overcurrent/burden)
+- Ensure all testing personnel are qualified and familiar with the equipment
+- Verify circuit isolation before commencing tests
+- Use appropriate PPE (Personal Protective Equipment)
+- Follow all safety protocols specific to the testing environment
+- Double-check connections before applying test voltages/currents
+- Ensure trip circuits are isolated to prevent unwanted operations
+- Document all test results and relay settings for future reference
+- Consult manufacturer's manual for specific safety requirements
 
-## Test Placeholders
+## Pickup Test
 
-- [Test 1](/docs/relay/overcurrent/test-1)
-- [Test 2](/docs/relay/overcurrent/test-2)
-- [Test 3](/docs/relay/overcurrent/test-3)
+### Test Procedure
+Pickup testing verifies the exact current value at which an overcurrent relay begins to operate. This confirms that the relay will correctly detect fault currents and initiate protective actions.
+
+1. **Preparation:**
+   - Obtain relay settings from protection design documentation
+   - Calculate expected pickup values (Primary pickup = Tap setting × CT ratio)
+   - Configure test equipment with appropriate parameters
+   - Isolate relay from power system (use test blocks where available)
+
+2. **Connection Setup:**
+   - Connect test set current outputs to relay current inputs
+   - Connect timing inputs to relay trip contacts
+   - Verify all connections before applying test currents
+   - Confirm auxiliary power supply to the relay
+
+3. **Testing:**
+   - Start with current at 90% of expected pickup value
+   - Increase current slowly in small increments (1-2% steps)
+   - Observe for relay pickup indication
+   - Record the exact current value at which pickup occurs
+   - Repeat test 3 times to ensure consistency
+
+### Circuit Diagram
+```
++----------------+     +---------------+     +----------------+
+| Current Source |---->| Test Switches |---->| Relay Current  |
+| (Test Set)     |     | (Test Block)  |     | Input Terminals|
++----------------+     +---------------+     +----------------+
+                                                    |
+                                                    v
++----------------+     +---------------+     +----------------+
+| Timer Start    |<----| Test Switches |<----| Relay Output   |
+| (Test Set)     |     | (Test Block)  |     | Contacts       |
++----------------+     +---------------+     +----------------+
+```
+
+### Acceptance Criteria
+For overcurrent relay pickup testing, the measured pickup values should fall within the following tolerances:
+
+| Relay Type | Acceptable Pickup Tolerance |
+| ---------- | --------------------------- |
+| Electromechanical | ±10% |
+| Static/Digital | ±7% |
+| Numerical/Microprocessor | ±5% |
+
+### Tools Used
+- Relay Test Set (Omicron CMC356, Doble F6150, Megger SMRT410)
+- Test leads and connectors
+- Timer or oscilloscope (if not built into test set)
+- Insulated gloves (rated for system voltage)
+- Safety glasses
+- Insulated tools
+
+### Appendix
+- **Formulas:**
+  - Accuracy (%) = ((Measured Pickup - Expected Pickup) / Expected Pickup) × 100%
+- **Troubleshooting Guide:**
+  - If pickup test results are outside acceptable tolerances:
+    - Verify relay settings match test plan
+    - Check test connections for proper contact and polarity
+    - Inspect relay for visible damage or signs of overheating
+
+## Timing Test
+
+### Test Procedure
+This test verifies the operating time of the relay at different multiples of pickup current.
+
+1. **Preparation:**
+   - Review relay time-current characteristic curves
+   - Calculate test currents at specific multiples of pickup (2x, 5x, 10x)
+   - Prepare test equipment with appropriate parameters
+   - Configure relay settings according to protection scheme
+
+2. **Connection Setup:**
+   - Use same connections as for pickup test
+   - Verify timer connections are correctly configured
+   - Ensure trip detection is properly set up
+
+3. **Testing:**
+   - Apply 2× pickup current and measure operating time
+   - Apply 5× pickup current and measure operating time
+   - Apply 10× pickup current and measure operating time
+   - Compare measured times with calculated expected times
+   - Plot results against time-current characteristic curve
+
+### Circuit Diagram
+```
++----------------+     +---------------+     +----------------+
+| Current Source |---->| Test Switches |---->| Relay Current  |
+| (Test Set)     |     | (Test Block)  |     | Input Terminals|
++----------------+     +---------------+     +----------------+
+                                                    |
+                                                    v
++----------------+     +---------------+     +----------------+
+| Timer Start    |<----| Test Switches |<----| Relay Output   |
+| (Test Set)     |     | (Test Block)  |     | Contacts       |
++----------------+     +---------------+     +----------------+
+```
+
+### Acceptance Criteria
+| Current Multiple | Curve Type | Acceptable Tolerance | Expected Range |
+|------------------|------------|----------------------|----------------|
+| 2× pickup | Standard Inverse | ±7% or ±15ms | Based on TCC formula |
+| 5× pickup | Standard Inverse | ±7% or ±15ms | Based on TCC formula |
+| 10× pickup | Standard Inverse | ±7% or ±15ms | Based on TCC formula |
+
+Timing should match the selected curve within tolerance specified by the manufacturer.
+
+### Tools Used
+- Relay test set with timing capability
+- Test cables and connectors
+- Test set control software
+- Curve plotting software (optional)
+
+### Appendix
+- **Time-Current Characteristic Formulas:**
+  - IEC Standard Inverse: t = TMS × 0.14 / ((I/Is)^0.02 - 1)
+  - IEC Very Inverse: t = TMS × 13.5 / ((I/Is) - 1)
+  - IEC Extremely Inverse: t = TMS × 80 / ((I/Is)^2 - 1)
+  - Where: t = operating time, TMS = time multiplier setting, I = fault current, Is = pickup current
+
+## Characteristic Curve Test
+
+### Test Procedure
+This test verifies that the relay's time-current characteristic curve matches the selected curve type across multiple points.
+
+1. **Preparation:**
+   - Determine relay curve type (e.g., IEC Standard Inverse, Very Inverse, Extremely Inverse)
+   - Calculate expected operating times at various current multiples
+   - Set up test equipment for multiple test points
+
+2. **Connection Setup:**
+   - Use same connections as for timing test
+   - Configure test equipment to record precise timing measurements
+
+3. **Testing:**
+   - Apply current at multiples of pickup (1.5, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20)
+   - Record operating time at each multiple
+   - Plot measured points against theoretical curve
+   - Calculate deviation at each test point
+   - Verify all points fall within acceptable tolerance
+
+### Circuit Diagram
+Same as the timing test circuit.
+
+### Acceptance Criteria
+The measured time at each test point should fall within ±7% of the theoretical time or ±15ms, whichever is greater. The overall shape of the plot should match the theoretical curve.
+
+### Tools Used
+- Microprocessor-based relay test set
+- High-precision timing unit
+- Test sequencing software
+- Graphing software for curve plotting
+
+### Appendix
+- **Expected Results Example:**
+  | Multiple of Pickup | Expected Time (ms) | Acceptable Range (ms) |
+  |--------------------|-------------------|----------------------|
+  | 1.5 | 10000 | 9300 - 10700 |
+  | 2.0 | 7500 | 6975 - 8025 |
+  | 5.0 | 3000 | 2790 - 3210 |
+  | 10.0 | 1500 | 1395 - 1605 |
+
+## Insulation Resistance Test
+
+### Test Procedure
+[Content for insulation resistance test procedure]
+
+### Circuit Diagram
+[Circuit diagram for insulation resistance test]
+
+### Acceptance Criteria
+[Acceptance criteria for insulation resistance test]
+
+### Tools Used
+[Tools used for insulation resistance test]
+
+### Appendix
+[Appendix for insulation resistance test]
+
+## Burden Test
+
+### Test Procedure
+[Content for burden test procedure]
+
+### Circuit Diagram
+[Circuit diagram for burden test]
+
+### Acceptance Criteria
+[Acceptance criteria for burden test]
+
+### Tools Used
+[Tools used for burden test]
+
+### Appendix
+[Appendix for burden test]
+

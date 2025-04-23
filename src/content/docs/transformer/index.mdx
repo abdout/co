@@ -1,16 +1,244 @@
-# Transformer
+---
+title: Transformer
+description: Transformer testing and commissioning
+---
+## Equipment Selection
 
-This section covers information about Transformer.
+<EquipmentImages />
 
-## Sections
+## Overview
 
-- [Power Transformer](/docs/transformer/power-transformer)
-- [Bushing](/docs/transformer/bushing)
-- [Tap Changer (OLTC/De-Energized)](/docs/transformer/tap-changer-oltcde-energized)
-- [Cooling System](/docs/transformer/cooling-system)
-- [Protection Devices](/docs/transformer/protection-devices)
-- [Neutral Grounding](/docs/transformer/neutral-grounding)
-- [Surge Arrester](/docs/transformer/surge-arrester)
-- [Control Panel](/docs/transformer/control-panel)
-- [Oil Management](/docs/transformer/oil-management)
-- [General](/docs/transformer/general)
+This section covers comprehensive information about transformer testing and commissioning. Power transformers are critical components of electrical power systems, used to transfer electrical energy between circuits through electromagnetic induction. Thorough testing is essential to ensure proper operation, reliability, and longevity of these assets.
+
+## Precautions
+
+- De-energize and properly ground the transformer before conducting tests
+- Follow manufacturer's recommendations for handling and testing
+- Use appropriate PPE including insulated gloves, safety glasses, and arc-flash protection
+- Ensure proper ventilation when working with transformer oil
+- Follow lockout/tagout procedures
+- Verify that all test leads can handle the test voltages/currents
+- Have fire suppression equipment readily available
+- Consult relevant standards (IEEE C57, IEC 60076) for test procedures
+- Document all test results and compare with factory test results
+
+## Transformer Turns Ratio Test
+
+### Test Procedure
+This test measures the ratio of high voltage winding turns to low voltage winding turns to verify proper transformer construction and connection.
+
+1. **Preparation:**
+   - Review transformer nameplate data and connection diagram
+   - De-energize transformer and isolate from the system
+   - Disconnect all external connections including neutrals
+   - Select appropriate TTR tester for the transformer voltage rating
+   - Determine expected turn ratios for all tap positions
+
+2. **Connection Setup:**
+   - Connect TTR tester to one phase at a time
+   - For three-phase transformers, test each phase individually
+   - Connect H leads to high voltage terminals
+   - Connect X leads to low voltage terminals
+   - Ensure good electrical contact at all connection points
+
+3. **Testing:**
+   - Perform TTR test for each phase at nominal tap position
+   - Record measured turn ratio and compare with nameplate
+   - For tap changers, test at each tap position
+   - Measure phase angle (optional, for vector group verification)
+   - Calculate percentage deviation from expected values
+
+### Circuit Diagram
+```
++-------------------+      +-------------------+
+| TTR Test Set      |----->| HV Transformer    |
+| H+ Terminal       |      | Terminal (H1)     |
++-------------------+      +-------------------+
+                                    |
++-------------------+      +-------------------+
+| TTR Test Set      |----->| HV Transformer    |
+| H- Terminal       |      | Terminal (H0/H2)  |
++-------------------+      +-------------------+
+                                    |
++-------------------+      +-------------------+
+| TTR Test Set      |----->| LV Transformer    |
+| X+ Terminal       |      | Terminal (X1)     |
++-------------------+      +-------------------+
+                                    |
++-------------------+      +-------------------+
+| TTR Test Set      |----->| LV Transformer    |
+| X- Terminal       |      | Terminal (X0/X2)  |
++-------------------+      +-------------------+
+```
+
+### Acceptance Criteria
+The measured turn ratio should be within the following tolerances:
+
+| Transformer Type | Acceptable Ratio Tolerance |
+| ---------------- | -------------------------- |
+| Distribution Transformer | ±0.5% of nameplate ratio |
+| Power Transformer | ±0.5% of nameplate ratio |
+| Phase-shifting Transformer | ±1.0% of nameplate ratio |
+
+### Tools Used
+- **Test Equipment:** 
+  - Transformer Turns Ratio (TTR) Tester (Megger TTR330, Omicron TESTRANO 600)
+  - Test leads with appropriate connectors
+  - Multimeter for verification
+- **Safety Equipment:**
+  - Insulated gloves (rated for system voltage)
+  - Safety glasses
+  - Grounding cables
+- **Documentation:**
+  - Transformer nameplate data
+  - Connection diagrams
+  - Factory test reports
+  - Test report templates
+
+### Appendix
+- **Formulas:**
+  - Turns Ratio = Primary Voltage / Secondary Voltage = Secondary Current / Primary Current
+  - Percentage Deviation = ((Measured Ratio - Expected Ratio) / Expected Ratio) × 100%
+- **Common Issues:**
+  - Incorrect tap position
+  - Incorrect vector group connections
+  - Short-circuited turns
+  - Improper test lead connections
+
+## Insulation Resistance Test
+
+### Test Procedure
+This test measures the insulation resistance between transformer windings and between windings and ground to verify insulation integrity.
+
+1. **Preparation:**
+   - Review transformer nameplate data
+   - De-energize transformer and isolate from the system
+   - Discharge all windings and ground them for at least 24 hours before testing
+   - Record ambient temperature and humidity
+   - Disconnect all external connections
+   - Select appropriate test voltage based on winding rating
+
+2. **Connection Setup:**
+   - Connect insulation resistance tester between:
+     - HV winding to ground (LV and tertiary grounded)
+     - LV winding to ground (HV and tertiary grounded)
+     - Tertiary winding to ground (if applicable)
+     - HV to LV (tertiary grounded)
+     - HV to tertiary (LV grounded, if applicable)
+     - LV to tertiary (HV grounded, if applicable)
+
+3. **Testing:**
+   - Apply test voltage for 1 minute
+   - Record readings at 15, 30, 45, and 60 seconds
+   - Calculate polarization index (PI = R10min / R1min)
+   - Calculate dielectric absorption ratio (DAR = R60sec / R30sec)
+   - Temperature correct the readings to 20°C
+
+### Circuit Diagram
+```
++-------------------+      +-------------------+
+| Insulation Tester |----->| HV Transformer    |
+| + Terminal        |      | Winding           |
++-------------------+      +-------------------+
+                                    |
++-------------------+      +-------------------+
+| Insulation Tester |----->| Ground/LV Winding |
+| - Terminal        |      | (shorted to gnd)  |
++-------------------+      +-------------------+
+```
+
+### Acceptance Criteria
+| Parameter | Minimum Acceptable Value | Good Value | Excellent Value |
+| --------- | ------------------------ | ---------- | --------------- |
+| Insulation Resistance | Varies with class | >100 MΩ | >1000 MΩ |
+| Polarization Index (PI) | >1.0 | >1.5 | >2.0 |
+| Dielectric Absorption Ratio (DAR) | >1.0 | >1.25 | >1.6 |
+
+### Tools Used
+- **Test Equipment:**
+  - Insulation resistance tester (Megger MIT1025, Fluke 1555)
+  - Temperature and humidity meter
+  - Test leads with appropriate connectors
+- **Safety Equipment:**
+  - Insulated gloves
+  - Safety glasses
+  - Discharge sticks
+- **Documentation:**
+  - Transformer test history
+  - Temperature correction tables
+  - Test standards (IEEE 62-1995)
+
+### Appendix
+- **Temperature Correction:**
+  - R20°C = Rt × Kt, where Kt is the temperature correction factor
+  - Insulation resistance approximately doubles for each 10°C decrease
+- **Interpretation Guidelines:**
+  - Decreasing resistance over time indicates potential insulation problems
+  - PI and DAR values indicate insulation absorption characteristics
+  - Compare results to previous tests to identify deterioration trends
+
+## Winding Resistance Test
+
+### Test Procedure
+This test measures the DC resistance of transformer windings to verify proper internal connections, detect broken strands, poor joints, and verify tap changer operation.
+
+1. **Preparation:**
+   - Review transformer nameplate data
+   - De-energize transformer and isolate from the system
+   - Discharge all windings
+   - Disconnect all external connections
+   - Record ambient temperature
+   - Select appropriate test current based on winding rating
+
+2. **Connection Setup:**
+   - Connect micro-ohmmeter to each phase of each winding
+   - Ensure good electrical contact at connection points
+   - For delta windings, measurements require calculations to derive individual winding resistances
+
+3. **Testing:**
+   - Apply test current and measure resistance after stabilization
+   - Test each phase of each winding
+   - For transformers with tap changers, measure at each tap position
+   - Record all measurements and temperature
+
+### Circuit Diagram
+```
++-------------------+      +-------------------+
+| Micro-ohmmeter    |----->| Transformer       |
+| + Terminal        |      | Winding Terminal  |
++-------------------+      +-------------------+
+                                    |
++-------------------+      +-------------------+
+| Micro-ohmmeter    |----->| Transformer       |
+| - Terminal        |      | Winding Terminal  |
++-------------------+      +-------------------+
+```
+
+### Acceptance Criteria
+- Phase-to-phase resistance values should be within ±2% of each other
+- Measured values should be within ±5% of factory measurements after temperature correction
+- Resistance pattern across taps should be consistent
+- No unexplained deviations in resistance values
+
+### Tools Used
+- **Test Equipment:**
+  - Micro-ohmmeter (Megger DLRO10HD, Vanguard WRM-10P)
+  - Temperature meter
+  - Test leads with appropriate connectors
+- **Safety Equipment:**
+  - Insulated gloves
+  - Safety glasses
+  - Discharge sticks
+- **Documentation:**
+  - Transformer factory test report
+  - Temperature correction tables
+  - Connection diagrams
+
+### Appendix
+- **Temperature Correction:**
+  - R20°C = Rt × [235 + 20) / (235 + t)], where t is the winding temperature in °C (for copper)
+  - R20°C = Rt × [225 + 20) / (225 + t)], where t is the winding temperature in °C (for aluminum)
+- **Calculations for Delta Windings:**
+  - Three measurements yield three equations with three unknowns
+  - Individual winding resistance = (RAB + RAC - RBC) / 2, where RAB is resistance between terminals A and B
+

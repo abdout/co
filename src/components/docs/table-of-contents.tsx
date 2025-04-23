@@ -83,6 +83,7 @@ function TOCItem({ item, level = 0 }: { item: TocType["items"][0], level: number
       >
         {item.title}
       </Link>
+      {/* Temporarily commented out nested items rendering
       {item.items && item.items.length > 0 && (
         <ul className="mt-1 ml-1 pl-3 border-l border-primary list-none p-0">
           {item.items.map((child, i) => (
@@ -90,6 +91,7 @@ function TOCItem({ item, level = 0 }: { item: TocType["items"][0], level: number
           ))}
         </ul>
       )}
+      */}
     </li>
   );
 }

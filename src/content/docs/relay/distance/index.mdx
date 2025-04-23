@@ -1,10 +1,286 @@
-# Distance
+---
+title: Distance
+description: Distance Relay testing and commissioning
+---
 
-This section covers information about Distance under Relay.
+## Overview
+This section covers comprehensive information about distance relay testing and commissioning. Distance protection is used to detect and isolate faults in transmission and distribution lines by measuring the impedance between the relay location and the fault. The relay operates when the measured impedance falls below a preset threshold, providing high-speed protection for power system lines.
 
-## Activities
+## Precautions
 
-- [Impedance](/docs/relay/distance/impedance)
-- [Zone Timing](/docs/relay/distance/zone-timing)
-- [Directional](/docs/relay/distance/directional)
-- [Polarization](/docs/relay/distance/polarization)
+- Ensure all testing personnel are qualified and familiar with the equipment
+- Verify circuit isolation before commencing tests
+- Use appropriate PPE (Personal Protective Equipment)
+- Follow all safety protocols specific to the testing environment
+- Double-check connections before applying test voltages/currents
+- Ensure trip circuits are isolated to prevent unwanted operations
+- Document all test results and relay settings for future reference
+- Consult manufacturer's manual for specific safety requirements
+- Pay special attention to CT and VT polarity connections as they are critical for directional elements
+
+## Reach Test
+
+### Test Procedure
+This test verifies that the relay operates correctly for faults within the protected zone and remains stable for faults outside this zone.
+
+1. **Preparation:**
+   - Obtain relay settings from protection design documentation
+   - Review the impedance characteristics (MHO, quadrilateral, etc.)
+   - Calculate test points for each protection zone (Zone 1, Zone 2, Zone 3)
+   - Configure test equipment with appropriate parameters
+   - Isolate relay from power system (use test blocks where available)
+
+2. **Connection Setup:**
+   - Connect test set voltage outputs to relay voltage inputs
+   - Connect test set current outputs to relay current inputs
+   - Connect timing inputs to relay trip contacts
+   - Verify all connections before applying test signals
+   - Confirm auxiliary power supply to the relay
+
+3. **Testing:**
+   - Apply test points just inside and just outside each zone boundary
+   - For each test point, apply pre-fault conditions, then transition to fault
+   - Record the relay response time for in-zone faults
+   - Verify that the relay does not operate for out-of-zone faults
+   - Test multiple fault types (single phase-to-ground, phase-to-phase, three-phase)
+   - Verify correct operation at different fault angles (0°, 45°, 90°, etc.)
+
+### Circuit Diagram
+```
++----------------+     +---------------+     +----------------+
+| Voltage Source |---->| Test Switches |---->| Relay Voltage  |
+| (Test Set)     |     | (Test Block)  |     | Input Terminals|
++----------------+     +---------------+     +----------------+
+                                                    |
++----------------+     +---------------+     +----------------+
+| Current Source |---->| Test Switches |---->| Relay Current  |
+| (Test Set)     |     | (Test Block)  |     | Input Terminals|
++----------------+     +---------------+     +----------------+
+                                                    |
+                                                    v
++----------------+     +---------------+     +----------------+
+| Timer Start    |<----| Test Switches |<----| Relay Output   |
+| (Test Set)     |     | (Test Block)  |     | Contacts       |
++----------------+     +---------------+     +----------------+
+```
+
+### Acceptance Criteria
+The measured reach values should fall within the following tolerances:
+
+| Zone | Acceptable Reach Tolerance | Operating Time |
+| ---- | -------------------------- | -------------- |
+| Zone 1 | ±5% | Typically < 30ms |
+| Zone 2 | ±5% | Typically 300-500ms |
+| Zone 3 | ±5% | Typically 800-1000ms |
+
+### Tools Used
+- **Test Equipment:** 
+  - Advanced relay test set with impedance testing capability (Omicron CMC356, Doble F6150)
+  - Test leads and connectors
+  - Timer or oscilloscope (if not built into test set)
+- **Safety Equipment:**
+  - Insulated gloves (rated for system voltage)
+  - Safety glasses
+  - Insulated tools
+- **Documentation:**
+  - Relay instruction manual
+  - System impedance data
+  - Line parameters
+  - Test report templates
+
+### Appendix
+- **Formulas:**
+  - Impedance (Z) = Voltage (V) / Current (I)
+  - Zone 1 reach = 80-90% of protected line impedance
+  - Zone 2 reach = 120-150% of protected line impedance
+  - Zone 3 reach = Zone 2 reach + 50% of shortest adjacent line
+- **Troubleshooting Guide:**
+  - If reach test results are outside acceptable tolerances:
+    - Verify CT and VT ratios are set correctly in the relay
+    - Check test connections for proper contact and polarity
+    - Verify impedance settings are correct for each zone
+
+## Zone Timing Test
+
+### Test Procedure
+This test verifies the timing of the relay's operation for different zones.
+
+1. **Preparation:**
+   - Obtain relay settings from protection design documentation
+   - Configure test equipment with appropriate parameters
+
+2. **Connection Setup:**
+   - Use same connections as for reach test
+   - Ensure correct voltage and current polarity
+
+3. **Testing:**
+   - Apply test points within each zone
+   - Record the relay response time for each zone
+   - Verify that the relay operates correctly within each zone
+
+### Circuit Diagram
+Same as the reach test circuit.
+
+### Acceptance Criteria
+- The relay must operate correctly within each zone
+- The relay response time should be within the specified tolerance for each zone
+
+### Tools Used
+- **Test Equipment:**
+  - Relay test set with timing testing capability
+  - Test cables and connectors
+- **Software:**
+  - Test set control software
+  - Timer or oscilloscope
+- **Documentation:**
+  - Relay timing characteristics
+  - System network data
+  - Test report template
+
+### Appendix
+- **Timing Tolerance Guidelines:**
+  - Zone 1: Typically < 30ms
+  - Zone 2: Typically 300-500ms
+  - Zone 3: Typically 800-1000ms
+
+## Directional Element Test
+
+### Test Procedure
+This test verifies the directional element's operation.
+
+1. **Preparation:**
+   - Review the directional element settings
+   - Prepare test points for forward and reverse faults
+   - Configure test equipment with appropriate parameters
+
+2. **Connection Setup:**
+   - Use same connections as for reach test
+   - Ensure correct voltage and current polarity
+
+3. **Testing:**
+   - Apply forward faults (within each zone)
+   - Apply reverse faults
+   - Verify correct operation for forward faults
+   - Verify stability for reverse faults
+   - Test at different power factor angles
+
+### Circuit Diagram
+Same as the reach test circuit.
+
+### Acceptance Criteria
+- The relay must operate for all forward faults within its set reach
+- The relay must not operate for any reverse fault
+- Directionality should be maintained for all fault types and power factor angles
+
+### Tools Used
+- **Test Equipment:**
+  - Relay test set with directional testing capability
+  - Test cables and connectors
+- **Software:**
+  - Test set control software
+  - Vector diagram display
+- **Documentation:**
+  - Relay directional element characteristics
+  - Power system network data
+  - Test report template
+
+### Appendix
+- **Directional Principles:**
+  - Forward direction typically uses positive sequence quantities
+  - Memory voltage may be used for close-in faults
+  - Different fault types may use different polarizing quantities
+- **Common Issues:**
+  - CT/VT polarity errors
+  - Incorrect angle compensation settings
+  - Incorrect polarizing quantity selection
+
+## Power Swing Blocking Test
+
+### Test Procedure
+This test verifies the relay's ability to block operation during power swings.
+
+1. **Preparation:**
+   - Identify power swing scenarios for the protected line
+   - Calculate impedance seen by relay under power swing conditions
+   - Review power swing blocking settings
+
+2. **Connection Setup:**
+   - Use same connections as for reach test
+
+3. **Testing:**
+   - Apply test points within the power swing region
+   - Apply test points just outside the power swing region but within reach
+   - Verify relay stability for power swing points
+   - Verify relay operation for fault points
+
+### Circuit Diagram
+Same as the reach test circuit.
+
+### Acceptance Criteria
+- The relay must remain stable for all power swing points within the power swing region
+- The relay must operate for fault points outside the power swing region but within its protection zones
+
+### Tools Used
+- **Test Equipment:**
+  - Microprocessor-based relay test set
+  - High-precision timing unit
+- **Software:**
+  - Impedance plane plotting software
+- **Documentation:**
+  - Power swing blocking settings
+  - System power swing data
+  - Test report template
+
+### Appendix
+- **Power Swing Blocking Setting Guidelines:**
+  - Maximum power swing impedance = (Line voltage)² / (Maximum power swing MVA)
+  - Typically set at 120-150% of maximum power swing impedance
+  - Angular setting typically 30-40° from the R-axis
+- **Considerations:**
+  - Power system stability requirements
+
+## Fault Locator Test
+
+### Test Procedure
+This test verifies the relay's ability to locate faults.
+
+1. **Preparation:**
+   - Obtain relay settings from protection design documentation
+   - Configure test equipment with appropriate parameters
+
+2. **Connection Setup:**
+   - Use same connections as for reach test
+   - Ensure correct voltage and current polarity
+
+3. **Testing:**
+   - Apply test points within the protected zone
+   - Apply test points outside the protected zone
+   - Verify correct operation for in-zone faults
+   - Verify correct operation for out-of-zone faults
+
+### Circuit Diagram
+Same as the reach test circuit.
+
+### Acceptance Criteria
+- The relay must operate correctly for in-zone faults
+- The relay must not operate for out-of-zone faults
+
+### Tools Used
+- **Test Equipment:**
+  - Microprocessor-based relay test set
+  - Test cables and connectors
+- **Software:**
+  - Test set control software
+  - Vector diagram display
+- **Documentation:**
+  - Relay fault locator characteristics
+  - System network data
+  - Test report template
+
+### Appendix
+- **Fault Locator Principles:**
+  - Fault locator typically uses positive sequence quantities
+  - Different fault types may use different polarizing quantities
+- **Common Issues:**
+  - Incorrect polarizing quantity selection
+
