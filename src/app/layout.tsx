@@ -36,7 +36,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
     <html lang="en" suppressHydrationWarning >
       <head>
-        <link rel="preload" href="./fonts/Rubik-Black.ttf" as="font" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Rubik-Black.ttf" as="font" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{
           __html: `
             // Remove Facebook #_=_ hash on page load
