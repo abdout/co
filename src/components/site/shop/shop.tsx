@@ -13,31 +13,40 @@ interface KitItem {
     details?: string;
 }
 
-const kits: KitItem[] = [
-    { name: 'CT', price: 'From 180 SAR', imagePath: '/kit/ct.png', padding: 20, description: 'Current Transformer Testing Kit', details: 'Professional CT testing equipment for electrical engineers. Tests ratio, polarity, and burden. Ideal for substation maintenance and commissioning.' },
-    { name: 'B10E', price: 'From 160 SAR', imagePath: '/kit/b10e.png', padding: 20, description: 'Battery Testing System', details: 'Advanced battery testing system for voltage, impedance and capacity measurements. Perfect for UPS and backup power system maintenance.' },
-    { name: 'Sverker750', price: 'From 300 SAR', imagePath: '/kit/sverker750.png', padding: 20, description: 'Relay Testing System', details: 'Comprehensive relay testing kit for protection system verification. Tests timing, pick-up and drop-out values with high precision.' },
-    { name: 'MCF750', price: 'From 310 SAR', imagePath: '/kit/mcf750.png', padding: 22, description: 'Multi-Function Calibrator', details: 'High-precision calibration equipment for electrical parameters. Calibrates meters, transducers and protection devices with laboratory accuracy.' },
-    { name: 'TTR330', price: 'From 250 SAR', imagePath: '/kit/ttr330.png', padding: 15, description: 'Three-Phase TTR Meter', details: 'Three-phase transformer turn ratio testing device. Measures ratio, phase displacement and excitation current for power transformers.' },
-    { name: 'TTR300', price: 'From 220 SAR', imagePath: '/kit/ttr300.png', padding: 30, description: 'Transformer Turn Ratio Tester', details: 'Single-phase TTR meter with advanced features. Tests ratio accuracy and identifies winding problems in distribution transformers.' },
-    
-    { name: 'PDTD60', price: 'From 180 SAR', imagePath: '/kit/pdtd60.png', padding: 40, description: 'Partial Discharge Analyzer', details: 'Detection and measurement of partial discharges in high voltage equipment. Essential for preventive maintenance of cables and transformers.' },
-    { name: 'OTS80PD', price: 'From 190 SAR', imagePath: '/kit/ots80pd.png', padding: 25, description: 'Oil Test System', details: 'Measures dielectric breakdown voltage of insulating oils. Ensures transformer oil meets safety and performance standards.' },
-    { name: 'Oden', price: 'From 150 SAR', imagePath: '/kit/oden.png', padding: 50, description: 'Primary Current Injection Tester', details: 'High current testing system for circuit breakers and protection relays. Verifies operation at actual fault current levels.' },
-    { name: 'MTO330', price: 'From 280 SAR', imagePath: '/kit/mto330.png', padding: 10, description: 'Transformer Ohmmeter', details: 'Precision winding resistance measurement for power transformers. Detects poor connections, broken strands and tap changer problems.' },
-    { name: 'MOM600A', price: 'From 200 SAR', imagePath: '/kit/mom600a.png', padding: 15, description: 'Micro-Ohmmeter', details: 'Measures low resistances with high precision. Used for testing circuit breaker contacts, bus bar joints and other connections.' },
-    { name: 'MIT525', price: 'From 270 SAR', imagePath: '/kit/mit525.png', padding: 20, description: 'Insulation Tester 5kV', details: 'Measures insulation resistance up to 5kV. Features multiple test modes including PI, DAR and dielectric discharge.' },
-    { name: 'MIT300', price: 'From 220 SAR', imagePath: '/kit/mit300.png', padding: 10, description: 'Insulation and Continuity Tester', details: 'Handheld device for insulation resistance and continuity tests. Perfect for routine maintenance of electrical equipment.' },
-    { name: 'MIT520', price: 'From 260 SAR', imagePath: '/kit/mit520.png', padding: 30, description: 'Diagnostic Insulation Tester', details: 'Advanced 5kV insulation analyzer with memory storage. Provides diagnostic testing for high voltage equipment health assessment.' },
+// SVG Icon component for currency
+const CurrencyIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+        <g style={{fontSize:'8px', lineHeight:0, fontFamily:'Andika', opacity:1, vectorEffect:'none', fill:'currentColor', strokeWidth:.15, strokeLinecap:'square', strokeLinejoin:'bevel', paintOrder:'markers stroke fill'}}>
+            <path d="m6.836 8.468 2.595-.55q-.045.454-.236.876l-2.589.55q.04-.46.23-.876Zm2.359-1.325-2.589.55v-1.65l-.808.173v.916q0 .123-.068.224l-.421.623q-.168.242-.45.298l-2.29.489q.045-.455.236-.876l2.184-.466v-1.04l-2.038.433q.045-.455.235-.87l1.803-.388V2.353q.342-.416.809-.68v3.718l.808-.174v-2.46q.343-.415.803-.68v2.971l2.022-.432q-.045.455-.236.876l-1.786.382v.82l2.022-.427q-.045.46-.236.876Z" style={{fontSize:'11.5px', fontFamily:'Gentium Unicode'}} aria-label="⃁"/>
+        </g>
+    </svg>
+);
 
-    { name: 'LCR55A', price: 'From 170 SAR', imagePath: '/kit/lcr55a.png', padding: 20, description: 'LCR Meter', details: 'Measures inductance, capacitance and resistance. Essential for component testing and electrical equipment maintenance.' },
-    { name: 'HVA60', price: 'From 240 SAR', imagePath: '/kit/hva60.png', padding: 40, description: 'High Voltage Test System', details: 'AC/DC high voltage testing equipment for cables and electrical installations. Tests withstand voltage up to 60kV.' },
-    { name: 'HIPOT', price: 'From 150 SAR', imagePath: '/kit/hipot.png', padding: 60, description: 'High Potential Tester', details: 'Electrical safety tester for dielectric withstand testing. Verifies insulation integrity and electrical safety compliance.' },
-    { name: 'FREJA300', price: 'From 280 SAR', imagePath: '/kit/freja300.png', padding: 10, description: 'Relay Test System', details: 'Comprehensive testing solution for protection relays. Tests complex protection schemes with high precision timing.' },
-    { name: 'FRAX101', price: 'From 240 SAR', imagePath: '/kit/frax101.png', padding: 20, description: 'Frequency Response Analyzer', details: 'Transformer winding deformation analysis through frequency response. Detects mechanical problems in transformer active parts.' },
-    { name: 'EGIL', price: 'From 210 SAR', imagePath: '/kit/egil.png', padding: 15, description: 'Circuit Breaker Analyzer', details: 'Timing and motion analysis for medium voltage circuit breakers. Verifies operation speed and synchronization between contacts.' },
-    { name: 'DLRO600', price: 'From 220 SAR', imagePath: '/kit/dlro600.png', padding: 25, description: 'Digital Low Resistance Ohmmeter', details: 'High current micro-ohmmeter for precise resistance measurements. Features temperature compensation and data storage capabilities.' },
-    { name: 'DELTA4000', price: 'From 290 SAR', imagePath: '/kit/delta4000.png', padding: 45, description: 'Power Factor Test System', details: 'Tests power factor and capacitance of high voltage equipment. Essential for assessing insulation condition in transformers and bushings.' },
+const kits: KitItem[] = [
+    { name: 'CT', price: 'From 180', imagePath: '/kit/ct.png', padding: 20, description: 'Current Transformer Testing Kit', details: 'Professional CT testing equipment for electrical engineers. Tests ratio, polarity, and burden. Ideal for substation maintenance and commissioning.' },
+    { name: 'B10E', price: 'From 160', imagePath: '/kit/b10e.png', padding: 20, description: 'Battery Testing System', details: 'Advanced battery testing system for voltage, impedance and capacity measurements. Perfect for UPS and backup power system maintenance.' },
+    { name: 'Sverker750', price: 'From 300', imagePath: '/kit/sverker750.png', padding: 20, description: 'Relay Testing System', details: 'Comprehensive relay testing kit for protection system verification. Tests timing, pick-up and drop-out values with high precision.' },
+    { name: 'MCF750', price: 'From 310', imagePath: '/kit/mcf750.png', padding: 22, description: 'Multi-Function Calibrator', details: 'High-precision calibration equipment for electrical parameters. Calibrates meters, transducers and protection devices with laboratory accuracy.' },
+    { name: 'TTR330', price: 'From 250', imagePath: '/kit/ttr330.png', padding: 15, description: 'Three-Phase TTR Meter', details: 'Three-phase transformer turn ratio testing device. Measures ratio, phase displacement and excitation current for power transformers.' },
+    { name: 'TTR300', price: 'From 220', imagePath: '/kit/ttr300.png', padding: 30, description: 'Transformer Turn Ratio Tester', details: 'Single-phase TTR meter with advanced features. Tests ratio accuracy and identifies winding problems in distribution transformers.' },
+    
+    { name: 'PDTD60', price: 'From 180', imagePath: '/kit/pdtd60.png', padding: 40, description: 'Partial Discharge Analyzer', details: 'Detection and measurement of partial discharges in high voltage equipment. Essential for preventive maintenance of cables and transformers.' },
+    { name: 'OTS80PD', price: 'From 190', imagePath: '/kit/ots80pd.png', padding: 25, description: 'Oil Test System', details: 'Measures dielectric breakdown voltage of insulating oils. Ensures transformer oil meets safety and performance standards.' },
+    { name: 'Oden', price: 'From 150', imagePath: '/kit/oden.png', padding: 50, description: 'Primary Current Injection Tester', details: 'High current testing system for circuit breakers and protection relays. Verifies operation at actual fault current levels.' },
+    { name: 'MTO330', price: 'From 280', imagePath: '/kit/mto330.png', padding: 10, description: 'Transformer Ohmmeter', details: 'Precision winding resistance measurement for power transformers. Detects poor connections, broken strands and tap changer problems.' },
+    { name: 'MOM600A', price: 'From 200', imagePath: '/kit/mom600a.png', padding: 15, description: 'Micro-Ohmmeter', details: 'Measures low resistances with high precision. Used for testing circuit breaker contacts, bus bar joints and other connections.' },
+    { name: 'MIT525', price: 'From 270', imagePath: '/kit/mit525.png', padding: 20, description: 'Insulation Tester 5kV', details: 'Measures insulation resistance up to 5kV. Features multiple test modes including PI, DAR and dielectric discharge.' },
+    { name: 'MIT300', price: 'From 220', imagePath: '/kit/mit300.png', padding: 10, description: 'Insulation and Continuity Tester', details: 'Handheld device for insulation resistance and continuity tests. Perfect for routine maintenance of electrical equipment.' },
+    { name: 'MIT520', price: 'From 260', imagePath: '/kit/mit520.png', padding: 30, description: 'Diagnostic Insulation Tester', details: 'Advanced 5kV insulation analyzer with memory storage. Provides diagnostic testing for high voltage equipment health assessment.' },
+
+    { name: 'LCR55A', price: 'From 170', imagePath: '/kit/lcr55a.png', padding: 20, description: 'LCR Meter', details: 'Measures inductance, capacitance and resistance. Essential for component testing and electrical equipment maintenance.' },
+    { name: 'HVA60', price: 'From 240', imagePath: '/kit/hva60.png', padding: 40, description: 'High Voltage Test System', details: 'AC/DC high voltage testing equipment for cables and electrical installations. Tests withstand voltage up to 60kV.' },
+    { name: 'HIPOT', price: 'From 150', imagePath: '/kit/hipot.png', padding: 60, description: 'High Potential Tester', details: 'Electrical safety tester for dielectric withstand testing. Verifies insulation integrity and electrical safety compliance.' },
+    { name: 'FREJA300', price: 'From 280', imagePath: '/kit/freja300.png', padding: 10, description: 'Relay Test System', details: 'Comprehensive testing solution for protection relays. Tests complex protection schemes with high precision timing.' },
+    { name: 'FRAX101', price: 'From 240', imagePath: '/kit/frax101.png', padding: 20, description: 'Frequency Response Analyzer', details: 'Transformer winding deformation analysis through frequency response. Detects mechanical problems in transformer active parts.' },
+    { name: 'EGIL', price: 'From 210', imagePath: '/kit/egil.png', padding: 15, description: 'Circuit Breaker Analyzer', details: 'Timing and motion analysis for medium voltage circuit breakers. Verifies operation speed and synchronization between contacts.' },
+    { name: 'DLRO600', price: 'From 220', imagePath: '/kit/dlro600.png', padding: 25, description: 'Digital Low Resistance Ohmmeter', details: 'High current micro-ohmmeter for precise resistance measurements. Features temperature compensation and data storage capabilities.' },
+    { name: 'DELTA4000', price: 'From 290', imagePath: '/kit/delta4000.png', padding: 45, description: 'Power Factor Test System', details: 'Tests power factor and capacitance of high voltage equipment. Essential for assessing insulation condition in transformers and bushings.' },
 ];
 
 // Helper hook for detecting clicks outside an element
@@ -163,7 +172,7 @@ export default function Shop() {
                                             layoutId={`price-${active.price}-${id}`}
                                             className="text-neutral-300 text-base mt-1"
                                         >
-                                            {active.price}
+                                            {active.price} <CurrencyIcon />
                                         </motion.p>
                                     </div>
                                 </div>
@@ -263,7 +272,7 @@ export default function Shop() {
                                     layoutId={`price-${kit.price}-${id}`}
                                     className="text-neutral-300 text-sm"
                                 >
-                                    {kit.price}
+                                    {kit.price} <CurrencyIcon />
                                 </motion.p>
                             </div>
                         </motion.div>

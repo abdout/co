@@ -13,6 +13,15 @@ interface KitItem {
   details?: string;
 }
 
+// SVG Icon component for currency
+const CurrencyIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" className="inline-block -ml-1">
+        <g style={{fontSize:'8px', lineHeight:0, fontFamily:'Andika', opacity:1, vectorEffect:'none', fill:'currentColor', strokeWidth:.15, strokeLinecap:'square', strokeLinejoin:'bevel', paintOrder:'markers stroke fill'}}>
+            <path d="m6.836 8.468 2.595-.55q-.045.454-.236.876l-2.589.55q.04-.46.23-.876Zm2.359-1.325-2.589.55v-1.65l-.808.173v.916q0 .123-.068.224l-.421.623q-.168.242-.45.298l-2.29.489q.045-.455.236-.876l2.184-.466v-1.04l-2.038.433q.045-.455.235-.87l1.803-.388V2.353q.342-.416.809-.68v3.718l.808-.174v-2.46q.343-.415.803-.68v2.971l2.022-.432q-.045.455-.236.876l-1.786.382v.82l2.022-.427q-.045.46-.236.876Z" style={{fontSize:'11.5px', fontFamily:'Gentium Unicode'}} aria-label="⃁"/>
+        </g>
+    </svg>
+);
+
 // Sample content for appendix items
 const appendixContent = {
   datasheet: {
@@ -74,28 +83,28 @@ const appendixContent = {
 };
 
 const kits: KitItem[] = [
-  { name: 'CT', price: 'From 180 SAR', imagePath: '/kit/ct.png', padding: 20, description: 'Current Transformer Testing Kit', details: 'Professional CT testing equipment for electrical engineers. Tests ratio, polarity, and burden. Ideal for substation maintenance and commissioning.' },
-  { name: 'B10E', price: 'From 160 SAR', imagePath: '/kit/b10e.png', padding: 20, description: 'Battery Testing System', details: 'Advanced battery testing system for voltage, impedance and capacity measurements. Perfect for UPS and backup power system maintenance.' },
-  { name: 'Sverker750', price: 'From 300 SAR', imagePath: '/kit/sverker750.png', padding: 20, description: 'Relay Testing System', details: 'Comprehensive relay testing kit for protection system verification. Tests timing, pick-up and drop-out values with high precision.' },
-  { name: 'MCF750', price: 'From 310 SAR', imagePath: '/kit/mcf750.png', padding: 22, description: 'Multi-Function Calibrator', details: 'High-precision calibration equipment for electrical parameters. Calibrates meters, transducers and protection devices with laboratory accuracy.' },
-  { name: 'TTR330', price: 'From 250 SAR', imagePath: '/kit/ttr330.png', padding: 15, description: 'Three-Phase TTR Meter', details: 'Three-phase transformer turn ratio testing device. Measures ratio, phase displacement and excitation current for power transformers.' },
-  { name: 'TTR300', price: 'From 220 SAR', imagePath: '/kit/ttr300.png', padding: 30, description: 'Transformer Turn Ratio Tester', details: 'Single-phase TTR meter with advanced features. Tests ratio accuracy and identifies winding problems in distribution transformers.' },
-  { name: 'PDTD60', price: 'From 180 SAR', imagePath: '/kit/pdtd60.png', padding: 40, description: 'Partial Discharge Analyzer', details: 'Detection and measurement of partial discharges in high voltage equipment. Essential for preventive maintenance of cables and transformers.' },
-  { name: 'OTS80PD', price: 'From 190 SAR', imagePath: '/kit/ots80pd.png', padding: 25, description: 'Oil Test System', details: 'Measures dielectric breakdown voltage of insulating oils. Ensures transformer oil meets safety and performance standards.' },
-  { name: 'Oden', price: 'From 150 SAR', imagePath: '/kit/oden.png', padding: 50, description: 'Primary Current Injection Tester', details: 'High current testing system for circuit breakers and protection relays. Verifies operation at actual fault current levels.' },
-  { name: 'MTO330', price: 'From 280 SAR', imagePath: '/kit/mto330.png', padding: 10, description: 'Transformer Ohmmeter', details: 'Precision winding resistance measurement for power transformers. Detects poor connections, broken strands and tap changer problems.' },
-  { name: 'MOM600A', price: 'From 200 SAR', imagePath: '/kit/mom600a.png', padding: 15, description: 'Micro-Ohmmeter', details: 'Measures low resistances with high precision. Used for testing circuit breaker contacts, bus bar joints and other connections.' },
-  { name: 'MIT525', price: 'From 270 SAR', imagePath: '/kit/mit525.png', padding: 20, description: 'Insulation Tester 5kV', details: 'Measures insulation resistance up to 5kV. Features multiple test modes including PI, DAR and dielectric discharge.' },
-  { name: 'MIT300', price: 'From 220 SAR', imagePath: '/kit/mit300.png', padding: 10, description: 'Insulation and Continuity Tester', details: 'Handheld device for insulation resistance and continuity tests. Perfect for routine maintenance of electrical equipment.' },
-  { name: 'MIT520', price: 'From 260 SAR', imagePath: '/kit/mit520.png', padding: 30, description: 'Diagnostic Insulation Tester', details: 'Advanced 5kV insulation analyzer with memory storage. Provides diagnostic testing for high voltage equipment health assessment.' },
-  { name: 'LCR55A', price: 'From 170 SAR', imagePath: '/kit/lcr55a.png', padding: 20, description: 'LCR Meter', details: 'Measures inductance, capacitance and resistance. Essential for component testing and electrical equipment maintenance.' },
-  { name: 'HVA60', price: 'From 240 SAR', imagePath: '/kit/hva60.png', padding: 40, description: 'High Voltage Test System', details: 'AC/DC high voltage testing equipment for cables and electrical installations. Tests withstand voltage up to 60kV.' },
-  { name: 'HIPOT', price: 'From 150 SAR', imagePath: '/kit/hipot.png', padding: 60, description: 'High Potential Tester', details: 'Electrical safety tester for dielectric withstand testing. Verifies insulation integrity and electrical safety compliance.' },
-  { name: 'FREJA300', price: 'From 280 SAR', imagePath: '/kit/freja300.png', padding: 10, description: 'Relay Test System', details: 'Comprehensive testing solution for protection relays. Tests complex protection schemes with high precision timing.' },
-  { name: 'FRAX101', price: 'From 240 SAR', imagePath: '/kit/frax101.png', padding: 20, description: 'Frequency Response Analyzer', details: 'Transformer winding deformation analysis through frequency response. Detects mechanical problems in transformer active parts.' },
-  { name: 'EGIL', price: 'From 210 SAR', imagePath: '/kit/egil.png', padding: 15, description: 'Circuit Breaker Analyzer', details: 'Timing and motion analysis for medium voltage circuit breakers. Verifies operation speed and synchronization between contacts.' },
-  { name: 'DLRO600', price: 'From 220 SAR', imagePath: '/kit/dlro600.png', padding: 25, description: 'Digital Low Resistance Ohmmeter', details: 'High current micro-ohmmeter for precise resistance measurements. Features temperature compensation and data storage capabilities.' },
-  { name: 'DELTA4000', price: 'From 290 SAR', imagePath: '/kit/delta4000.png', padding: 45, description: 'Power Factor Test System', details: 'Tests power factor and capacitance of high voltage equipment. Essential for assessing insulation condition in transformers and bushings.' },
+  { name: 'CT', price: 'From 180', imagePath: '/kit/ct.png', padding: 20, description: 'Current Transformer Testing Kit', details: 'Professional CT testing equipment for electrical engineers. Tests ratio, polarity, and burden. Ideal for substation maintenance and commissioning.' },
+  { name: 'B10E', price: 'From 160', imagePath: '/kit/b10e.png', padding: 20, description: 'Battery Testing System', details: 'Advanced battery testing system for voltage, impedance and capacity measurements. Perfect for UPS and backup power system maintenance.' },
+  { name: 'Sverker750', price: 'From 300', imagePath: '/kit/sverker750.png', padding: 20, description: 'Relay Testing System', details: 'Comprehensive relay testing kit for protection system verification. Tests timing, pick-up and drop-out values with high precision.' },
+  { name: 'MCF750', price: 'From 310', imagePath: '/kit/mcf750.png', padding: 22, description: 'Multi-Function Calibrator', details: 'High-precision calibration equipment for electrical parameters. Calibrates meters, transducers and protection devices with laboratory accuracy.' },
+  { name: 'TTR330', price: 'From 250', imagePath: '/kit/ttr330.png', padding: 15, description: 'Three-Phase TTR Meter', details: 'Three-phase transformer turn ratio testing device. Measures ratio, phase displacement and excitation current for power transformers.' },
+  { name: 'TTR300', price: 'From 220', imagePath: '/kit/ttr300.png', padding: 30, description: 'Transformer Turn Ratio Tester', details: 'Single-phase TTR meter with advanced features. Tests ratio accuracy and identifies winding problems in distribution transformers.' },
+  { name: 'PDTD60', price: 'From 180', imagePath: '/kit/pdtd60.png', padding: 40, description: 'Partial Discharge Analyzer', details: 'Detection and measurement of partial discharges in high voltage equipment. Essential for preventive maintenance of cables and transformers.' },
+  { name: 'OTS80PD', price: 'From 190', imagePath: '/kit/ots80pd.png', padding: 25, description: 'Oil Test System', details: 'Measures dielectric breakdown voltage of insulating oils. Ensures transformer oil meets safety and performance standards.' },
+  { name: 'Oden', price: 'From 150', imagePath: '/kit/oden.png', padding: 50, description: 'Primary Current Injection Tester', details: 'High current testing system for circuit breakers and protection relays. Verifies operation at actual fault current levels.' },
+  { name: 'MTO330', price: 'From 280', imagePath: '/kit/mto330.png', padding: 10, description: 'Transformer Ohmmeter', details: 'Precision winding resistance measurement for power transformers. Detects poor connections, broken strands and tap changer problems.' },
+  { name: 'MOM600A', price: 'From 200', imagePath: '/kit/mom600a.png', padding: 15, description: 'Micro-Ohmmeter', details: 'Measures low resistances with high precision. Used for testing circuit breaker contacts, bus bar joints and other connections.' },
+  { name: 'MIT525', price: 'From 270', imagePath: '/kit/mit525.png', padding: 20, description: 'Insulation Tester 5kV', details: 'Measures insulation resistance up to 5kV. Features multiple test modes including PI, DAR and dielectric discharge.' },
+  { name: 'MIT300', price: 'From 220', imagePath: '/kit/mit300.png', padding: 10, description: 'Insulation and Continuity Tester', details: 'Handheld device for insulation resistance and continuity tests. Perfect for routine maintenance of electrical equipment.' },
+  { name: 'MIT520', price: 'From 260', imagePath: '/kit/mit520.png', padding: 30, description: 'Diagnostic Insulation Tester', details: 'Advanced 5kV insulation analyzer with memory storage. Provides diagnostic testing for high voltage equipment health assessment.' },
+  { name: 'LCR55A', price: 'From 170', imagePath: '/kit/lcr55a.png', padding: 20, description: 'LCR Meter', details: 'Measures inductance, capacitance and resistance. Essential for component testing and electrical equipment maintenance.' },
+  { name: 'HVA60', price: 'From 240', imagePath: '/kit/hva60.png', padding: 40, description: 'High Voltage Test System', details: 'AC/DC high voltage testing equipment for cables and electrical installations. Tests withstand voltage up to 60kV.' },
+  { name: 'HIPOT', price: 'From 150', imagePath: '/kit/hipot.png', padding: 60, description: 'High Potential Tester', details: 'Electrical safety tester for dielectric withstand testing. Verifies insulation integrity and electrical safety compliance.' },
+  { name: 'FREJA300', price: 'From 280', imagePath: '/kit/freja300.png', padding: 10, description: 'Relay Test System', details: 'Comprehensive testing solution for protection relays. Tests complex protection schemes with high precision timing.' },
+  { name: 'FRAX101', price: 'From 240', imagePath: '/kit/frax101.png', padding: 20, description: 'Frequency Response Analyzer', details: 'Transformer winding deformation analysis through frequency response. Detects mechanical problems in transformer active parts.' },
+  { name: 'EGIL', price: 'From 210', imagePath: '/kit/egil.png', padding: 15, description: 'Circuit Breaker Analyzer', details: 'Timing and motion analysis for medium voltage circuit breakers. Verifies operation speed and synchronization between contacts.' },
+  { name: 'DLRO600', price: 'From 220', imagePath: '/kit/dlro600.png', padding: 25, description: 'Digital Low Resistance Ohmmeter', details: 'High current micro-ohmmeter for precise resistance measurements. Features temperature compensation and data storage capabilities.' },
+  { name: 'DELTA4000', price: 'From 290', imagePath: '/kit/delta4000.png', padding: 45, description: 'Power Factor Test System', details: 'Tests power factor and capacitance of high voltage equipment. Essential for assessing insulation condition in transformers and bushings.' },
 ];
 
 export default function ProductPage() {
@@ -183,7 +192,7 @@ export default function ProductPage() {
           </div>
           
           <p className="text-xl text-neutral-300 mx-3 mt-6 mb-3">
-            {product.price}
+            {product.price} <CurrencyIcon />
           </p>
           
           <div className="flex items-center gap-4 mx-2">
@@ -285,78 +294,57 @@ export default function ProductPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 h-full w-full z-[9000]"
+              className="fixed inset-0 bg-black/70 z-50"
               onClick={closeAppendixDialog}
             />
+            
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9001] p-0"
-              style={{ top: 0, left: 0 }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="fixed inset-4 md:inset-10 bg-primary z-50 rounded-lg overflow-hidden flex flex-col"
             >
-              <div className="bg-primary w-full h-full flex flex-col box-border">
-                {/* Custom PDF header */}
-                <div className="flex justify-between items-center py-3 px-5 border-b border-background/20 bg-background/5">
-                  <div className="flex items-center">
-                    <h3 className="text-base font-medium text-background">
-                      {activeAppendix && appendixContent[activeAppendix as keyof typeof appendixContent].title}
-                    </h3>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <button
+              <div className="p-4 border-b border-background/20 flex justify-between items-center">
+                <h3 className="text-xl text-background font-semibold">
+                  {appendixContent[activeAppendix as keyof typeof appendixContent]?.title || 'Document'}
+                </h3>
+                
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <button 
                       onClick={zoomOut}
-                      className="text-background hover:bg-background/10 rounded-full p-2 transition-colors w-8 h-8 flex items-center justify-center"
-                      aria-label="Zoom Out"
+                      className="p-1 rounded-full hover:bg-background/10"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-background">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
                       </svg>
                     </button>
-                    <button
+                    
+                    <span className="text-sm text-background">{Math.round(pdfScale * 100)}%</span>
+                    
+                    <button 
                       onClick={zoomIn}
-                      className="text-background hover:bg-background/10 rounded-full p-2 transition-colors w-8 h-8 flex items-center justify-center"
-                      aria-label="Zoom In"
+                      className="p-1 rounded-full hover:bg-background/10"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-background">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                       </svg>
                     </button>
-                    <a
-                      href="/docs/fake.pdf"
-                      download="document.pdf"
-                      className="text-background hover:bg-background/10 rounded-full p-2 transition-colors w-8 h-8 flex items-center justify-center"
-                      aria-label="Download"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                      </svg>
-                    </a>
-                    <a
-                      href={`mailto:?subject=${product.name} Document&body=Check out this document for ${product.name}.`}
-                      className="text-background hover:bg-background/10 rounded-full p-2 transition-colors w-8 h-8 flex items-center justify-center"
-                      aria-label="Share via Email"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                      </svg>
-                    </a>
-                    <button 
-                      onClick={closeAppendixDialog}
-                      className="text-background hover:bg-background/10 rounded-full p-2 transition-colors w-8 h-8 flex items-center justify-center"
-                      aria-label="Close"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
                   </div>
+                  
+                  <button 
+                    onClick={closeAppendixDialog}
+                    className="p-1 rounded-full hover:bg-background/10"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-background">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
-                
-                <div className="flex-1 overflow-hidden">
-                  {activeAppendix && appendixContent[activeAppendix as keyof typeof appendixContent].content(pdfScale)}
-                </div>
+              </div>
+              
+              <div className="flex-1 overflow-auto">
+                {appendixContent[activeAppendix as keyof typeof appendixContent]?.content(pdfScale)}
               </div>
             </motion.div>
           </>
