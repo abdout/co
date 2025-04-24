@@ -4,13 +4,22 @@ import PlatformHeader from "@/components/template/header-platform/platform-heade
 import { UploadProvider } from "@/components/upload/context";
 import { ModalProvider } from "@/components/atom/modal/context";
 import { Toaster } from "@/components/ui/sonner";
-
+import { redirect } from 'next/navigation';
+import { auth } from '../../../auth';
 
 interface AppLayoutProps {
   children: React.ReactNode
 }
 
-export default function AppLayout({ children }: AppLayoutProps) {
+export default async function AppLayout({ children }: AppLayoutProps) {
+  // Server-side authentication check
+  const session = await auth();
+  
+  // If not authenticated, redirect to login
+  if (!session) {
+    redirect('/login?callbackUrl=/dashboard');
+  }
+  
   return (
     <div data-wrapper="" className="px-4 md:px-8 lg:px-0 xl:px-32 2xl:px-48 border-grid flex flex-1 flex-col">
       <PlatformHeader />
