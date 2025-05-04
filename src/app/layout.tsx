@@ -34,35 +34,22 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-    <html lang="en" suppressHydrationWarning >
-      <head>
-        <link rel="preload" href="/fonts/Rubik-Black.ttf" as="font" crossOrigin="anonymous" />
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            // Remove Facebook #_=_ hash on page load
-            if (window.location.hash === '#_=_') {
-              history.replaceState 
-                ? window.history.replaceState(null, null, window.location.href.split('#')[0])
-                : window.location.hash = '';
-            }
-          `
-        }} />
-      </head>
-      <body
-        className={cn(
-          "min-h-screen bg-background antialiased overflow-x-hidden",
-          fontSans.variable,
-          fontHeading.variable,
-          "font-sans"
-        )}
-      >
-        
-          <div className="container">
-            {children}
-          </div>
-        
-      </body>
-    </html>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="preload" href="/fonts/Rubik-Black.ttf" as="font" crossOrigin="anonymous" />
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              // Remove Facebook #_=_ hash on page load
+              if (window.location.hash === '#_=_') {
+                history.replaceState 
+                  ? window.history.replaceState(null, null, window.location.href.split('#')[0])
+                  : window.location.hash = '';
+              }
+            `
+          }} />
+        </head>
+        {children}
+      </html>
     </SessionProvider>
   );
 }
