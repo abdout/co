@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
-import { ThemeProvider } from "@/components/providers";
+
 import { SessionProvider } from "next-auth/react";
 import { auth } from "../../auth";
 
@@ -56,11 +56,11 @@ export default async function RootLayout({
           "font-sans"
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
+        
           <div className="container">
             {children}
           </div>
-        </ThemeProvider>
+        
       </body>
     </html>
     </SessionProvider>

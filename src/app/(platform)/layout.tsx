@@ -3,6 +3,7 @@ import "../globals.css";
 import PlatformHeader from "@/components/template/header-platform/platform-header"
 import { UploadProvider } from "@/components/upload/context";
 import { ModalProvider } from "@/components/atom/modal/context";
+import { ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { redirect } from 'next/navigation';
 import { auth } from '../../../auth';
@@ -28,7 +29,9 @@ export default async function AppLayout({ children }: AppLayoutProps) {
             <UploadProvider>
               {/* <MemberProvider> */}
                 <ModalProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
                   {children}
+                </ThemeProvider>
                 </ModalProvider>
               {/* </MemberProvider> */}
             </UploadProvider>
