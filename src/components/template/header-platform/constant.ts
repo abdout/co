@@ -12,6 +12,11 @@ export const siteConfig: SiteConfig = {
   },
 }
 
+export const META_THEME_COLORS = {
+  light: "#ffffff",
+  dark: "#09090b",
+}
+
 import { DocsConfig } from "./type"
 
 export const docsConfig: DocsConfig = {

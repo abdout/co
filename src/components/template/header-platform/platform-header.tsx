@@ -15,6 +15,7 @@ import { siteConfig } from './constant'
 import { usePathname, useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { MainNavItem } from './type'
+import { PlatformMobileNav } from './platform-mobile-nav'
 
 // Helper to generate secondary navigation items based on section
 const getSecondaryNavItems = (section: 'project' | 'resource' | 'wallet' | null, projectId?: string): MainNavItem[] => {
@@ -46,6 +47,70 @@ const getSecondaryNavItems = (section: 'project' | 'resource' | 'wallet' | null,
   
   return [];
 };
+
+const PlatformMainNav = ({ activeSection, projectId, isNavigating, onBackClick }: {
+  activeSection: 'project' | 'resource' | 'wallet' | null;
+  projectId?: string;
+  isNavigating: boolean;
+  onBackClick: () => void;
+}) => {
+  const pathname = usePathname() || '';
+  
+  // Get the current navigation items based on active section
+  const navItems = activeSection 
+    ? getSecondaryNavItems(activeSection, projectId) 
+    : marketingConfig.mainNav;
+
+  return (
+    <div className="mr-4 hidden md:flex">
+      <Link href="/platform" className="mr-4 flex items-center gap-2 lg:mr-6">
+        <Icons.logo className="h-6 w-6" />
+        <span className="hidden font-bold lg:inline-block">
+          {siteConfig.name}
+        </span>
+      </Link>
+      <div className="flex items-center">
+        {/* Back arrow when in a section */}
+        {activeSection && !isNavigating && (
+          <button 
+            onClick={onBackClick}
+            className="mr-4 flex items-center justify-center w-8 h-8 text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Go back to main navigation"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+        )}
+        
+        {/* Navigation items */}
+        <div className="overflow-hidden">
+          {!isNavigating && (
+            <nav 
+              key={activeSection || 'main'}
+              className="flex items-center gap-4 text-sm font-medium lg:gap-6"
+            >
+              {navItems.map((item, index) => (
+                <div key={`${item.title}-${index}`}>
+                  <Link
+                    href={item.disabled ? "#" : item.href}
+                    className={cn(
+                      "transition-colors hover:text-foreground/80",
+                      pathname === item.href || pathname.startsWith(item.href)
+                        ? "text-foreground"
+                        : "text-foreground/60",
+                      item.disabled && "cursor-not-allowed opacity-80"
+                    )}
+                  >
+                    {item.title}
+                  </Link>
+                </div>
+              ))}
+            </nav>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const PlatformHeader = () => {
   const [activeSection, setActiveSection] = useState<'project' | 'resource' | 'wallet' | null>(null);
@@ -123,86 +188,36 @@ const PlatformHeader = () => {
     };
   }, []);
 
-  // Get the current navigation items based on active section
-  const navItems = activeSection 
-    ? getSecondaryNavItems(activeSection, projectId) 
-    : marketingConfig.mainNav;
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
       <div className="container flex h-14 max-w-screen-2xl items-center">
-        {/* 1. Logo + Name Section (always visible) */}
-        <div className="flex items-center mr-6">
-          <Link href="/platform" className="flex items-center space-x-2">
-            <Icons.logo className="h-6 w-6" />
-            <span className="hidden font-bold lg:inline-block">
-              {siteConfig.name}
-            </span>
-          </Link>
-        </div>
-        
-        {/* 2. Navigation Links Section (swappable) */}
-        <div className="flex flex-1 items-center">
-          {/* Back arrow when in a section */}
-          {activeSection && !isNavigating && (
-            <button 
-              onClick={handleBackClick}
-              className="mr-4 flex items-center justify-center w-8 h-8 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Go back to main navigation"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-          )}
-          
-          {/* Navigation items */}
-          <div className="hidden md:flex overflow-hidden">
-            {!isNavigating && (
-              <nav 
-                key={activeSection || 'main'}
-                className="flex items-center gap-4 text-sm font-medium lg:gap-6"
-              >
-                {navItems.map((item, index) => (
-                  <div key={`${item.title}-${index}`}>
-                    <Link
-                      href={item.disabled ? "#" : item.href}
-                      className={cn(
-                        "transition-colors hover:text-foreground/80",
-                        pathname === item.href || pathname.startsWith(item.href)
-                          ? "text-foreground"
-                          : "text-foreground/60",
-                        item.disabled && "cursor-not-allowed opacity-80"
-                      )}
-                    >
-                      {item.title}
-                    </Link>
-                  </div>
-                ))}
-              </nav>
-            )}
+        <PlatformMainNav 
+          activeSection={activeSection}
+          projectId={projectId}
+          isNavigating={isNavigating}
+          onBackClick={handleBackClick}
+        />
+        <PlatformMobileNav 
+          activeSection={activeSection}
+          projectId={projectId}
+          isNavigating={isNavigating}
+          onBackClick={handleBackClick}
+        />
+        <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
+          <div className="w-full flex-1 md:w-auto md:flex-none">
+            <CommandMenu />
           </div>
-          
-          {/* Mobile menu button */}
-          <button
-            className="flex items-center space-x-2 md:hidden"
-            onClick={() => {}}
-          >
-            <Icons.logo className="h-5 w-5" />
-            <span className="font-medium text-sm">Menu</span>
-          </button>
-        </div>
-        
-        {/* 3. Command + Avatar + Theme Mode Section (always visible) */}
-        <div className="flex items-center space-x-2">
-          <CommandMenu />
-          <div className={cn(
-            buttonVariants({
-              variant: "ghost",
-            }),
-            "h-8 w-8 px-0"
-          )}>
-            <UserButton />
-          </div>
-          <ModeSwitcher />
+          <nav className="flex items-center gap-0.5">
+            <div className={cn(
+              buttonVariants({
+                variant: "ghost",
+              }),
+              "h-8 w-8 px-0"
+            )}>
+              <UserButton />
+            </div>
+            <ModeSwitcher />
+          </nav>
         </div>
       </div>
     </header>
