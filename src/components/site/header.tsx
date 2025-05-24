@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { GetStarted } from "./get-started";
+import { SiteMobileNav } from "./site-mobile-nav";
 
 const navLinks = [
   { href: "/about", label: "About" },
@@ -38,6 +39,7 @@ export function SiteHeader() {
             <span className="text-xl font-fabriga">company</span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-center flex-1 max-w-2xl mx-10">
             {navLinks.map((link) => (
               <Link
@@ -53,7 +55,12 @@ export function SiteHeader() {
           </div>
 
           <div className="flex items-center">
-           <GetStarted />
+            {/* Mobile Navigation */}
+            <SiteMobileNav />
+            {/* Desktop Get Started - Hidden on mobile */}
+            <div className="hidden md:flex">
+              <GetStarted />
+            </div>
           </div>
         </div>
       </div>
