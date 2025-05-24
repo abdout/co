@@ -3,7 +3,11 @@ import React from 'react'
 
 const page = () => {
   return (
-    <TwitterProfile />
+    <div>
+      Profile
+
+    </div>
+    
   )
 }
 
