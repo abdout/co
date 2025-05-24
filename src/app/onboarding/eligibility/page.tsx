@@ -6,7 +6,10 @@ import { db } from "@/lib/db";
 async function getActivityData() {
   try {
     const user = await currentUser();
-    if (!user?.id) return null;
+    if (!user?.id) {
+      // Return a default structure if no user is found
+      return { id: "", eligibility: [] };
+    }
 
     // Find the user with their team relationship
     const userWithTeam = await db.user.findUnique({
@@ -36,12 +39,22 @@ async function getActivityData() {
     };
   } catch (error) {
     console.error("Error fetching activity data:", error);
-    return { id: user.id, eligibility: [] };
+    // Return a safe default structure instead of potentially accessing null user
+    return { id: "", eligibility: [] };
   }
 }
 
 export default async function ActivityPage() {
   const userData = await getActivityData();
+  
+  // Add a check to ensure we have valid user data
+  if (!userData || !userData.id) {
+    return (
+      <div className="w-full flex items-center justify-center">
+        <div>Please log in to continue</div>
+      </div>
+    );
+  }
   
   return (
     <div className="w-full flex items-center justify-center">

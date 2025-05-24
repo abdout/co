@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useRef, useState } from 'react';
+import Loading from '@/components/atom/loading';
 
 interface FormContextType {
   formRef: React.RefObject<HTMLFormElement | null>;
@@ -7,6 +8,8 @@ interface FormContextType {
   setIsSubmitting: (value: boolean) => void;
   currentFormId: string;
   setCurrentFormId: (value: string) => void;
+  isLoading: boolean;
+  setIsLoading: (value: boolean) => void;
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -15,6 +18,7 @@ export function FormProvider({ children }: { children: React.ReactNode }) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentFormId, setCurrentFormId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <FormContext.Provider value={{ 
@@ -22,8 +26,11 @@ export function FormProvider({ children }: { children: React.ReactNode }) {
       isSubmitting, 
       setIsSubmitting,
       currentFormId,
-      setCurrentFormId
+      setCurrentFormId,
+      isLoading,
+      setIsLoading
     }}>
+      {isLoading && <Loading />}
       {children}
     </FormContext.Provider>
   );

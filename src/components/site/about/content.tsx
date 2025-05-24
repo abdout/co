@@ -63,7 +63,7 @@ const policy = () => {
 
 export const Content = () => {
     return (
-        <div className='max-w-[80%] py-40'>
+        <div className='md:max-w-[80%] py-40'>
             {introduction()}
             {changelog()}
             {policy()}

@@ -11,13 +11,14 @@ import { Button } from "@/components/ui/button";
 import { eligibility, Eligibility } from './constant';
 import { cn } from "@/lib/utils";
 import PageHeading from "../page-heading";
+import { useEffect } from "react";
 
 interface ActivityFormProps {
   user: ActivityUser;
 }
 
 export default function ActivityForm({ user }: ActivityFormProps) {
-  const { formRef, setIsSubmitting, setCurrentFormId } = useFormContext();
+  const { formRef, setCurrentFormId, setIsLoading, isLoading } = useFormContext();
   
   // Initialize form with useForm
   const {
@@ -33,7 +34,7 @@ export default function ActivityForm({ user }: ActivityFormProps) {
     }
   });
 
-  const { onSubmit } = useSubmit({ handleSubmit, setIsSubmitting });
+  const { onSubmit } = useSubmit({ handleSubmit, setIsLoading });
 
   const selectedEligibility = watch("eligibility") || [];
 
@@ -45,6 +46,10 @@ export default function ActivityForm({ user }: ActivityFormProps) {
       setValue("eligibility", [...current, item]);
     }
   };
+
+  useEffect(() => {
+    setCurrentFormId('eligibility');
+  }, [setCurrentFormId]);
 
   return (
     <form
@@ -93,6 +98,7 @@ export default function ActivityForm({ user }: ActivityFormProps) {
                     key={item}
                     type="button"
                     variant="ghost"
+                    disabled={isLoading}
                     className={cn(
                       "rounded-full transition-colors border-0 px-1 py-0 hover:bg-transparent",
                       sizeClass,
@@ -111,6 +117,13 @@ export default function ActivityForm({ user }: ActivityFormProps) {
           </div>
         </div>
       </ScrollArea>
+      
+      <button 
+        id="submit-eligibility" 
+        type="submit" 
+        className="hidden"
+        disabled={isLoading}
+      />
     </form>
   );
 } 

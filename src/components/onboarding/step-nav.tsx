@@ -12,7 +12,7 @@ const steps = [
   // { title: 'الاحكام', route: 'terms', link: '/onboarding/terms' },
   { title: 'Attachments', route: 'attachment', link: '/onboarding/attachment' },
   { title: 'Contact', route: 'contact', link: '/onboarding/contact' },
-  { title: 'Activities', route: 'activity', link: '/onboarding/activity' },
+  { title: 'Eligibility', route: 'eligibility', link: '/onboarding/eligibility' },
 ];
 
 // Map localStorage keys to form routes
@@ -20,12 +20,12 @@ const FORM_STORAGE_KEYS = {
   attachment: 'attachmentFormData',
   contact: 'contactFormData',
   'basic-info': 'informationFormData',
-  address: 'activityFormData',
+  eligibility: 'eligibilityFormData',
 };
 
 export default function StepNavigation() {
   const pathname = usePathname();
-  const currentPath = path.basename(pathname);
+  const currentPath = path.basename(pathname || '/');
   const { currentFormId } = useFormContext();
 
   // Track visited steps
@@ -96,9 +96,9 @@ export default function StepNavigation() {
 
     // Check activity form - green if at least one skill is filled
     try {
-      const activityData = localStorage.getItem(FORM_STORAGE_KEYS.address);
-      if (activityData) {
-        const parsedData = JSON.parse(activityData);
+      const eligibilityData = localStorage.getItem(FORM_STORAGE_KEYS.eligibility);
+      if (eligibilityData) {
+        const parsedData = JSON.parse(eligibilityData);
         const hasSkill = Array.isArray(parsedData.skills) && parsedData.skills.length > 0;
         
         setFormStatus(prev => ({

@@ -3,6 +3,23 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Content } from "./content";
 
+// Hook to detect mobile device
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
+
 const About = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const leftContentRef = useRef<HTMLDivElement>(null);
@@ -15,6 +32,7 @@ const About = () => {
   const [boxStartTop, setBoxStartTop] = useState(10);
   const [scrollPercentage, setScrollPercentage] = useState(10);
   const [textSpeedFactor, setTextSpeedFactor] = useState(0.4);
+  const isMobile = useIsMobile();
 
   // Constants
   const initialBoxTop = -26;
@@ -73,6 +91,11 @@ const About = () => {
 
     // Handle wheel events for custom scrolling
     const handleWheel = (e: WheelEvent) => {
+      // Skip custom scrolling on mobile devices
+      if (isMobile) {
+        return;
+      }
+      
       // Don't prevent default if interacting with the header
       if (isHeaderElement(e.target as Element)) {
         return;
@@ -271,8 +294,10 @@ const About = () => {
     window.addEventListener('click', handleLeftColumnClick);
     window.addEventListener('keydown', handleKeyDown);
     
-    // Prevent default browser scroll behavior
-    document.body.style.overflow = 'hidden';
+    // Prevent default browser scroll behavior (only on desktop)
+    if (!isMobile) {
+      document.body.style.overflow = 'hidden';
+    }
     
     return () => {
       window.removeEventListener('wheel', handleWheel);
@@ -285,20 +310,20 @@ const About = () => {
       // Restore default browser scroll behavior
       document.body.style.overflow = '';
     };
-  }, [isDragging, dragStartY, boxStartTop, scrollPercentage, textSpeedFactor]);
+  }, [isDragging, dragStartY, boxStartTop, scrollPercentage, textSpeedFactor, isMobile]);
 
   return (
-    <div ref={containerRef} className="container mx-auto px-14  bg-primary text-white">
+    <div ref={containerRef} className="container mx-auto px-4 md:px-14 bg-primary text-white">
       <div className="flex flex-col lg:flex-row h-[100vh]">
-        {/* Left Column - Content at scale with custom scrollbar */}
-        <div ref={leftColumnRef} className="w-full relative pt-36 pl-4 h-full">
+        {/* Left Column - Content at scale with custom scrollbar - hidden on mobile */}
+        <div ref={leftColumnRef} className="w-full relative pt-36 pl-0 md:pl-4 h-full hidden md:block">
           <div ref={leftContentRef} style={{ transform: `scale(${scaleValue})`, transformOrigin: 'top left' }}>
             <Content />
           </div>
-          {/* Transparent tracker box - with cursor styling for drag */}
+          {/* Transparent tracker box - with cursor styling for drag - hidden on mobile */}
           <div 
             ref={boxRef}
-            className="absolute w-40 h-24 mt-44 border border-muted-foreground hover:border-white hover:border-opacity-70 "
+            className="absolute w-40 h-24 mt-44 border border-muted-foreground hover:border-white hover:border-opacity-70 hidden md:block"
             style={{
               left: '-20px',
               top: `${initialBoxTop}px`,
@@ -306,25 +331,23 @@ const About = () => {
               zIndex: 10
             }}
           />
-          {/* Clickable overlay for the entire left column */}
+          {/* Clickable overlay for the entire left column - hidden on mobile */}
           <div 
-            className="absolute inset-0"
+            className="absolute inset-0 hidden md:block"
             style={{ zIndex: 5 }}
           />
         </div>
 
         {/* Right Column - Content at normal scale with hidden scrollbar */}
-        <div className="w-full -ml-40 h-full relative z-50 ">
+        <div className="w-full -ml-0 md:-ml-40 h-full relative z-50">
           <div 
             ref={rightContentRef}
-            className="h-full overflow-hidden"
+            className="h-full overflow-auto md:overflow-hidden no-scrollbar"
           >
             <Content />
           </div>
         </div>
       </div>
-      
-      
     </div>
   );
 };

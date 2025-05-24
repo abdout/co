@@ -140,7 +140,7 @@ export default function Shop() {
                         <motion.div
                             layoutId={`card-${active.name}-${id}`}
                             ref={ref}
-                            className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-primary"
+                            className="w-full max-w-[500px] h-fit max-h-[85%] mx-4 md:mx-0 flex flex-col bg-primary rounded-lg"
                         >
                             <div className="p-6">
                                 <div className="flex flex-row items-center">
@@ -234,7 +234,7 @@ export default function Shop() {
                     </p>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-20">
                     {kits.map((kit) => (
                         <motion.div
                             layoutId={`card-${kit.name}-${id}`}
@@ -245,35 +245,37 @@ export default function Shop() {
                             <div className="py-4 text-center">
                                 <motion.div 
                                     layoutId={`image-${kit.name}-${id}`}
-                                    className="flex justify-center items-center" 
-                                    style={{ height: '176px' }}
+                                    className="flex justify-center items-center mb-6 md:mb-4" 
+                                    style={{ height: '280px' }}
                                 >
                                     <div style={{ padding: `${kit.padding || 15}px` }}>
                                         <img 
                                             src={kit.imagePath} 
                                             alt={`${kit.name} Kit`} 
-                                            className="w-full h-auto object-contain"
+                                            className="w-full h-auto object-contain max-h-full"
                                         />
                                     </div>
                                 </motion.div>
-                                <motion.h2 
-                                    layoutId={`title-${kit.name}-${id}`}
-                                    className="text-xl font-semibold mt-4 text-background"
-                                >
-                                    {kit.name}
-                                </motion.h2>
-                                <motion.p 
-                                    layoutId={`description-${kit.description}-${id}`}
-                                    className="text-neutral-300 text-sm"
-                                >
-                                    {kit.description}
-                                </motion.p>
-                                <motion.p 
-                                    layoutId={`price-${kit.price}-${id}`}
-                                    className="text-neutral-300 text-sm"
-                                >
-                                    {kit.price} <CurrencyIcon />
-                                </motion.p>
+                                <div className="space-y-3">
+                                    <motion.h2 
+                                        layoutId={`title-${kit.name}-${id}`}
+                                        className="text-2xl font-semibold text-background"
+                                    >
+                                        {kit.name}
+                                    </motion.h2>
+                                    <motion.p 
+                                        layoutId={`description-${kit.description}-${id}`}
+                                        className="text-neutral-300 text-lg md:text-sm leading-relaxed"
+                                    >
+                                        {kit.description}
+                                    </motion.p>
+                                    <motion.p 
+                                        layoutId={`price-${kit.price}-${id}`}
+                                        className="text-neutral-300 text-lg md:text-sm font-medium"
+                                    >
+                                        {kit.price} <CurrencyIcon />
+                                    </motion.p>
+                                </div>
                             </div>
                         </motion.div>
                     ))}

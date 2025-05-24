@@ -3,18 +3,24 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import { toast } from 'sonner';
+import { SuccessToast, ErrorToast } from '@/components/atom/toast';
+import { useFormContext } from '@/components/onboarding/form-context';
 
 const TermsPage = () => {
     const [accepted, setAccepted] = useState(false);
     const router = useRouter();
     const formRef = useRef<HTMLFormElement>(null);
+    const { setIsLoading, isLoading } = useFormContext();
 
     const handleCheckboxChange = (checked: boolean) => {
         setAccepted(checked);
         if (checked) {
-            toast.success("تم قبول الشروط");
-            router.push('/onboarding/attachment');
+            setIsLoading(true);
+            SuccessToast();
+            setTimeout(() => {
+                setIsLoading(false);
+                router.push('/onboarding/attachment');
+            }, 1000);
         }
     };
 
@@ -28,13 +34,7 @@ const TermsPage = () => {
         // Assign the function to the window object
         (window as CustomWindow).submitTermsForm = () => {
             if (!accepted) {
-                toast.error("يجب قبول الشروط للمتابعة", {
-                    style: {
-                        background: 'rgb(239 68 68)',
-                        color: 'white',
-                        border: 'none'
-                    }
-                });
+                ErrorToast("يجب قبول الشروط للمتابعة");
                 return false;
             }
             return true;
@@ -56,6 +56,7 @@ const TermsPage = () => {
                     id="terms"
                     checked={accepted}
                     onCheckedChange={handleCheckboxChange}
+                    disabled={isLoading}
                 />
                 <label
                     htmlFor="terms"
@@ -64,7 +65,7 @@ const TermsPage = () => {
                     اقرأ <Link href="#" className='text-blue-600'>الارشادات</Link> و <Link href="#" className='text-blue-600'>الاوراق</Link> <span className='hidden md:inline'> قبل البدء</span> 
                 </label>
             </div>
-            <button id="submit-terms" type="submit" className="hidden" />
+            <button id="submit-terms" type="submit" className="hidden" disabled={isLoading} />
         </form>
     )
 }

@@ -1,21 +1,21 @@
 import { useCallback } from "react";
-import { toast } from "sonner";
+import { SuccessToast, ErrorToast } from "@/components/atom/toast";
 import { useRouter } from "next/navigation";
 import { createActivities, ActionState } from "./action";
 import { ActivitySchema } from "./validation";
 
 interface UseFormSubmitProps {
   handleSubmit: (onValid: (data: ActivitySchema) => void) => (e: React.FormEvent<HTMLFormElement>) => void;
-  setIsSubmitting?: (isSubmitting: boolean) => void;
+  setIsLoading?: (isLoading: boolean) => void;
 }
 
-export const useSubmit = ({ handleSubmit, setIsSubmitting }: UseFormSubmitProps) => {
+export const useSubmit = ({ handleSubmit, setIsLoading }: UseFormSubmitProps) => {
   const router = useRouter();
 
   const onSubmit = useCallback(
     handleSubmit(async (data) => {
-      if (setIsSubmitting) {
-        setIsSubmitting(true);
+      if (setIsLoading) {
+        setIsLoading(true);
       }
 
       try {
@@ -29,23 +29,23 @@ export const useSubmit = ({ handleSubmit, setIsSubmitting }: UseFormSubmitProps)
         const result = await createActivities(initialState, data);
 
         if (result.success) {
-          toast.success("Eligibility save success!");
+          SuccessToast();
           
           // Navigate to the next step
           router.push("/onboarding/review");
         } else {
-          toast.error(result.message || "Eligibility save faild!");
+          ErrorToast(result.message || "فشل في حفظ البيانات");
         }
       } catch (error) {
         console.error("Eligibility submission error:", error);
-        toast.error("An unexpected error occurred. Please try again.");
+        ErrorToast("حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى");
       } finally {
-        if (setIsSubmitting) {
-          setIsSubmitting(false);
+        if (setIsLoading) {
+          setIsLoading(false);
         }
       }
     }),
-    [handleSubmit, router, setIsSubmitting]
+    [handleSubmit, router, setIsLoading]
   );
 
   return { onSubmit };

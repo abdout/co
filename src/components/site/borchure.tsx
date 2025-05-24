@@ -6,8 +6,8 @@ export function BorchurePage() {
     <section className="py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-signifier mb-6 ">
-            Excellence in Electrical <br />
+          <h2 className="text-2xl md:text-5xl font-signifier mb-6 ">
+            Excellence in Electrical <br className="" />
             Testing & Commissioning
           </h2>
 

@@ -7,7 +7,7 @@ import { contactSchema, ContactSchema } from "./validation";
 import { createContact, updateContact } from "./action";
 import { useActionState } from "react";
 import { useEffect, useCallback } from "react";
-import { toast } from "sonner";
+import { SuccessToast, ErrorToast } from "@/components/atom/toast";
 import { useRouter, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,7 +38,7 @@ const ContactForm = ({
   type: "create" | "update";
   data?: ContactSchema;
 }) => {
-  const { formRef, setCurrentFormId } = useFormContext();
+  const { formRef, setCurrentFormId, setIsLoading, isLoading } = useFormContext();
   
   const {
     register,
@@ -46,6 +46,7 @@ const ContactForm = ({
     formState: { errors },
   } = useForm<ContactSchema>({
     resolver: zodResolver(contactSchema),
+    defaultValues: data,
   });
 
   const [isPending, startTransition] = useTransition();
@@ -58,6 +59,19 @@ const ContactForm = ({
   );
 
   const onSubmit = handleSubmit((formData) => {
+    // Show loading spinner
+    setIsLoading(true);
+    
+    // Check for validation errors and show them via toast instead of inline
+    if (Object.keys(errors).length > 0) {
+      const firstError = Object.values(errors)[0]?.message;
+      if (firstError) {
+        ErrorToast(firstError);
+      }
+      setIsLoading(false);
+      return;
+    }
+
     // Get the original data for comparison
     const originalData = data || {};
     
@@ -85,18 +99,19 @@ const ContactForm = ({
   const pathname = usePathname();
 
   const onSubmitSuccess = useCallback(() => {
-    toast.success(`Contact ${type === "create" ? "created" : "updated"}!`);
+    SuccessToast();
+    setIsLoading(false);
     router.push(getNextRoute(pathname));
-  }, [router, pathname, type]);
+  }, [router, pathname, setIsLoading]);
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Data save success");
       onSubmitSuccess();
     } else if (state.error) {
-      toast.error("Data save faild");
+      ErrorToast("فشل في حفظ البيانات");
+      setIsLoading(false);
     }
-  }, [state, onSubmitSuccess]);
+  }, [state, onSubmitSuccess, setIsLoading]);
 
   useEffect(() => {
     setCurrentFormId('contact');
@@ -106,7 +121,6 @@ const ContactForm = ({
     <form 
       ref={formRef} 
       className="w-full flex flex-col p-2"
-      
       onSubmit={onSubmit}
     >
       <PageHeading title="Contacts"/>
@@ -128,14 +142,8 @@ const ContactForm = ({
                   {...register(name)}
                   defaultValue={data?.[name] || ''}
                   placeholder={placeholder}
-                  aria-invalid={errors[name] ? "true" : "false"}
-                  className="h-10 w-80 items-center justify-center  border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="h-10 w-80 items-center justify-center border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {errors[name] && (
-                  <span className="text-sm text-red-500">
-                    {errors[name]?.message}
-                  </span>
-                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -151,18 +159,15 @@ const ContactForm = ({
         </div>
       </Tabs>
       
-      {state.error && (
-        <span className="text-red-500">Something went wrong!</span>
-      )}
-      
-      <Button type="submit" className="hidden w-full mt-8" disabled={isPending}>
-        {isPending ? "Saving..." : type === "create" ? "Create" : "Update"}
+      <Button type="submit" className="hidden w-full mt-8" disabled={isPending || isLoading}>
+        {isPending || isLoading ? "Saving..." : type === "create" ? "Create" : "Update"}
       </Button>
 
       <button 
         id="submit-contact" 
         type="submit" 
         className="hidden"
+        disabled={isPending || isLoading}
       />
     </form>
   );

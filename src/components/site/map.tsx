@@ -65,7 +65,7 @@ const MapPage = () => {
   };
 
   return (
-    <section className="p-8">
+    <section className="p-4 md:p-8">
       <div className=" my-10 ">
             <h4 className="text-muted-foreground">check in </h4>
             <h1 className=" font-bold -mt-2">Address</h1>
@@ -76,7 +76,7 @@ const MapPage = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Map Image Container */}
           <div className="flex flex-col h-full overflow-hidden rounded-lg">
-            <div className="relative h-[300px] w-full">
+            <div className="relative h-[220px] md:h-[300px] w-full">
               <Image 
                 src={selectedOffice.mapImage}
                 alt={`Map of ${selectedOffice.title}`}
@@ -96,7 +96,7 @@ const MapPage = () => {
           </div>
 
           {/* Info Section */}
-          <div className="space-y-6 px-6 rounded-lg">
+          <div className="space-y-6 md:px-6 rounded-lg">
             {Object.values(OFFICES).map((office) => (
               <div 
                 key={office.id}

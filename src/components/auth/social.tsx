@@ -38,7 +38,7 @@ export const Social = () => {
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid md:gap-4 gap-3 grid-cols-2">
       <Button
         size="lg"
         className="w-full"

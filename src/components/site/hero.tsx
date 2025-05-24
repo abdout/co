@@ -21,7 +21,7 @@ export function HeroPage() {
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-background">
         <div className="space-y-4 pt-24">
-          <h1 className="font-heading leading-wide text-lg sm:text-xl md:text-2xl lg:text-6xl font-bold text-background">
+          <h1 className="font-heading leading-wide text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-background">
             Precision testing, <br /> confidence energize.
           </h1>
 

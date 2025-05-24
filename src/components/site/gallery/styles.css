@@ -26,6 +26,7 @@
 	object-position: 100% 50%;
 	-webkit-user-drag: none;
 	user-select: none;
+	touch-action: none; /* Prevent default touch behaviors */
 }
 
 #image-track > .image img:hover {
@@ -36,4 +37,53 @@
 .span {
   display: inline-block;
   width: 100px;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+	.gallery-container {
+		height: 80vh; /* Reduce height on mobile to prevent overflow */
+	}
+
+	#image-track {
+		gap: 3vmin; /* Smaller gap on mobile */
+	}
+
+	#image-track > .image {
+		width: 35vmin; /* Smaller images on mobile */
+		height: 50vmin;
+	}
+
+	/* Disable hover effects on mobile */
+	#image-track > .image img:hover {
+		transform: none;
+	}
+}
+
+/* Very small mobile screens */
+@media (max-width: 480px) {
+	.gallery-container {
+		height: 70vh;
+	}
+
+	#image-track {
+		gap: 2vmin;
+	}
+
+	#image-track > .image {
+		width: 30vmin; /* Even smaller on very small screens */
+		height: 45vmin;
+	}
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+	.gallery-container {
+		height: 100vh; /* Full height in landscape */
+	}
+
+	#image-track > .image {
+		width: 25vmin; /* Smaller width to fit more images */
+		height: 40vmin;
+	}
 }
